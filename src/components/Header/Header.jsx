@@ -1,11 +1,11 @@
-import React from "react";
+import React, { useState } from "react";
 import "./Header.scss";
 import LanguageIcon from '@mui/icons-material/Language';
-import DehazeIcon from '@mui/icons-material/Dehaze';
 import HeaderProfile from "./components/HeaderProfile";
 import HeaderLocation from "./components/HeaderLocation";
 
 export default function Header() {
+  const [showLocationDropdown, setShowLocationDropdown] = useState(false);
   return (
     <nav className="fixed top-0 border-b w-full bg-white z-20">
       <div className="container mx-auto px-2 sm:px-10 py-5 flex flex-wrap justify-between items-center">
@@ -31,10 +31,11 @@ export default function Header() {
           </div>
         </a>
         <div
-          className="flex flex-wrap justify-center items-center relative z-20"
+          className="flex flex-wrap justify-center items-center relative z-20 "
           style={{ flex: "1 1 45%" }}
         >
-          <div className="flex flex-wrap justify-center items-center">
+          <div className={`flex flex-wrap justify-center items-center 
+          ${showLocationDropdown ? "" : "hidden"}`}  onClick={() => setShowLocationDropdown(!showLocationDropdown)}>
             <a href="" className="mx-2 active">
               Chỗ ở
             </a>
@@ -45,7 +46,11 @@ export default function Header() {
               Trải nghiệm trực tuyến
             </a>
           </div>
-          <div className="absolute flex flex-wrap px-3 py-1.5 rounded-full shadow-lg border bg-white justify-center items-center cursor-pointer z-20">
+          <div className={`absolute flex flex-wrap px-3 py-1.5 rounded-full shadow-lg border bg-white justify-center items-center cursor-pointer z-20 ${
+    showLocationDropdown ? "hidden" : ""
+  } `}
+  onClick={() => setShowLocationDropdown(!showLocationDropdown)}
+>
             <div className="font-medium border-r pr-2">Địa điểm bất kỳ</div>
             <div className="font-medium border-r pr-2 pl-2">Tuần bất kỳ</div>
             <div className="ffont-normal pr-2 pl-2">Thêm khách</div>
@@ -76,7 +81,7 @@ export default function Header() {
             </div>
           </div>
         </div>
-        <div className="absolute top-0 left-0 w-screen bg-white transition-all duration-300 pb-3 z-10" style={{ paddingTop: "4.4rem" }}>
+        <div className={`absolute top-0 left-0 w-screen bg-white transition-all duration-300 pb-3 z-10 absolute top-0 left-0 w-screen bg-white transition-all duration-300 pb-3 z-10  shadow-lg ${showLocationDropdown ? "transition-slide-down active" : "transition-slide-down"}`} style={{ paddingTop: "4.4rem" }}>
           <form
             action=""
             className="flex flex-wrap justify-center items-center"
@@ -117,7 +122,6 @@ export default function Header() {
             </div>
           </div>
         </div>
-
       </div>
     </nav>
   );
