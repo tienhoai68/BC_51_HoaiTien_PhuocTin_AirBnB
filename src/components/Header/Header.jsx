@@ -1,5 +1,9 @@
 import React from "react";
 import "./Header.scss";
+import LanguageIcon from '@mui/icons-material/Language';
+import DehazeIcon from '@mui/icons-material/Dehaze';
+import HeaderProfile from "./components/HeaderProfile";
+import HeaderLocation from "./components/HeaderLocation";
 
 export default function Header() {
   return (
@@ -41,85 +45,79 @@ export default function Header() {
               Trải nghiệm trực tuyến
             </a>
           </div>
-        </div>
-        <div className="absolute flex flex-wrap px-3 py-1.5 rounded-full shadow-lg border bg-white justify-center items-center cursor-pointer z-20">
-          <div className="font-medium border-r pr-2">Địa điểm bất kỳ</div>
-          <div className="font-medium border-r pr-2 pl-2">Tuần bất kỳ</div>
-          <div className="ffont-normal pr-2 pl-2">Thêm khách</div>
-          <div className="inline-flex w-8 h-8 justify-center items-center bg-rose-500 rounded-full text-white">
-            <svg
-              viewBox="0 0 32 32"
-              xmlns="http://www.w3.org/2000/svg"
-              aria-hidden="true"
-              role="presentation"
-              focusable="false"
-              style={{
-                display: "block",
-                fill: "none",
-                height: 12,
-                width: 12,
-                stroke: "currentcolor",
-                strokeWidth: "5.33333",
-                overflow: "visible",
-              }}
-            >
-              <g fill="none">
-                <path d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9" />
-              </g>
-              <g fill="none">
-                <path d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9" />
-              </g>
-            </svg>
+          <div className="absolute flex flex-wrap px-3 py-1.5 rounded-full shadow-lg border bg-white justify-center items-center cursor-pointer z-20">
+            <div className="font-medium border-r pr-2">Địa điểm bất kỳ</div>
+            <div className="font-medium border-r pr-2 pl-2">Tuần bất kỳ</div>
+            <div className="ffont-normal pr-2 pl-2">Thêm khách</div>
+            <div className="inline-flex w-8 h-8 justify-center items-center bg-rose-500 rounded-full text-white">
+              <svg
+                viewBox="0 0 32 32"
+                xmlns="http://www.w3.org/2000/svg"
+                aria-hidden="true"
+                role="presentation"
+                focusable="false"
+                style={{
+                  display: "block",
+                  fill: "none",
+                  height: 12,
+                  width: 12,
+                  stroke: "currentcolor",
+                  strokeWidth: "5.33333",
+                  overflow: "visible",
+                }}
+              >
+                <g fill="none">
+                  <path d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9" />
+                </g>
+                <g fill="none">
+                  <path d="m13 24c6.0751322 0 11-4.9248678 11-11 0-6.07513225-4.9248678-11-11-11-6.07513225 0-11 4.92486775-11 11 0 6.0751322 4.92486775 11 11 11zm8-3 9 9" />
+                </g>
+              </svg>
+            </div>
           </div>
         </div>
-        <div className="absolute top-0 left-0 w-screen bg-white transition-all duration-300 pb-3 z-10">
+        <div className="absolute top-0 left-0 w-screen bg-white transition-all duration-300 pb-3 z-10" style={{ paddingTop: "4.4rem" }}>
           <form
             action=""
             className="flex flex-wrap justify-center items-center"
           >
-            <div className="flex flex-wrap justify-center items-center relative  transition-all duration-300 h-0 overflow-hidden">
-              <div className="px-5 py-2 hover:bg-gray-300 rounded-full h-full flex flex-wrap justify-center items-center">
-                <label
-                  htmlFor="checkInDate"
-                  className="block text-sm font-medium text-gray-900 dark:text-gray-300"
-                >
-                  Địa điểm
-                </label>
-                <div className="w-48 bg-transparent outline-none select_location css-b62m3t-container">
-                  <span className="css-text"></span>
-                  <span
-                    aria-live="polite"
-                    aria-atomic="false"
-                    aria-relevant="additions text"
-                    className="css-text"
-                  ></span>
-                  <div className=" css-1s2u09g-control">
-                    <div className=" css-1d8n9bt">
-                      <div className=" css-qc6sy-singleValue"></div>
-                      <div className=" css-ackcql">
-                        <input
-                          className="custom-input" 
-                          autocapitalize="none"
-                          autoComplete="off"
-                          autocorrect="off"
-                          id="react-select-3-input"
-                          spellCheck={false}
-                          tabIndex={0}
-                          type="text"
-                          aria-autocomplete="list"
-                          aria-expanded={false}
-                          aria-haspopup={true}
-                          role="combobox"
-                          value=""
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
+            <div className="flex flex-wrap justify-center items-center relative  transition-all duration-300 h-16 rounded-full border">
+              <HeaderLocation />
+              <div className="hidden sm:block py-2 px-5 hover:bg-gray-300 rounded-full overflow-hidden h-full">
+                <label htmlFor="checkInDate" className="block text-sm font-medium text-gray-900 dark:text-gray-300">Nhận phòng</label>
+                <input name="checkIn" type="date" id="checkInDate" className="bg-transparent outline-none" placeholder="Thêm ngày" />
               </div>
+              <div className="hidden sm:block py-2 px-5 hover:bg-gray-300 rounded-full overflow-hidden h-full">
+                <label htmlFor="checkOutDate" className="block text-sm font-medium text-gray-900 dark:text-gray-300">Trả phòng</label>
+                <input name="checkOut" type="date" id="checkOutDate" className="bg-transparent outline-none" placeholder="Thêm ngày" />
+              </div>
+              <div className="hidden sm:block py-2 pl-7 pr-5 hover:bg-gray-300 rounded-full overflow-hidden h-full">
+                <label htmlFor="guest" className="block text-sm font-medium text-gray-900 dark:text-gray-300">Khách</label>
+                <input name="guest" type="number" id="guest" className="bg-transparent outline-none" placeholder="Thêm khách" />
+              </div>
+              <button className="text-white bg-red-700 hover:bg-red-800 focus:outline-none focus:ring-4 focus:ring-red-300 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 absolute right-0">Tìm kiếm</button>
             </div>
           </form>
         </div>
+        <div className="hidden sm:block flex-initial col-end-6 z-20" style={{ flex: "1 1 25%" }}>
+          <div className="relative flex items-center justify-end">
+            <div className="mr-4 flex items-center z-10">
+              <a className="inline-block rounded-full py-2 px-3 hover:bg-gray-200" href="">
+                <div className="hidden relative lg:flex cursor-pointer items-center whitespace-nowrap">Trở thành chủ nhà
+                </div>
+              </a>
+              <div className="hidden relative lg:block">
+                <button className="relative inline-block rounded-full py-2 px-3 hover:bg-gray-200">
+                  <div className="flex h-5 items-center">
+                    <LanguageIcon />
+                  </div>
+                </button>
+              </div>
+              <HeaderProfile />
+            </div>
+          </div>
+        </div>
+
       </div>
     </nav>
   );
