@@ -4,6 +4,7 @@ import { Menu, Transition } from '@headlessui/react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DehazeIcon from '@mui/icons-material/Dehaze';
 import { pink } from '@mui/material/colors';
+import { NavLink } from 'react-router-dom';
 
 
 function classNames(...classes) {
@@ -11,6 +12,7 @@ function classNames(...classes) {
 }
 
 export default function HeaderProfile() {
+
   return (
     <Menu as="div" className="relative inline-block text-left">
       <div>
@@ -32,28 +34,28 @@ export default function HeaderProfile() {
           <div className="py-1">
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="#"
+                <NavLink
+                  to="/register"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'
                   )}
                 >
                   Đăng kí
-                </a>
+                </NavLink>
               )}
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="#"
+                <NavLink
+                  to="/login"
                   className={classNames(
                     active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
                     'block px-4 py-2 text-sm'
                   )}
                 >
                   Đăng Nhập
-                </a>
+                </NavLink>
               )}
             </Menu.Item>
           </div>

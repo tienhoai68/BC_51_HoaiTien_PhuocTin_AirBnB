@@ -113,22 +113,22 @@ const image1 = [
 ];
 export default function CarouselSearch() {
   return (
-    <div className="container flex">
+    <div className="flex item-swiper">
 
       <Swiper
         slidesPerView={8}
-        spaceBetween={1}
+        spaceBetween={10}
         className="mySwiper"
         modules={[Navigation]}
         navigation={true}
       >
         {image1.map((item, index) => {
           return (
-            <SwiperSlide>
-              <NavLink to={"/"} key={index} className="font-medium slick-item" >
-                <span className="flex flex-col items-center slick-item-img ">
+            <SwiperSlide key={index}>
+              <NavLink to={"/"} key={index} className="font-medium " >
+                <span className="flex flex-col items-center slick-item slick-item-img ">
                   <img src={item.url} alt="..." className="w-6 " />
-                  <span className="text-xs hover:text-black">{item.name}</span>
+                  <span className="text-xs hover:text-black ">{item.name}</span>
                 </span>
               </NavLink>
             </SwiperSlide>
