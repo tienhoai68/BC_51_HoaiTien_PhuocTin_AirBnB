@@ -5,6 +5,10 @@ import Home from "../pages/Home/Home";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
 import Login from "../pages/Login/Login";
 import Register from "../pages/Home/Register/Register";
+import AdminLayout from "../layouts/AdminLayout/AdminLayout";
+import AdminHome from "../pages/AdminHome/AdminHome";
+import AdminRoom from "../pages/AdminRoom/AdminRoom";
+import AdminUser from "../pages/AdminUser/AdminUser";
 
 export default function Router() {
   const routing = useRoutes([
@@ -19,17 +23,35 @@ export default function Router() {
       ],
     },
     {
+      path: "/admin",
+      element: <AdminLayout />,
+      children: [
+        {
+          path: "/admin/",
+          element: <AdminHome />,
+        },
+        {
+          path: "/admin/user",
+          element: <AdminUser />,
+        },
+        {
+          path: "/admin/phongthue",
+          element: <AdminRoom />,
+        },
+      ],
+    },
+    {
       path: "*",
-      element: <PageNotFound />
+      element: <PageNotFound />,
     },
     {
       path: "/login",
-      element: <Login />
+      element: <Login />,
     },
     {
       path: "/register",
-      element: <Register />
-    }
+      element: <Register />,
+    },
   ]);
 
   return routing;
