@@ -8,6 +8,6 @@ export default function AdminLayout() {
     <div className="container-admin">
       <Siderbar />
       <Outlet />
-    </div>
+    </div> 
   );
 }
