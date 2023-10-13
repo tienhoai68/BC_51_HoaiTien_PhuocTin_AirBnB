@@ -9,6 +9,7 @@ import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import AdminHome from "../pages/AdminHome/AdminHome";
 import AdminRoom from "../pages/AdminRoom/AdminRoom";
 import AdminUser from "../pages/AdminUser/AdminUser";
+import RoomDetails from "../pages/RoomDetails/RoomDetails";
 
 export default function Router() {
   const routing = useRoutes([
@@ -19,6 +20,10 @@ export default function Router() {
         {
           path: "/",
           element: <Home />,
+        },
+        {
+          path: "/roomdetail",
+          element: <RoomDetails />,
         },
       ],
     },
