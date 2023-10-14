@@ -103,7 +103,10 @@ export default function AdminUser() {
     <div className="container m-5 mx-auto adminUser-main">
       <div className="title-adminUser m-5">
         <h1 className="title-admin">User Admin</h1>
-        <button onClick={() => navigate("/admin")} className="btn-addUser">
+        <button
+          onClick={() => navigate("/admin/addUser")}
+          className="btn-addUser"
+        >
           ADD USER
         </button>
         <Search

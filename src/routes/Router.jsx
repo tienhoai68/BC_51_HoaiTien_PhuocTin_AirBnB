@@ -10,6 +10,7 @@ import AdminHome from "../pages/AdminHome/AdminHome";
 import AdminRoom from "../pages/AdminRoom/AdminRoom";
 import AdminUser from "../pages/AdminUser/AdminUser";
 import RoomDetails from "../pages/RoomDetails/RoomDetails";
+import AdminAddUser from "../pages/AdminAddUser/AdminUserAdd";
 
 export default function Router() {
   const routing = useRoutes([
@@ -38,6 +39,10 @@ export default function Router() {
         {
           path: "/admin/user",
           element: <AdminUser />,
+        },
+        {
+          path: "/admin/addUser",
+          element: <AdminAddUser />,
         },
         {
           path: "/admin/phongthue",

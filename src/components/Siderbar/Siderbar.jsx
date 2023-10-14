@@ -33,10 +33,10 @@ export default function Siderbar() {
     });
   };
   return (
-    <div style={{ width: isOpen ? "200px" : "70px" }} className="siderbar">
+    <div style={{ width: isOpen ? "250px" : "70px" }} className="siderbar">
       <div className="top-siderbar">
         <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
-          Admin Page
+          MANAGER
         </h1>
         <div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">
           <button onClick={toggle}>
