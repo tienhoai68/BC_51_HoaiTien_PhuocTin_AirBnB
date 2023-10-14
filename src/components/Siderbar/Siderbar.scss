@@ -14,8 +14,9 @@
 .siderbar {
   background: var(--blue);
   border-left: 10px solid var(--blue);
+  border-right: 10px solid var(--blue);
   color: #fff;
-  height: 100vh;
+  min-height: 100vh;
   width: 200px;
   transition: all 0.5s;
 }
@@ -51,4 +52,18 @@
 .icon,
 .link_text {
   font-size: 20px;
+}
+.btn-logout {
+  width: 100%;
+  display: flex;
+  color: #fff;
+  padding: 10px 15px;
+  gap: 15px;
+  transition: all 0.5s;
+  font-size: 20px;
+}
+.btn-logout:hover {
+  background: lightskyblue;
+  color: #000;
+  transition: all 0.5s;
 }

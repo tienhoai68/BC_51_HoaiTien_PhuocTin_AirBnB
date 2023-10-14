@@ -45,6 +45,17 @@ export default function Siderbar() {
         </div>
       </div>
       {renderSiderbar()}
+      <hr />
+      <div>
+        <button className="btn-logout">
+          <div className="icon-siderbar">
+            <i className="fa-solid fa-arrow-right-from-bracket" />
+          </div>
+          <span style={{ display: isOpen ? "block" : "none" }} className="">
+            logout
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
