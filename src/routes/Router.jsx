@@ -4,13 +4,15 @@ import HomeLayout from "../layouts/HomeLayout/HomeLayout";
 import Home from "../pages/Home/Home";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
 import Login from "../pages/Login/Login";
-import Register from "../pages/Home/Register/Register";
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
 import AdminHome from "../pages/AdminHome/AdminHome";
 import AdminRoom from "../pages/AdminRoom/AdminRoom";
 import AdminUser from "../pages/AdminUser/AdminUser";
 import RoomDetails from "../pages/RoomDetails/RoomDetails";
 import AdminAddUser from "../pages/AdminAddUser/AdminUserAdd";
+import RoomByCity from "../pages/RoomByCity/RoomByCity";
+import PersonaInfo from "../pages/PersonaInfo/PersonaInfo";
+import Register from "../pages/Register/Register";
 import AdminEditUser from "../pages/AdminEditUser/AdminEditUser";
 
 export default function Router() {
@@ -24,8 +26,16 @@ export default function Router() {
           element: <Home />,
         },
         {
-          path: "/roomdetail",
+          path: "/room-detail",
           element: <RoomDetails />,
+        },
+        {
+          path: "/room-by-city",
+          element: <RoomByCity />,
+        },
+        {
+          path: "/personal-info",
+          element: <PersonaInfo/>,
         },
       ],
     },

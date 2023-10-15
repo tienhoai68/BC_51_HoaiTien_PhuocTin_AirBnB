@@ -7,8 +7,8 @@ import { AiFillStar } from 'react-icons/ai';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import "./Room.scss"
 import { Link } from 'react-router-dom';
+import "./Room.scss"
 
 const imagesRoom = [
   {
