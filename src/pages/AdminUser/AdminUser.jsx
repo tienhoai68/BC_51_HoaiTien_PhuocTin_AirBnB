@@ -1,7 +1,7 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { adminUsersService } from "../../services/AdminUser";
 import { Table } from "antd";
-import { NavLink, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Input } from "antd";
 
 import "./AdminUser.scss";
@@ -40,17 +40,6 @@ export default function AdminUser() {
       ellipsis: true,
     },
     {
-      title: "Avatar",
-      dataIndex: "avatar",
-      render: (text, user) => {
-        return (
-          <Fragment>
-            <img src={user.avatar} alt="..." width={50} height={50} />
-          </Fragment>
-        );
-      },
-    },
-    {
       title: "Email",
       dataIndex: "email",
     },
@@ -75,9 +64,12 @@ export default function AdminUser() {
       render: (text, user) => {
         return (
           <Fragment>
-            <NavLink className="btn-edit mr-2 ">
+            <button
+              onClick={() => navigate(`/admin/editUser/${user.id}`)}
+              className="btn-edit mr-2 "
+            >
               <i className="fa-solid fa-magnifying-glass" />
-            </NavLink>
+            </button>
             <button className="btn-delete">
               <i className="fa-solid fa-trash" />
             </button>
