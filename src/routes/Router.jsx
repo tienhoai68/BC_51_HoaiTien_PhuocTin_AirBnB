@@ -13,6 +13,7 @@ import AdminAddUser from "../pages/AdminAddUser/AdminUserAdd";
 import RoomByCity from "../pages/RoomByCity/RoomByCity";
 import PersonaInfo from "../pages/PersonaInfo/PersonaInfo";
 import Register from "../pages/Register/Register";
+import AdminEditUser from "../pages/AdminEditUser/AdminEditUser";
 
 export default function Router() {
   const routing = useRoutes([
@@ -53,6 +54,10 @@ export default function Router() {
         {
           path: "/admin/addUser",
           element: <AdminAddUser />,
+        },
+        {
+          path: "/admin/editUser/:userId",
+          element: <AdminEditUser />,
         },
         {
           path: "/admin/phongthue",

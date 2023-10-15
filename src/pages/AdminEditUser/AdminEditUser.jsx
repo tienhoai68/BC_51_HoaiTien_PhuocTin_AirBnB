@@ -1,50 +1,55 @@
-import moment from "moment/moment";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useNavigate, useParams } from "react-router-dom";
 import { adminUsersService } from "../../services/AdminUser";
-import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import { DatePicker } from "antd";
 
-export default function AdminAddUser() {
-  const [userState, setUserState] = useState({
+export default function AdminEditUser() {
+  const params = useParams();
+  const navigate = useNavigate();
+  const [userEditState, setUserEditState] = useState({
     name: "",
     email: "",
     password: "",
     phone: "",
     birthday: "",
-    gender: true,
-    role: "ADMIN",
+    gender: "",
+    role: "",
   });
-  const handleChange = (event) => {
-    setUserState({
-      ...userState,
-      [event.target.name]: event.target.value,
-    });
+
+  useEffect(() => {
+    fetchAdminDetailApi();
+  }, []);
+
+  const fetchAdminDetailApi = async () => {
+    const result = await adminUsersService.fetchAdminDetailApi(params.userId);
+    setUserEditState(result.data.content);
   };
-  const handleDate = (value) => {
-    const ngaySinh = dayjs(value).format("DD/MM/YYYY");
-    setUserState({
-      ...userState,
+  const handleChangeDate = (value) => {
+    const ngaySinh = dayjs(value);
+    setUserEditState({
+      ...userEditState,
       birthday: ngaySinh,
     });
   };
-
-  const handleChangeSelect = (event) => {
-    if (event.target.value === "MALE") {
-      setUserState({
-        ...userState,
-        gender: true,
-      });
-    } else {
-      setUserState({
-        ...userState,
-        gender: false,
-      });
-    }
+  const handleChange = (event) => {
+    setUserEditState({
+      ...userEditState,
+      [event.target.name]: event.target.value,
+    });
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await adminUsersService.fetchAdminAddUserApi(userState);
+    const result = await adminUsersService.fetchAdminUpdateApi(
+      params.userId,
+      userEditState
+    );
+    console.log(result.data.content);
+    if (result.data.content) {
+      navigate(`/admin/user`);
+    }
   };
+
   return (
     <div className="container mx-auto py-5">
       <form onSubmit={handleSubmit}>
@@ -59,6 +64,7 @@ export default function AdminAddUser() {
           </label>
           <input
             onChange={handleChange}
+            value={userEditState.name}
             type="text"
             name="name"
             className="border text-sm rounded-md w-1/3 p-2 "
@@ -68,6 +74,7 @@ export default function AdminAddUser() {
           <label className="block mb-2 text-sm font-medium mr-3">Email :</label>
           <input
             onChange={handleChange}
+            value={userEditState.email}
             type="text"
             name="email"
             className="border text-sm rounded-md w-1/3 p-2 "
@@ -79,6 +86,7 @@ export default function AdminAddUser() {
           </label>
           <input
             onChange={handleChange}
+            value={userEditState.password}
             type="text"
             name="password"
             className="border text-sm rounded-md w-1/3 p-2 "
@@ -90,6 +98,7 @@ export default function AdminAddUser() {
           </label>
           <input
             onChange={handleChange}
+            value={userEditState.phone}
             type="text"
             name="phone"
             className="border text-sm rounded-md w-1/3 p-2 "
@@ -100,9 +109,10 @@ export default function AdminAddUser() {
             Birthday :
           </label>
           <DatePicker
-            onChange={handleDate}
-            format={"DD/MM/YYYY"}
             name="birthday"
+            format={"DD/MM/YYYY"}
+            onChange={handleChangeDate}
+            value={dayjs(userEditState.birthday, "DD/MM/YYYY")}
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </div>
@@ -111,12 +121,13 @@ export default function AdminAddUser() {
             Gender :
           </label>
           <select
-            onChange={handleChangeSelect}
+            onChange={handleChange}
+            value={userEditState.gender}
             name="gender"
             className="border text-sm rounded-md w-1/3 p-2"
           >
-            <option>MALE</option>
-            <option>FEMALE</option>
+            <option value={true}>MALE</option>
+            <option value={false}>FEMALE</option>
           </select>
         </div>
         <div className="mb-2">
@@ -125,11 +136,12 @@ export default function AdminAddUser() {
           </label>
           <select
             onChange={handleChange}
+            value={userEditState.role}
             name="role"
             className="border text-sm rounded-md w-1/3 p-2"
           >
-            <option>ADMIN</option>
-            <option>USER</option>
+            <option value="ADMIN">ADMIN</option>
+            <option value="USER">USER</option>
           </select>
         </div>
 
@@ -138,7 +150,7 @@ export default function AdminAddUser() {
             type="submit"
             className=" font-medium text-sm py-2.5 mr-2 mb-2 bg-blue-500 p-3 rounded-md"
           >
-            Thêm
+            Cập nhật
           </button>
         </div>
       </form>
