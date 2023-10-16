@@ -3,8 +3,11 @@ import React, { useState } from "react";
 import { adminUsersService } from "../../services/AdminUser";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
+import { useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
 
 export default function AdminAddUser() {
+  const navigate = useNavigate();
   const [userState, setUserState] = useState({
     name: "",
     email: "",
@@ -43,7 +46,23 @@ export default function AdminAddUser() {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await adminUsersService.fetchAdminAddUserApi(userState);
+    try {
+      const result = await adminUsersService.fetchAdminAddUserApi(userState);
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "thêm User thành công !",
+      });
+      if (result.data.content) {
+        navigate(`/admin/user`);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.content}`,
+      });
+    }
   };
   return (
     <div className="container mx-auto py-5">

@@ -3,6 +3,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import { adminUsersService } from "../../services/AdminUser";
 import dayjs from "dayjs";
 import { DatePicker } from "antd";
+import Swal from "sweetalert2";
 
 export default function AdminEditUser() {
   const params = useParams();
@@ -40,13 +41,25 @@ export default function AdminEditUser() {
   };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    const result = await adminUsersService.fetchAdminUpdateApi(
-      params.userId,
-      userEditState
-    );
-    console.log(result.data.content);
-    if (result.data.content) {
-      navigate(`/admin/user`);
+    try {
+      const result = await adminUsersService.fetchAdminUpdateApi(
+        params.userId,
+        userEditState
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Cập nhật User thành công !",
+      });
+      if (result.data.content) {
+        navigate(`/admin/user`);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.content}`,
+      });
     }
   };
 
@@ -55,7 +68,7 @@ export default function AdminEditUser() {
       <form onSubmit={handleSubmit}>
         <div className="mb-4 ">
           <div className="md:block text-center text-3xl text-blue-800">
-            <h1>Đăng Ký Tài Khoản</h1>
+            <h1>Cập Nhật Tài Khoản</h1>
           </div>
         </div>
         <div className="mb-2">
