@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 import { Input } from "antd";
 
 import "./AdminUser.scss";
+import Swal from "sweetalert2";
 
 export default function AdminUser() {
   const navigate = useNavigate();
@@ -70,7 +71,10 @@ export default function AdminUser() {
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
-            <button className="btn-delete">
+            <button
+              onClick={() => fetchAdminDelete(user.id)}
+              className="btn-delete"
+            >
               <i className="fa-solid fa-trash" />
             </button>
           </Fragment>
@@ -87,10 +91,45 @@ export default function AdminUser() {
   const fetchAdminUserApi = async () => {
     const result = await adminUsersService.fetchAdminUserApi();
     setUserState(result.data.content);
-    console.log(result.data.content);
+  };
+  const fetchAdminDelete = async (id) => {
+    try {
+      const result = await adminUsersService.fetchAdminDeleteApi(id);
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Xóa User thành công !",
+      });
+
+      fetchAdminUserApi();
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.content}`,
+      });
+    }
   };
 
-  const onSearch = (value, _e, info) => console.log(info?.source, value);
+  const onSearch = async (value, _e) => {
+    if (value) {
+      const result = await adminUsersService.fetchAdminSearchApi(value);
+      setUserState(result.data.content);
+    } else {
+      fetchAdminUserApi();
+    }
+  };
+
+  const handlSearch = async (event) => {
+    if (event.target.value) {
+      const result = await adminUsersService.fetchAdminSearchApi(
+        event.target.value
+      );
+      setUserState(result.data.content);
+    } else {
+      fetchAdminUserApi();
+    }
+  };
   return (
     <div className="container m-5 mx-auto adminUser-main">
       <div className="title-adminUser m-5">
@@ -102,7 +141,8 @@ export default function AdminUser() {
           ADD USER
         </button>
         <Search
-          placeholder="input search text"
+          onChange={handlSearch}
+          placeholder="Tìm kiếm theo tên ..."
           allowClear
           size="large"
           onSearch={onSearch}
