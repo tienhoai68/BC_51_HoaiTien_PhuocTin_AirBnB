@@ -14,6 +14,7 @@ import RoomByCity from "../pages/RoomByCity/RoomByCity";
 import PersonaInfo from "../pages/PersonaInfo/PersonaInfo";
 import Register from "../pages/Register/Register";
 import AdminEditUser from "../pages/AdminEditUser/AdminEditUser";
+import TicketByUser from "../pages/TicketByUser/TicketByUser";
 
 export default function Router() {
   const routing = useRoutes([
@@ -35,7 +36,11 @@ export default function Router() {
         },
         {
           path: "/personal-info",
-          element: <PersonaInfo/>,
+          element: <PersonaInfo />,
+        },
+        {
+          path: "/ticket-by-user",
+          element: <TicketByUser />,
         },
       ],
     },
