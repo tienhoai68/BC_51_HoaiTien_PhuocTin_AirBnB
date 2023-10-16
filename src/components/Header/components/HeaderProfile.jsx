@@ -4,7 +4,8 @@ import { Menu, Transition } from '@headlessui/react'
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DehazeIcon from '@mui/icons-material/Dehaze';
 import { pink } from '@mui/material/colors';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
 
 
 function classNames(...classes) {
@@ -12,6 +13,175 @@ function classNames(...classes) {
 }
 
 export default function HeaderProfile() {
+  const userState = useSelector((state) => state.userReducer);
+  const navigate = useNavigate();
+
+
+  const renderButtonLogin = () => {
+    if (!userState.userInfo) {
+      return (
+        <>
+        <div className="py-1">
+        <Menu.Item>
+          {({ active }) => (
+            <NavLink
+              to="/register"
+              className={classNames(
+                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                'block px-4 py-2 text-sm'
+              )}
+            >
+              Đăng kí
+            </NavLink>
+          )}
+        </Menu.Item>
+        <Menu.Item>
+          {({ active }) => (
+            <NavLink
+              to="/login"
+              className={classNames(
+                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                'block px-4 py-2 text-sm'
+              )}
+            >
+              Đăng Nhập
+            </NavLink>
+          )}
+        </Menu.Item>
+      </div>
+      <div className="py-1">
+      <Menu.Item>
+        {({ active }) => (
+          <a
+            href="#"
+            className={classNames(
+              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+              'block px-4 py-2 text-sm'
+            )}
+          >
+            Cho thuê nhà
+          </a>
+        )}
+      </Menu.Item>
+      <Menu.Item>
+        {({ active }) => (
+          <a
+            href="#"
+            className={classNames(
+              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+              'block px-4 py-2 text-sm'
+            )}
+          >
+            Tổ chức trải nghiệm
+          </a>
+        )}
+      </Menu.Item>
+      <Menu.Item>
+        {({ active }) => (
+          <a
+            href="#"
+            className={classNames(
+              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+              'block px-4 py-2 text-sm'
+            )}
+          >
+            Trợ giúp
+          </a>
+        )}
+      </Menu.Item>
+    </div>
+        
+        </>
+      );
+    } else {
+      return (
+        <>
+        <div className="py-1">
+        <Menu.Item>
+          {({ active }) => (
+            <NavLink
+              to="/register"
+              className={classNames(
+                active ? 'bg-gray-100 text-rose-500' : 'text-rose-500', 
+              'block px-4 py-2 text-sm font-semibold'
+              )}
+            >
+              Chuyến đi
+            </NavLink>
+          )}
+        </Menu.Item>
+        <Menu.Item>
+          {({ active }) => (
+            <NavLink
+              to="/login"
+              className={classNames(
+                active ? 'bg-gray-100 text-rose-500' : 'text-rose-500', 
+              'block px-4 py-2 text-sm font-semibold'
+              )}
+            >
+             Thông tin cá nhân
+            </NavLink>
+          )}
+        </Menu.Item>
+      </div>
+      <div className="py-1">
+      <Menu.Item>
+        {({ active }) => (
+          <a
+            href="#"
+            className={classNames(
+              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+              'block px-4 py-2 text-sm'
+            )}
+          >
+            Cho thuê nhà
+          </a>
+        )}
+      </Menu.Item>
+      <Menu.Item>
+        {({ active }) => (
+          <a
+            href="#"
+            className={classNames(
+              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+              'block px-4 py-2 text-sm'
+            )}
+          >
+            Tổ chức trải nghiệm
+          </a>
+        )}
+      </Menu.Item>
+      <Menu.Item>
+        {({ active }) => (
+          <a
+            href="#"
+            className={classNames(
+              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+              'block px-4 py-2 text-sm '
+            )}
+          >
+            Trợ giúp
+          </a>
+        )}
+      </Menu.Item>
+      <Menu.Item>
+        {({ active }) => (
+          <a
+            href="#"
+            className={classNames(
+              active ? 'bg-gray-100 text-rose-500' : 'text-rose-500', 
+              'block px-4 py-2 text-sm font-semibold'
+            )}
+          >
+            Đăng xuất
+          </a>
+        )}
+      </Menu.Item>
+    </div>
+        </>
+      );
+    }
+  }
 
   return (
     <Menu as="div" className="relative inline-block text-left">
@@ -31,75 +201,8 @@ export default function HeaderProfile() {
         leaveTo="transform opacity-0 scale-95"
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <NavLink
-                  to="/register"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Đăng kí
-                </NavLink>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <NavLink
-                  to="/login"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Đăng Nhập
-                </NavLink>
-              )}
-            </Menu.Item>
-          </div>
-          <div className="py-1">
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Cho thuê nhà
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Tổ chức trải nghiệm
-                </a>
-              )}
-            </Menu.Item>
-            <Menu.Item>
-              {({ active }) => (
-                <a
-                  href="#"
-                  className={classNames(
-                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                    'block px-4 py-2 text-sm'
-                  )}
-                >
-                  Trợ giúp
-                </a>
-              )}
-            </Menu.Item>
-          </div>
+          {renderButtonLogin()}
+          
         </Menu.Items>
       </Transition>
     </Menu>
