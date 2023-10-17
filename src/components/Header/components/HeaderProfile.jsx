@@ -21,163 +21,163 @@ export default function HeaderProfile() {
     if (!userState.userInfo) {
       return (
         <>
-        <div className="py-1">
-        <Menu.Item>
-          {({ active }) => (
-            <NavLink
-              to="/register"
-              className={classNames(
-                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                'block px-4 py-2 text-sm'
+          <div className="py-1">
+            <Menu.Item>
+              {({ active }) => (
+                <NavLink
+                  to="/register"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
+                    'block px-4 py-2 text-sm font-semibold'
+                  )}
+                >
+                  Đăng Kí
+                </NavLink>
               )}
-            >
-              Đăng kí
-            </NavLink>
-          )}
-        </Menu.Item>
-        <Menu.Item>
-          {({ active }) => (
-            <NavLink
-              to="/login"
-              className={classNames(
-                active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-                'block px-4 py-2 text-sm'
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <NavLink
+                  to="/login"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
+                    'block px-4 py-2 text-sm font-semibold'
+                  )}
+                >
+                  Đăng Nhập
+                </NavLink>
               )}
-            >
-              Đăng Nhập
-            </NavLink>
-          )}
-        </Menu.Item>
-      </div>
-      <div className="py-1">
-      <Menu.Item>
-        {({ active }) => (
-          <a
-            href="#"
-            className={classNames(
-              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-              'block px-4 py-2 text-sm'
-            )}
-          >
-            Cho thuê nhà
-          </a>
-        )}
-      </Menu.Item>
-      <Menu.Item>
-        {({ active }) => (
-          <a
-            href="#"
-            className={classNames(
-              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-              'block px-4 py-2 text-sm'
-            )}
-          >
-            Tổ chức trải nghiệm
-          </a>
-        )}
-      </Menu.Item>
-      <Menu.Item>
-        {({ active }) => (
-          <a
-            href="#"
-            className={classNames(
-              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-              'block px-4 py-2 text-sm'
-            )}
-          >
-            Trợ giúp
-          </a>
-        )}
-      </Menu.Item>
-    </div>
-        
+            </Menu.Item>
+          </div>
+          <div className="py-1">
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm'
+                  )}
+                >
+                  Cho thuê nhà
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm'
+                  )}
+                >
+                  Tổ chức trải nghiệm
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm'
+                  )}
+                >
+                  Trợ giúp
+                </a>
+              )}
+            </Menu.Item>
+          </div>
+
         </>
       );
     } else {
       return (
         <>
-        <div className="py-1">
-        <Menu.Item>
-          {({ active }) => (
-            <NavLink
-              to="/register"
-              className={classNames(
-                active ? 'bg-gray-100 text-rose-500' : 'text-rose-500', 
-              'block px-4 py-2 text-sm font-semibold'
+          <div className="py-1">
+            <Menu.Item>
+              {({ active }) => (
+                <NavLink
+                  to="/register"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
+                    'block px-4 py-2 text-sm font-semibold'
+                  )}
+                >
+                  Chuyến đi
+                </NavLink>
               )}
-            >
-              Chuyến đi
-            </NavLink>
-          )}
-        </Menu.Item>
-        <Menu.Item>
-          {({ active }) => (
-            <NavLink
-              to="/login"
-              className={classNames(
-                active ? 'bg-gray-100 text-rose-500' : 'text-rose-500', 
-              'block px-4 py-2 text-sm font-semibold'
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <NavLink
+                  to="/login"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
+                    'block px-4 py-2 text-sm font-semibold'
+                  )}
+                >
+                  Thông tin cá nhân
+                </NavLink>
               )}
-            >
-             Thông tin cá nhân
-            </NavLink>
-          )}
-        </Menu.Item>
-      </div>
-      <div className="py-1">
-      <Menu.Item>
-        {({ active }) => (
-          <a
-            href="#"
-            className={classNames(
-              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-              'block px-4 py-2 text-sm'
-            )}
-          >
-            Cho thuê nhà
-          </a>
-        )}
-      </Menu.Item>
-      <Menu.Item>
-        {({ active }) => (
-          <a
-            href="#"
-            className={classNames(
-              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-              'block px-4 py-2 text-sm'
-            )}
-          >
-            Tổ chức trải nghiệm
-          </a>
-        )}
-      </Menu.Item>
-      <Menu.Item>
-        {({ active }) => (
-          <a
-            href="#"
-            className={classNames(
-              active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
-              'block px-4 py-2 text-sm '
-            )}
-          >
-            Trợ giúp
-          </a>
-        )}
-      </Menu.Item>
-      <Menu.Item>
-        {({ active }) => (
-          <a
-            href="#"
-            className={classNames(
-              active ? 'bg-gray-100 text-rose-500' : 'text-rose-500', 
-              'block px-4 py-2 text-sm font-semibold'
-            )}
-          >
-            Đăng xuất
-          </a>
-        )}
-      </Menu.Item>
-    </div>
+            </Menu.Item>
+          </div>
+          <div className="py-1">
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm'
+                  )}
+                >
+                  Cho thuê nhà
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm'
+                  )}
+                >
+                  Tổ chức trải nghiệm
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-gray-900' : 'text-gray-700',
+                    'block px-4 py-2 text-sm '
+                  )}
+                >
+                  Trợ giúp
+                </a>
+              )}
+            </Menu.Item>
+            <Menu.Item>
+              {({ active }) => (
+                <a
+                  href="#"
+                  className={classNames(
+                    active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
+                    'block px-4 py-2 text-sm font-semibold'
+                  )}
+                >
+                  Đăng xuất
+                </a>
+              )}
+            </Menu.Item>
+          </div>
         </>
       );
     }
@@ -202,7 +202,7 @@ export default function HeaderProfile() {
       >
         <Menu.Items className="absolute right-0 z-10 mt-2 w-56 origin-top-right divide-y divide-gray-100 rounded-md bg-white shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
           {renderButtonLogin()}
-          
+
         </Menu.Items>
       </Transition>
     </Menu>
