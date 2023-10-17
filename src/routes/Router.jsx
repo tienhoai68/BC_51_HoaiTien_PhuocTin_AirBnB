@@ -31,7 +31,7 @@ export default function Router() {
           element: <RoomDetails />,
         },
         {
-          path: "/room-by-city",
+          path: "/room-by-city/:roomCityId",
           element: <RoomByCity />,
         },
         {
