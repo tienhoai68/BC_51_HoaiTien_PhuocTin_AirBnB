@@ -17,25 +17,32 @@ import PersonIcon from '@mui/icons-material/Person';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import "./Room.scss"
 import { roomService } from '../../../../services/Room';
+import { useSelector } from 'react-redux';
 
 
 export default function Room() {
-
+  const userState = useSelector((state) => state.userReducer);
   const [room, setRoom] = useState([]);
-
+  const navigate = useNavigate();
   const fetchRoom = async () => {
     const result = await roomService.fetchRoomApi();
     setRoom(result.data.content)
   }
 
+  const handleBooking = (roomId) => {
+    if (userState) {
+      navigate(`/room-detail/${roomId}`)
+    } else {
+      navigate("/login");
+    }
+  }
   const renderRoom = () => {
     return room.map((element) => {
-      console.log(element);
       return (
-        <Link key={element.id} href="" className='roomLink'>
+        <Link key={element.id} to={`/room-detail/${element.id}`} className='roomLink' >
           <Swiper
             slidesPerView={1}
             cssMode={true}
@@ -45,6 +52,7 @@ export default function Room() {
             keyboard={true}
             modules={[Navigation, Pagination, Mousewheel, Keyboard]}
             className="roomSwiper"
+            onClick={() => handleBooking(element.id)}
           >
             <SwiperSlide>
               <img src={element.hinhAnh} alt="..." className='w-' />
@@ -72,36 +80,36 @@ export default function Room() {
               </span>
             </p>
             <p className="text-sm mt-2">
-              <div className="flex items-center">
+              <span className="flex items-center">
                 <span className="font-semibold text-gray-600 mr-1">Sức chứa:</span>
                 {element?.khach > 0 && element?.khach <= 8 && (
-                  <div className="flex">
+                  <span className="flex">
                     {[...Array(element.khach)].map((_, index) => (
                       <PersonIcon fontSize="small" key={index} className="inline text-gray-500" />
                     ))}
-                  </div>
+                  </span>
                 )}
-              </div>
-              <div className="flex items-center mt-2">
+              </span>
+              <span className="flex items-center mt-2">
                 <span className="font-semibold text-gray-600 mr-1">Giường:</span>
                 {element?.giuong > 0 && element?.giuong <= 8 && (
-                  <div className="flex">
+                  <span className="flex">
                     {[...Array(element.giuong)].map((_, index) => (
                       <KingBedIcon fontSize="small" key={index} className="inline text-gray-500" />
                     ))}
-                  </div>
+                  </span>
                 )}
-              </div>
-              <div className="flex items-center mt-2">
+              </span>
+              <span className="flex items-center mt-2">
                 <span className="font-semibold text-gray-600 mr-1">Phòng tắm:</span>
                 {element?.phongTam > 0 && element?.phongTam <= 8 && (
-                  <div className="flex">
+                  <span className="flex">
                     {[...Array(element.phongTam)].map((_, index) => (
                       <ShowerIcon fontSize="small" key={index} className="inline text-gray-500" />
                     ))}
-                  </div>
+                  </span>
                 )}
-              </div>
+              </span>
               <span className="flex items-center font-semibold text-gray-600 mt-2">
                 Các tiện ích:
                 {element.dieuHoa && (
@@ -131,6 +139,7 @@ export default function Room() {
             </p>
           </div>
         </Link>
+
       )
     })
   }

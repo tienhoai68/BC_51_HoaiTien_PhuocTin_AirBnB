@@ -27,7 +27,7 @@ export default function Router() {
           element: <Home />,
         },
         {
-          path: "/room-detail",
+          path: "/room-detail/:roomId",
           element: <RoomDetails />,
         },
         {
