@@ -39,6 +39,14 @@
     width: 25px;
   }
 
+  .swiper-button-prev.swiper-button-disabled,
+  .swiper-button-next.swiper-button-disabled {
+    opacity: 0.35;
+    cursor: not-allowed;
+    pointer-events: unset;
+    /* pointer-events: none; (tùy chọn, tắt sự kiện click) */
+  }
+
   .swiper-button-next:after,
   .swiper-button-prev:after {
     color: #000;
