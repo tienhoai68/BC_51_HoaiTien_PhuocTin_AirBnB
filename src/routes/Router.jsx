@@ -15,6 +15,7 @@ import PersonaInfo from "../pages/PersonaInfo/PersonaInfo";
 import Register from "../pages/Register/Register";
 import AdminEditUser from "../pages/AdminEditUser/AdminEditUser";
 import TicketByUser from "../pages/TicketByUser/TicketByUser";
+import AdminAddRoom from "../pages/AdminAddRoom/AdminAddRoom";
 
 export default function Router() {
   const routing = useRoutes([
@@ -67,6 +68,10 @@ export default function Router() {
         {
           path: "/admin/phongthue",
           element: <AdminRoom />,
+        },
+        {
+          path: "/admin/addRoom",
+          element: <AdminAddRoom />,
         },
       ],
     },
