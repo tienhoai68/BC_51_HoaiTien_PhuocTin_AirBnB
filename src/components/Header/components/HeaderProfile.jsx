@@ -100,7 +100,7 @@ export default function HeaderProfile() {
             <Menu.Item>
               {({ active }) => (
                 <NavLink
-                  to="/register"
+                  to="/ticket-by-user"
                   className={classNames(
                     active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
                     'block px-4 py-2 text-sm font-semibold'
@@ -113,7 +113,7 @@ export default function HeaderProfile() {
             <Menu.Item>
               {({ active }) => (
                 <NavLink
-                  to="/login"
+                  to="/personal-info"
                   className={classNames(
                     active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
                     'block px-4 py-2 text-sm font-semibold'

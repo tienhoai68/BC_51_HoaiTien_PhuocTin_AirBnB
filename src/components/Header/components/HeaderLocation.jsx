@@ -56,11 +56,11 @@ export default function HeaderLocation() {
               label="Địa Điểm"
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'new-password', // Tắt tính năng autocomplete và autofill
+                autoComplete: 'new-password',
               }}
             />
           )}
-          onChange={handleLocationChange} // Handle location selection
+          onChange={handleLocationChange}
         />
       </div>
       <div className="hidden sm:block py-2 px-5 hover:bg-gray-300 rounded-full overflow-hidden h-full">

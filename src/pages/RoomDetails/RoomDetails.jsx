@@ -22,29 +22,37 @@ import airCover from "../../assets/img/AirCover.png";
 import "./RoomDetails.scss";
 import { useParams } from "react-router-dom";
 import { roomService } from "../../services/Room";
-import BookingRoom from "./components/BookingRoom/BookingRoom";
 import FeedbackRoom from "./components/FeedbackRoom/FeedbackRoom";
 
 export default function RoomDetails() {
   const param = useParams();
+  const [feedBackRoom, setFeedBackRoom] = useState([]);
   const [roomDetail, setRoomDetail] = useState({});
   const [roomDetailLocation, setRoomDetailLocation] = useState({});
   const [description, setDesCription] = useState([]);
   const regex = /[\r\n]+/;
+  const fecthFeedBack = async () => {
+    const result = await roomService.fetchCommentRoomApi(param.roomId);
+    setFeedBackRoom(result.data.content);
+
+  };
   const fetchRoomDetail = async () => {
     const roomDetailResult = await roomService.fetchRoomDetailApi(param.roomId);
     const maViTri = roomDetailResult.data.content.maViTri;
-    const roomLocationResult = await roomService.fetchRoomLocationDetailApi(maViTri);
-    setRoomDetail(roomDetailResult.data.content);
-    setRoomDetailLocation(roomLocationResult.data.content);
+    if (maViTri > 0) {
+      const roomLocationResult = await roomService.fetchRoomLocationDetailApi(maViTri);
+      setRoomDetail(roomDetailResult.data.content);
+      setRoomDetailLocation(roomLocationResult.data.content);
+    } else {
+      setRoomDetail(roomDetailResult.data.content);
+    }
     const motaArray = roomDetailResult.data.content.moTa.split(regex);
     setDesCription(motaArray);
   }
   useEffect(() => {
     fetchRoomDetail();
+    fecthFeedBack();
   }, [])
-
-  console.log(roomDetail.id);
 
   return (
     <div>
@@ -65,25 +73,25 @@ export default function RoomDetails() {
               <div className="flex items-center">
                 <span className="flex items-center text-sm font-normal tracking-widest">
                   {" "}
-                  <span>
+                  <span className="text-rose-500 mr-1">
                     <AiFillStar />
-                  </span>{" "}
+                  </span>
                   4
                 </span>
                 <span className="underline text-sm font-normal tracking-widest mx-2">
-                  68 đánh giá
+                  {feedBackRoom.length} đánh giá
                 </span>
                 <span className="text-sm font-normal tracking-widest mx-2 flex items-center">
                   {" "}
-                  <span className="mr-2">
+                  <span className="text-rose-500 mr-1">
                     <FaAward />
                   </span>{" "}
                   Chủ nhà siêu cấp .
                 </span>
                 <span className="underline text-sm font-normal tracking-widest mx-2">
-                  <span className="mr-2">{roomDetailLocation.tenViTri} </span>
-                  <span className="mr-2">{roomDetailLocation.tinhThanh} </span>
-                  <span>{roomDetailLocation.quocGia}</span>
+                  <span className="mr-2">{roomDetailLocation?.tenViTri} </span>
+                  <span className="mr-2">{roomDetailLocation?.tinhThanh} </span>
+                  <span>{roomDetailLocation?.quocGia}</span>
                 </span>
               </div>
               <div className="flex flex-wrap justify-center items-center">
@@ -91,7 +99,7 @@ export default function RoomDetails() {
                   <ShareIcon />
                   <span className="ml-2">Chia sẻ</span>
                 </button>
-                <button className="px-2 py-1 hover:bg-gray-100 rounded-md transition-all duration-150  flex justify-center items-center font-semibold text-sm text-gray-700">
+                <button className="px-2 py-1 rounded-md transition-all duration-150 flex justify-center items-center font-semibold text-sm text-gray-700 hover:bg-gray-100 hover:text-pink-500">
                   <FavoriteBorderIcon />
                   <span className="ml-2">Yêu thích</span>
                 </button>
@@ -181,12 +189,23 @@ export default function RoomDetails() {
                     </span>
                   </div>
                   <div className="ml-4">
-                    <h3 className="font-semibold text-gray-800 text-base sm:text-lg">
-                      {description[2]}
-                    </h3>
-                    <p className="tracking-wider text-gray-500">
-                      {description[3]}
-                    </p>
+                    {description[2] ? (
+                      <>
+                        <h3 className="font-semibold text-gray-800 text-base sm:text-lg">
+                          {description[2]}
+                        </h3>
+                        <p className="tracking-wider text-gray-500">{description[3]}</p>
+                      </>
+                    ) : (
+                      <>
+                        <h3 className="font-semibold text-gray-800 text-base sm:text-lg">
+                          Chủ nhà siêu cấp
+                        </h3>
+                        <p className="tracking-wider text-gray-500">
+                          Chủ nhà siêu cấp là những chủ nhà có kinh nghiệm, được đánh giá cao và là những người cam kết mang lại quãng thời gian ở tuyệt vời cho khách.
+                        </p>
+                      </>
+                    )}
                   </div>
                 </div>
                 <div className="flex mt-5">
@@ -326,8 +345,8 @@ export default function RoomDetails() {
                 </div>
 
                 <div className="mt-5">
-                  <button className="border border-solid border-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-md px-5 py-3 font-semibold text-base text-gray-800 tracking-wider">
-                    Hiển thị tất cả 75 tiện nghi
+                  <button className="btn-convenient border border-gray-900 hover:bg-gray-100 duration-200 rounded-md px-5 py-3 font-semibold text-base text-gray-800 tracking-wider uppercase">
+                    Hiển thị tất cả tiện nghi
                   </button>
                 </div>
               </div>
@@ -335,7 +354,88 @@ export default function RoomDetails() {
             <div className="w-full sm:w-1/2 lg:w-2/5">
               <div className="sticky top-28">
                 <div className="bg-white shadow-xl border rounded-xl p-6 w-full lg:w-5/6 mx-auto">
-                  <BookingRoom roomDetail={roomDetail} />
+                  <div className="relative w-full">
+                    <div className="hidden md:flex justify-between items-center mb-4">
+                      <div>
+                        <span>$ </span>
+                        <span className="text-xl font-semibold">{roomDetail.giaTien}</span>
+                        <span className="text-base">/đêm</span>
+                      </div>
+                      <div>
+                        <span className="text-sm font-normal mr-1">
+                          <i className="fa fa-star text-rose-500"></i> 4.
+                        </span>
+                        <span className="underline text-sm font-normal tracking-widest mx-1">
+                          {feedBackRoom.length} đánh giá
+                        </span>
+                      </div>
+                    </div>
+                    <div className="flex flex-col border border-solid border-gray-400 rounded-md">
+                      <div className="flex w-full border-b border-solid border-gray-400">
+                        <div className="border-r border-solid border-gray-400 rounded-tl-md w-full p-2 cursor-pointer hover:bg-gray-100">
+                          <div className="text-xs uppercase font-semibold">
+                            Nhận phòng
+                          </div>
+                          <div className="m-1">14-10-2023</div>
+                        </div>
+                        <div className="rounded-tr-md w-full p-2 cursor-pointer hover:bg-gray-100">
+                          <div className="text-xs uppercase font-semibold">
+                            Trả phòng
+                          </div>
+                          <div className="m-1">14-10-2023</div>
+                        </div>
+                      </div>
+                      <div className="p-2">
+                        <div className="uppercase text-xs font-semibold">
+                          Khách
+                        </div>
+                        <div className="flex justify-between items-center m-1">
+                          <button
+                            className="w-8 h-8 bg-gray-300 hover:bg-red-400 duration-200 rounded-xl text-white cursor-pointer"
+                            disabled
+                          >
+                            -
+                          </button>
+                          <div>0 khách</div>
+                          <button className="w-8 h-8 bg-gray-300 hover:bg-red-400 duration-200 rounded-xl text-white cursor-pointer">
+                            +
+                          </button>
+                        </div>
+                      </div>
+                    </div>
+                    <button
+                      type="submit"
+                      className="w-full py-3 mt-3 rounded-lg text-white text-lg font-semibold btn-bookroom"
+                    >
+                      Đặt phòng
+                    </button>
+                    <div className="text-center font-normal text-gray-400 my-2">
+                      <span>Bạn vẫn chưa bị trừ tiền</span>
+                    </div>
+                    <div className="border-b py-2">
+                      <div className="flex justify-between py-1 text-base">
+                        <div className="underline text-gray-600">
+                          $ {roomDetail.giaTien} x 0 đêm
+                        </div>
+                        <div>
+                          <span>0</span> $
+                        </div>
+                      </div>
+                      <div className="flex justify-between py-1 text-base">
+                        <div className="underline text-gray-600">
+                          Phí dịch vụ
+                        </div>
+                        <div>
+                          <span>0</span> $
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex justify-between items-center text-lg font-semibold pt-3">
+                      <div>Tổng trước thuế</div>
+                      <div>0 $</div>
+                    </div>
+                  </div>
+                  {/* <BookingRoom roomDetail={roomDetail} feedBackRoom={feedBackRoom} /> */}
                 </div>
               </div>
             </div>
@@ -345,6 +445,6 @@ export default function RoomDetails() {
           </div>
         </div>
       </div>
-    </div>
+    </div >
   );
 }
