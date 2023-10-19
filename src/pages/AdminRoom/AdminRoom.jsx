@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 export default function AdminRoom() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
-  const [imgRoom, setImgRoom] = useState("");
+  const [imgRoom, setImgRoom] = useState([]);
   const [idRoom, setIdRoom] = useState("");
   const { Search } = Input;
   const [fileImg, setFileImg] = useState({});
@@ -137,7 +137,8 @@ export default function AdminRoom() {
   };
   const handleUpload = async () => {
     let formData = new FormData();
-    formData.append("File", fileImg, fileImg.name);
+    formData.append("formFile", fileImg, fileImg.name);
+    console.log(formData);
     const result = await adminRoomService.fetchAdminUploadImgApi(
       idRoom,
       formData
