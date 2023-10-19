@@ -23,7 +23,7 @@ const validationSchema = Yup.object({
 
 export default function FormRegister() {
 
-    const navigate = useNavigate();
+  const navigate = useNavigate();
   const [fieldErrors, setFieldErrors] = useState({
     email: "",
   });
