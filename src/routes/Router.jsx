@@ -16,6 +16,7 @@ import Register from "../pages/Register/Register";
 import AdminEditUser from "../pages/AdminEditUser/AdminEditUser";
 import TicketByUser from "../pages/TicketByUser/TicketByUser";
 import AdminAddRoom from "../pages/AdminAddRoom/AdminAddRoom";
+import AdminEditRoom from "../pages/AdminEditRoom/AdminEditRoom";
 
 export default function Router() {
   const routing = useRoutes([
@@ -72,6 +73,10 @@ export default function Router() {
         {
           path: "/admin/addRoom",
           element: <AdminAddRoom />,
+        },
+        {
+          path: "/admin/editRoom/:roomId",
+          element: <AdminEditRoom />,
         },
       ],
     },
