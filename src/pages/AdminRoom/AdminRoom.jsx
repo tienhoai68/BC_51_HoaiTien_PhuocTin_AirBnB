@@ -8,7 +8,6 @@ export default function AdminRoom() {
   const [showModal, setShowModal] = useState(false);
   const [imgRoom, setImgRoom] = useState([]);
   const [idRoom, setIdRoom] = useState("");
-  const { Search } = Input;
   const [fileImg, setFileImg] = useState({});
   const [stateRoom, setStateRoom] = useState([]);
   const [sortedInfo, setSortedInfo] = useState({});
@@ -81,7 +80,10 @@ export default function AdminRoom() {
       render: (text, room) => {
         return (
           <Fragment>
-            <button className="btn-edit mr-2 ">
+            <button
+              onClick={() => navigate(`/admin/editRoom/${room.id}`)}
+              className="btn-edit mr-2 "
+            >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
             <button
@@ -138,19 +140,27 @@ export default function AdminRoom() {
   const handleUpload = async () => {
     let formData = new FormData();
     formData.append("formFile", fileImg, fileImg.name);
-    console.log(formData);
-    const result = await adminRoomService.fetchAdminUploadImgApi(
-      idRoom,
-      formData
-    );
-    console.log(result.data.content);
-  };
-
-  const handleSearch = (event) => {
-    console.log(event.target.value);
-  };
-  const onSearch = async (value, _e) => {
-    console.log(value);
+    try {
+      const result = await adminRoomService.fetchAdminUploadImgApi(
+        idRoom,
+        formData
+      );
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Cập nhật hình thành công !",
+      });
+      if (result.data.content) {
+        fetchAdminRoomApi();
+        setShowModal(!showModal);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.content}`,
+      });
+    }
   };
   return (
     <div className="container m-5 mx-auto adminUser-main">
@@ -162,13 +172,6 @@ export default function AdminRoom() {
         >
           ADD ROOM
         </button>
-        <Search
-          onChange={handleSearch}
-          placeholder="Tìm kiếm theo tên ..."
-          allowClear
-          size="large"
-          onSearch={onSearch}
-        />
       </div>
 
       <hr />
