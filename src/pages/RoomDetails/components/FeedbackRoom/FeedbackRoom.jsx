@@ -8,16 +8,19 @@ import { Formik, Form, Field } from 'formik';
 import { ErrorMessage } from 'formik';
 import * as Yup from 'yup';
 import TotalRating from '../TotalRating/TotalRating';
+import moment from 'moment';
+import { useSelector } from 'react-redux';
 
 const CommentSchema = Yup.object().shape({
   noiDung: Yup.string().required('Nội dung bình luận không được trống'),
   saoBinhLuan: Yup.number()
     .required('Điểm đánh giá không được trống')
-  // .min(1, 'Điểm đánh giá tối thiểu là 1')
-  // .max(5, 'Điểm đánh giá tối đa là 5'),
 });
 
 export default function FeedbackRoom(props) {
+
+  const userState = useSelector((state) => state.userReducer);
+  // console.log(userState.userInfo.user.id);
   const [feedBackRoom, setFeedBackRoom] = useState([]);
   const [showAllComments, setShowAllComments] = useState(false);
   const [isCommenting, setIsCommenting] = useState(false);
@@ -25,6 +28,9 @@ export default function FeedbackRoom(props) {
   const initialValues = {
     noiDung: '',
     saoBinhLuan: rating,
+    ngayBinhLuan: moment().format('ddd, DD MMM YYYY HH:mm:ss [GMT]'),
+    maPhong: props.feedBack.id,
+    maNguoiBinhLuan: userState.userInfo.user.id,
   };
   const handleRatingChange = (value) => {
     setRating(value);
@@ -53,9 +59,10 @@ export default function FeedbackRoom(props) {
   };
 
   const onSubmitComment = (values, { resetForm }) => {
-    console.log(values);
-    // Handle form submission, e.g., send the comment to your API
-
+    const dataSubmit = { ...values, saoBinhLuan: rating };
+    console.log(dataSubmit);
+    // roomService.sendCommentApi(dataSubmit);
+    // lấy dataSubmit này post api
     // Reset the form after submission
     resetForm();
     // Hide the comment form
@@ -186,6 +193,7 @@ export default function FeedbackRoom(props) {
                 Đánh giá (1-5 sao)
               </label>
               <Rating
+                value={rating}
                 count={5}
                 onChange={handleRatingChange}
                 size={24}

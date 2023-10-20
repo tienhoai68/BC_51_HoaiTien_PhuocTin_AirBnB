@@ -1,25 +1,70 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import userUpload from "../../assets/img/user_upload.png";
 import security from "../../assets/img/security.png";
 import * as Yup from "yup";
 import { Form, ErrorMessage, Field, Formik } from "formik";
-import "./PersonaInfo.scss";
+import Swal from 'sweetalert2';
 
-// const validationSchema = Yup.object().shape({
-//   taiKhoan: Yup.string().required("(*) Tài khoản không được để trống"),
-//   matKhau: Yup.string()
-//     .required("(*) Mật khẩu không được để trống")
-//     .min(8, "Mật khẩu phải có ít nhất 8 ký tự"),
-//   email: Yup.string()
-//     .email("(*) Email không hợp lệ")
-//     .required("(*) Email không được để trống"),
-//   soDT: Yup.string().required("(*) Số điện thoại không được để trống"),
-//   hoTen: Yup.string().required("(*) Họ tên không được để trống"),
-// });
+import "./PersonaInfo.scss";
+import { useSelector } from "react-redux";
+import { userService } from "../../services/UserBooking";
+
+const validationSchema = Yup.object().shape({
+  name: Yup.string().required("(*) Họ tên không được để trống"),
+  birthday: Yup.string().required("(*) Ngày sinh không được để trống"),
+  email: Yup.string()
+    .email("(*) Email không hợp lệ")
+    .required("(*) Email không được để trống"),
+  phone: Yup.string()
+    .required("(*) Số điện thoại không được để trống")
+    .min(10, "Số điện thoại phải có ít nhất 10 ký tự"),
+  gender: Yup.string().required("(*) Giới tính không được để trống"),
+});
 
 export default function PersonaInfo() {
+
+  const stateUser = useSelector((state) => state.userReducer);
+  const [userInfo, setUserInfo] = useState({
+    name: '',
+    birthday: '',
+    email: '',
+    phone: '',
+    gender: '',
+  });
+
+  const [fieldErrors, setFieldErrors] = useState("");
+
+  const getUserInfo = async () => {
+    const result = await userService.userInfoApi(stateUser.userInfo.user.id);
+    setUserInfo(result.data.content)
+  }
+  const handleChangeUserInfo = async (values, { resetForm }) => {
+    try {
+      await userService.updateUserInfoApi(stateUser.userInfo.user.id, values);
+      getUserInfo();
+      setFieldErrors("");
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Bạn đã cập nhật thành công',
+      });
+      resetForm();
+    } catch (error) {
+      setFieldErrors(error.response.data.content);
+      Swal.fire({
+        icon: 'error',
+        title: 'Oops...',
+        text: `${error.response.data.content}`,
+      })
+      resetForm();
+    }
+  };
+
+  useEffect(() => {
+    getUserInfo();
+  }, [])
   return (
-    <div className="container mx-auto px-10 personal-info">
+    <div className="container mx-auto px-10 personal-info mb-20">
       <div className="h-28"></div>
       <div className="flex flex-wrap">
         <div className="w-full md:w-1/4">
@@ -64,9 +109,9 @@ export default function PersonaInfo() {
           <div className="px-10">
             <Formik
               enableReinitialize
-              //   initialValues={userInfo}
-              // validationSchema={validationSchema}
-              //   onSubmit={handleChangeUserInfo}
+              initialValues={userInfo}
+              validationSchema={validationSchema}
+              onSubmit={handleChangeUserInfo}
             >
               <Form className="personal-form">
                 <div className="md:grid md:grid-cols-1 gap-x-4 gap-y-1">
@@ -76,19 +121,19 @@ export default function PersonaInfo() {
                     </label>
                     <Field
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      name="hoTen"
+                      name="name"
                       type="text"
                       placeholder="Họ Tên"
                     />
                     <ErrorMessage
                       name="hoTen"
                       component="div"
-                      className="form-label text-danger"
+                      className="form-label text-red-600"
                     />
                   </div>
 
                   <div className="form-group">
-                  <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       <span className="text-red-600">*</span> Ngày sinh
                     </label>
                     <Field
@@ -101,23 +146,7 @@ export default function PersonaInfo() {
                     <ErrorMessage
                       name="birthday"
                       component="div"
-                      className="form-label text-danger"
-                    />
-                  </div>
-                  <div className="form-group">
-                    <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
-                      <span className="text-red-600">*</span> Địa chỉ
-                    </label>
-                    <Field
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      name="matKhau"
-                      type="text"
-                      placeholder="Mật khẩu"
-                    />
-                    <ErrorMessage
-                      name="matKhau"
-                      component="div"
-                      className="form-label text-danger"
+                      className="form-label text-red-600"
                     />
                   </div>
                   <div className="form-group">
@@ -133,11 +162,11 @@ export default function PersonaInfo() {
                     <ErrorMessage
                       name="email"
                       component="div"
-                      className="form-label text-danger"
+                      className="form-label text-red-600"
                     />
-                    {/* {fieldErrors && (
-        <div className="text-danger">{fieldErrors}</div>
-      )} */}
+                    {fieldErrors && (
+                      <div className="text-red-600">(*) {fieldErrors}</div>
+                    )}
                   </div>
                   <div className="form-group">
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
@@ -145,14 +174,14 @@ export default function PersonaInfo() {
                     </label>
                     <Field
                       className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      name="soDT"
+                      name="phone"
                       type="text"
                       placeholder="Số điện thoại"
                     />
                     <ErrorMessage
-                      name="soDT"
+                      name="phone"
                       component="div"
-                      className="form-label text-danger"
+                      className="form-label text-red-600"
                     />
                   </div>
                   <div className="form-group">
@@ -171,18 +200,18 @@ export default function PersonaInfo() {
                     <ErrorMessage
                       name="gender"
                       component="div"
-                      className="form-label text-danger"
+                      className="form-label text-red-600"
                     />
                   </div>
                 </div>
                 <div className='col-span-2 text-center mt-2'>
-                <button
-                  type="submit"
-                  className="text-white focus:outline-none focus:ring-4 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 bg-red-500 hover:bg-red-800 duration-300 w-1/2"
-                >
-                  CẬP NHẬT
-                </button>
-              </div>
+                  <button
+                    type="submit"
+                    className="text-white focus:outline-none focus:ring-4 font-medium rounded-full text-sm px-5 py-2.5 text-center mr-2 mb-2 bg-red-500 hover:bg-red-800 duration-300 w-1/2"
+                  >
+                    CẬP NHẬT
+                  </button>
+                </div>
               </Form>
             </Formik>
           </div>
