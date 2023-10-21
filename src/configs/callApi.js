@@ -14,7 +14,7 @@ const requestApi = axios.create({
 requestApi.interceptors.request.use((config) => {
   const userState = store.getState();
   let accessToken = null;
-  
+
   if (userState.userReducer.userInfo) {
     accessToken = userState.userReducer.userInfo.accessToken;
     config.headers.Authorization = `Bearer ${accessToken}`

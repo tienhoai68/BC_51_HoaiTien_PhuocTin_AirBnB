@@ -16,6 +16,19 @@ class UserService {
       data,
     })
   }
+  userInfoApi(id) {
+    return requestApi({
+      url: `/users/${id}`,
+      method: "GET",
+    })
+  }
+  updateUserInfoApi(id, data) {
+    return requestApi({
+      url: `/users/${id}`,
+      method: "PUT",
+      data,
+    })
+  }
 
 }
 export const userService = new UserService();

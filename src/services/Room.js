@@ -37,8 +37,13 @@ class RoomService {
       method: "GET",
     })
   };
-
-
+  sendCommentApi(data) {
+    return requestApi({
+      url: `/binh-luan`,
+      method: "POST",
+      data
+    })
+  };
 
 }
 export const roomService = new RoomService();
