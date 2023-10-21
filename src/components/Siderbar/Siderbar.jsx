@@ -16,6 +16,11 @@ export default function Siderbar() {
       name: " Rent Room",
       icon: <i className="fa-solid fa-house" />,
     },
+    {
+      path: "/admin/location",
+      name: "Location",
+      icon: <i className="fa-regular fa-map" />,
+    },
   ];
   const renderSiderbar = () => {
     return menuItem.map((element, idx) => {
