@@ -25,7 +25,6 @@ export default function Login() {
   const handleSubmitLogin = async (values,  { resetForm }) => {
     try {
       const result = await userService.loginApi(values);
-      console.log(result);
       dispatch(setUserInfoAction(result.data.content));
       Swal.fire({
         icon: 'success',
