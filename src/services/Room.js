@@ -41,7 +41,7 @@ class RoomService {
     return requestApi({
       url: `/binh-luan`,
       method: "POST",
-      data
+      data,
     })
   };
 
