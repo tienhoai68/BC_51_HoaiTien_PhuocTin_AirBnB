@@ -7,12 +7,15 @@ import { useNavigate, useParams } from "react-router-dom";
 export default function AdminAddLocation() {
   const params = useParams();
   const navigate = useNavigate();
+  const [imgLocation, setImgLocation] = useState("");
+  const [imgFileUpload, setImgFileUpload] = useState(null);
   const [editLocation, setEditLocation] = useState({
     tenViTri: "",
     tinhThanh: "",
     quocGia: "",
-    hinhAnh: "",
+    hinhAnh: {},
   });
+
   useEffect(() => {
     fetchLocationDetail();
   }, []);
@@ -28,12 +31,30 @@ export default function AdminAddLocation() {
       [event.target.name]: event.target.value,
     });
   };
+  const handleChangeImg = (event) => {
+    let file = event.target.files[0];
+
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      setImgLocation(event.target.result);
+    };
+    setImgFileUpload(file);
+  };
   const handleSubmitEdit = async () => {
     try {
       const result = await adminLocalService.fetchAdminEditLocationApi(
         params.locationId,
         editLocation
       );
+      if (imgFileUpload !== null) {
+        let formData = new FormData();
+        formData.append("formFile", imgFileUpload, imgFileUpload.name);
+        const resultUpload = await adminLocalService.fetchAdminImgLocationApi(
+          params.locationId,
+          formData
+        );
+      }
       Swal.fire({
         icon: "success",
         title: "Success!",
@@ -92,6 +113,15 @@ export default function AdminAddLocation() {
             type="text"
             name="quocGia"
             className="border text-sm rounded-md w-2/3 p-2 "
+          />
+        </Form.Item>
+        <Form.Item label="Hình Ảnh">
+          <input name="hinhAnh" type="File" onChange={handleChangeImg} />
+          <br />
+          <img
+            style={{ width: 150, height: 150 }}
+            src={imgLocation === "" ? editLocation.hinhAnh : imgLocation}
+            alt="..."
           />
         </Form.Item>
         <Form.Item label="Action">

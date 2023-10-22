@@ -21,7 +21,13 @@ export default function Siderbar() {
       name: "Location",
       icon: <i className="fa-regular fa-map" />,
     },
+    {
+      path: "/admin/comment",
+      name: "Comment",
+      icon: <i className="fa-regular fa-comment" />,
+    },
   ];
+
   const renderSiderbar = () => {
     return menuItem.map((element, idx) => {
       return (

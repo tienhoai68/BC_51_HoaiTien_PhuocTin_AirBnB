@@ -20,6 +20,7 @@ import AdminEditRoom from "../pages/AdminEditRoom/AdminEditRoom";
 import AdminLocation from "../pages/AdminLocation/AdminLocation";
 import AdminAddLocation from "../pages/AdminAddLocation/AdminAddLocation";
 import AdminEditLocation from "../pages/AdminEditLocation/AdminEditLocation";
+import AdminComment from "../pages/AdminComment/AdminComment";
 
 export default function Router() {
   const routing = useRoutes([
@@ -92,6 +93,10 @@ export default function Router() {
         {
           path: "/admin/editlocation/:locationId",
           element: <AdminEditLocation />,
+        },
+        {
+          path: "/admin/comment",
+          element: <AdminComment />,
         },
       ],
     },

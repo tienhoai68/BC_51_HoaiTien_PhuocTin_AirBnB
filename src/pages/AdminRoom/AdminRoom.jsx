@@ -206,13 +206,6 @@ export default function AdminRoom() {
                     type="File"
                     onChange={handleUploadImg}
                   />
-                  <br />
-                  <img
-                    className="m-2"
-                    style={{ width: 200, height: 100 }}
-                    src={imgRoom}
-                    alt="..."
-                  />
                 </div>
                 {/*footer*/}
                 <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
