@@ -12,7 +12,6 @@ const requestApi = axios.create({
     token: userState.userReducer.userInfo ? userState.userReducer.userInfo.token : ""
   }
 })
-
 // requestApi.interceptors.request.use((config) => {
   
 //   let accessToken = null;

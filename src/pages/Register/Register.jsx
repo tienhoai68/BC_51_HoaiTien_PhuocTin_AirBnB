@@ -28,7 +28,6 @@ export default function Register() {
                     fill="currentcolor"
                   />
                 </svg>
-                ;
               </NavLink>
               <div className="hidden md:block text-center font-semibold text-3xl text-blue-800">
                 <h1>Đăng Ký Tài Khoản</h1>

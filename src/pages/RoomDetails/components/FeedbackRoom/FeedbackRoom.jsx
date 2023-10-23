@@ -60,9 +60,8 @@ export default function FeedbackRoom(props) {
 
   const onSubmitComment = async (values, { resetForm }) => {
     const dataSubmit = { ...values, saoBinhLuan: rating };
-    // console.log(dataSubmit);
     await roomService.sendCommentApi(dataSubmit);
-   fecthFeedBack();
+    fecthFeedBack();
     // lấy dataSubmit này post api
     // Reset the form after submission
     resetForm();
