@@ -5,7 +5,8 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import DehazeIcon from '@mui/icons-material/Dehaze';
 import { pink } from '@mui/material/colors';
 import { NavLink, useNavigate } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setUserInfoAction } from '../../../store/actions/userAction';
 
 
 function classNames(...classes) {
@@ -15,6 +16,12 @@ function classNames(...classes) {
 export default function HeaderProfile() {
   const userState = useSelector((state) => state.userReducer);
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    localStorage.removeItem("USER_INFO");
+    dispatch(setUserInfoAction(null));
+    navigate("/");
+  };
 
 
   const renderButtonLogin = () => {
@@ -166,15 +173,15 @@ export default function HeaderProfile() {
             </Menu.Item>
             <Menu.Item>
               {({ active }) => (
-                <a
-                  href="#"
+                <button
+                  onClick={handleLogout}
                   className={classNames(
                     active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
                     'block px-4 py-2 text-sm font-semibold'
                   )}
                 >
                   Đăng xuất
-                </a>
+                </button>
               )}
             </Menu.Item>
           </div>
