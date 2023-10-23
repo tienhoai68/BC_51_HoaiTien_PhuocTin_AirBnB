@@ -13,7 +13,6 @@ export default function AdminUser() {
   const [userState, setUserState] = useState([]);
   const [sortedInfo, setSortedInfo] = useState({});
   const handleChange = (pagination, filters, sorter) => {
-    // console.log("Various parameters", pagination, filters, sorter);
     setSortedInfo(sorter);
   };
   const columns = [
