@@ -372,7 +372,7 @@ export default function RoomDetails() {
                       </div>
                     </div>
                     <div>
-                      <BookingRoom />
+                      <BookingRoom room= {roomDetail} />
                     </div>
                   </div>
                 </div>

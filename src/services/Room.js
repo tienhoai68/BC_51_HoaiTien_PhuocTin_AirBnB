@@ -44,6 +44,13 @@ class RoomService {
       data,
     })
   };
+  bookingRoomApi(data) {
+    return requestApi({
+      url: `/dat-phong`,
+      method: "POST",
+      data,
+    })
+  };
 
 }
 export const roomService = new RoomService();
