@@ -21,6 +21,8 @@ import AdminLocation from "../pages/AdminLocation/AdminLocation";
 import AdminAddLocation from "../pages/AdminAddLocation/AdminAddLocation";
 import AdminEditLocation from "../pages/AdminEditLocation/AdminEditLocation";
 import AdminComment from "../pages/AdminComment/AdminComment";
+import AdminBookRoom from "../pages/AdminBookRoom/AdminBookRoom";
+import AdminBookRoomDetail from "../pages/AdminBookRoom/BookRoomDetail/AdminBookRoomDetail";
 
 export default function Router() {
   const routing = useRoutes([
@@ -97,6 +99,14 @@ export default function Router() {
         {
           path: "/admin/comment",
           element: <AdminComment />,
+        },
+        {
+          path: "/admin/bookroom",
+          element: <AdminBookRoom />,
+        },
+        {
+          path: "/admin/bookroom/:idRoom",
+          element: <AdminBookRoomDetail />,
         },
       ],
     },

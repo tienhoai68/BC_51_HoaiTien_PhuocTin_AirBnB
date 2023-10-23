@@ -5,7 +5,7 @@ import "./Siderbar.scss";
 export default function Siderbar() {
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
-  const menuItem = [
+  const menuItemSiderbar = [
     {
       path: "/admin/user",
       name: "User",
@@ -26,10 +26,15 @@ export default function Siderbar() {
       name: "Comment",
       icon: <i className="fa-regular fa-comment" />,
     },
+    {
+      path: "/admin/bookroom",
+      name: "Book Room",
+      icon: <i className="fa-regular fa-address-book" />,
+    },
   ];
 
   const renderSiderbar = () => {
-    return menuItem.map((element, idx) => {
+    return menuItemSiderbar.map((element, idx) => {
       return (
         <NavLink key={idx} to={element.path} className="link">
           <div className="icon-siderbar">{element.icon}</div>
