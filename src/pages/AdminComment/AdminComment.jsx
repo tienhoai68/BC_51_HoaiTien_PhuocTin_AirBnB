@@ -4,6 +4,7 @@ import { Table } from "antd";
 import { Input } from "antd";
 import Swal from "sweetalert2";
 
+import "./AdminComment.scss";
 export default function AdminComment() {
   const { Search } = Input;
   const [commentList, setCommentList] = useState([]);
@@ -65,8 +66,11 @@ export default function AdminComment() {
       render: (text, comment) => {
         return (
           <Fragment>
-            <button onClick={() => handleDeleteComment(comment.id)}>
-              <i className="fa-solid fa-trash" />
+            <button
+              className="AdminCommentBtn"
+              onClick={() => handleDeleteComment(comment.id)}
+            >
+              <i className="fa-solid fa-trash btn-deleteComment" />
             </button>
           </Fragment>
         );
@@ -138,9 +142,9 @@ export default function AdminComment() {
     }
   };
   return (
-    <div className="container m-5 mx-auto adminUser-main">
-      <div className="title-adminUser m-5">
-        <h1 className=" mb-5 title-admin">Book Room</h1>
+    <div className="container m-5 mx-auto adminComment-main">
+      <div className="title-adminComment m-5">
+        <h1 className=" mb-5 title-admin">Admin Comment</h1>
         <Search
           onChange={handleSearch}
           placeholder="Tìm kiếm theo mã người dùng ..."
