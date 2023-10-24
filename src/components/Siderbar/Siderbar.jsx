@@ -51,9 +51,13 @@ export default function Siderbar() {
   return (
     <div style={{ width: isOpen ? "250px" : "70px" }} className="siderbar">
       <div className="top-siderbar">
-        <h1 style={{ display: isOpen ? "block" : "none" }} className="logo">
+        <NavLink
+          to={`/admin/`}
+          style={{ display: isOpen ? "block" : "none" }}
+          className="logo"
+        >
           MANAGER
-        </h1>
+        </NavLink>
         <div style={{ marginLeft: isOpen ? "50px" : "0px" }} className="bars">
           <button onClick={toggle}>
             <i className="fa-solid fa-bars" />
