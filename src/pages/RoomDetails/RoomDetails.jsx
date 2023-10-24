@@ -24,9 +24,12 @@ import { useParams } from "react-router-dom";
 import { roomService } from "../../services/Room";
 import FeedbackRoom from "./components/FeedbackRoom/FeedbackRoom";
 import BookingRoom from "./components/FeedbackRoom/BookingRoom/BookingRoom";
+import { useDispatch } from "react-redux";
+import { setRoomInfoAction } from "../../store/actions/roomAction";
 
 export default function RoomDetails() {
   const param = useParams();
+  const dispatch = useDispatch();
   const [feedBackRoom, setFeedBackRoom] = useState([]);
   const [roomDetail, setRoomDetail] = useState({});
   const [roomDetailLocation, setRoomDetailLocation] = useState({});
@@ -43,9 +46,11 @@ export default function RoomDetails() {
     if (maViTri > 0) {
       const roomLocationResult = await roomService.fetchRoomLocationDetailApi(maViTri);
       setRoomDetail(roomDetailResult.data.content);
+      dispatch(setRoomInfoAction(roomDetailResult.data.content));
       setRoomDetailLocation(roomLocationResult.data.content);
     } else {
       setRoomDetail(roomDetailResult.data.content);
+      dispatch(setRoomInfoAction(roomDetailResult.data.content));
     }
     const motaArray = roomDetailResult.data.content.moTa.split(regex);
     setDesCription(motaArray);
@@ -372,7 +377,7 @@ export default function RoomDetails() {
                       </div>
                     </div>
                     <div>
-                      <BookingRoom room= {roomDetail} />
+                      <BookingRoom room={roomDetail} />
                     </div>
                   </div>
                 </div>
