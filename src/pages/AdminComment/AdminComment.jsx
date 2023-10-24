@@ -90,7 +90,7 @@ export default function AdminComment() {
     return false;
   };
 
-  const handlSearch = async (event) => {
+  const handleSearch = async (event) => {
     if (event.target.value) {
       let isValid = true;
       isValid = valicationSearch(event.target.value, "Vui Lòng Nhập Số");
@@ -138,18 +138,19 @@ export default function AdminComment() {
     }
   };
   return (
-    <div className="container m-5 mx-auto ">
-      <div className="m-5">
-        <h1 className="mb-5">Admin Location</h1>
+    <div className="container m-5 mx-auto adminUser-main">
+      <div className="title-adminUser m-5">
+        <h1 className=" mb-5 title-admin">Book Room</h1>
         <Search
-          onChange={handlSearch}
-          placeholder="Nhập mã phòng ..."
+          onChange={handleSearch}
+          placeholder="Tìm kiếm theo mã người dùng ..."
           allowClear
           size="large"
           onSearch={onSearch}
         />
       </div>
       <hr />
+
       <Table columns={columns} dataSource={data} onChange={handleChange} />
     </div>
   );
