@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import userUpload from "../../assets/img/user_upload.png";
 import security from "../../assets/img/security.png";
 import * as Yup from "yup";
 import { Form, ErrorMessage, Field, Formik } from "formik";
@@ -8,6 +7,7 @@ import Swal from 'sweetalert2';
 import "./PersonaInfo.scss";
 import { useSelector } from "react-redux";
 import { userService } from "../../services/UserBooking";
+import ImagePersonal from "./ImagePersonal/ImagePersonal";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("(*) Họ tên không được để trống"),
@@ -69,15 +69,7 @@ export default function PersonaInfo() {
       <div className="flex flex-wrap">
         <div className="w-full md:w-1/4">
           <div className="w-full sticky top-32 border rounded-lg p-5">
-            <div>
-              <img
-                className="mx-auto rounded-full personal-img"
-                src={userUpload}
-              />
-              <button className="text-center text-sm text-gray-600 underline hover:text-black duration-150 block mx-auto">
-                Cập nhật ảnh
-              </button>
-            </div>
+            <ImagePersonal />
             <div className="mt-2">
               <div className="flex items-center">
                 <img src={security} className="text-green-600 w-7" alt=".." />

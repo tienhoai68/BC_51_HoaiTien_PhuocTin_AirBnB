@@ -5,16 +5,11 @@ import "./BookingRoom.scss"
 import moment from 'moment';
 import { roomService } from '../../../../../services/Room';
 import { useSelector } from 'react-redux';
+import { notification } from 'antd';
 
-export default function BookingRoom(props) {
+export default function BookingRoom() {
   const userState = useSelector((state) => state.userReducer);
-
-  const [selectionRange, setSelectionRange] = useState({
-    startDate: new Date(),
-    endDate: new Date(),
-    key: 'selection',
-  });
-
+  const roomState = useSelector((state) => state.roomReducer);
   const [showDateRangePicker, setShowDateRangePicker] = useState(false);
 
   const [countGuest, setCountGuest] = useState(0);
@@ -23,27 +18,50 @@ export default function BookingRoom(props) {
 
   const [totalPrice, setTotalPrice] = useState(0);
 
+  const [basePrice, setBasePrice] = useState(0);
+
+  const [serviceFee, setServiceFee] = useState(0);
+
+  const [bookedRooms, setBookedRooms] = useState([]);
+
+  const [selectionRange, setSelectionRange] = useState({
+    startDate: new Date(),
+    endDate: new Date(),
+    key: 'selection',
+  });
+
+  const disableBookingRoom = async () => {
+    const result = await roomService.fetchBookingRoomApi();
+    setBookedRooms(result.data.content);
+  }
+
+
   const calculateNumNights = () => {
     const start = moment(selectionRange.startDate);
     const end = moment(selectionRange.endDate);
     const nights = end.diff(start, 'days');
     setNumNights(nights);
   };
-  // const calculateTotalPrice = () => {
-  //   const pricePerNight = props.room.giaTien;
-  //   const totalPrice = pricePerNight * numNights;
-  //   setTotalPrice(totalPrice);
-  // };
+  const calculateTotalPrice = () => {
+    const pricePerNight = roomState.roomInfo.giaTien;
+    if (pricePerNight && numNights >= 0) {
+      const basePrice = pricePerNight * numNights;
+      const calculatedServiceFee = 0.1 * basePrice;
+      const totalPrice = basePrice + calculatedServiceFee;
+      setBasePrice(basePrice);
+      setServiceFee(calculatedServiceFee);
+      setTotalPrice(totalPrice);
+    }
+  };
 
   const bookingData = {
     id: 0,
-    maPhong: props.room.id,
+    maPhong: roomState.roomInfo.id,
     ngayDen: selectionRange.startDate,
     ngayDi: selectionRange.endDate,
     soLuongKhach: countGuest,
     maNguoiDung: userState.userInfo.user.id,
   };
-  console.log(totalPrice);
   const updateCount = (action) => {
     if (action === 'increment') {
       setCountGuest(countGuest + 1);
@@ -55,19 +73,49 @@ export default function BookingRoom(props) {
   const bookingRoom = async () => {
     await roomService.bookingRoomApi(bookingData);
   }
-  
-  useEffect(() => {
-    calculateNumNights();
-    // calculateTotalPrice();
-  }, [selectionRange]);
 
-  const handleSelect = (ranges) => {
-    setSelectionRange(ranges.selection);
+  const isDateBooked = (date, maPhong) => {
+    for (const room of bookedRooms) {
+      if (room.maPhong === maPhong) {
+        if (date >= new Date(room.ngayDen) && date <= new Date(room.ngayDi)) {
+          return true;
+        }
+      }
+    }
+    return false;
   };
+
+  const isRangeValid = (range, maPhong) => {
+    let startDate = range.startDate;
+    while (startDate <= range.endDate) {
+      if (isDateBooked(startDate, maPhong)) {
+        return false;
+      }
+      startDate = new Date(startDate);
+      startDate.setDate(startDate.getDate() + 1);
+    }
+    return true;
+  };
+  const handleSelect = (ranges) => {
+    const maPhong = roomState.roomInfo.id;
+    if (isRangeValid(ranges.selection, maPhong)) {
+      setSelectionRange(ranges.selection);
+    } else {
+      notification.warning({
+        message: "Ngày Bạn Chọn Đã Hết Phòng",
+        placement: "topRight",
+      })
+    }
+  };
+
+  useEffect(() => {
+    disableBookingRoom();
+    calculateNumNights();
+    calculateTotalPrice();
+  }, [selectionRange, roomState.roomInfo.giaTien, numNights]);
 
   const handleReceiveRoom = () => {
     setShowDateRangePicker(true)
-    // Thay đổi `minDate` để vô hiệu hóa các ngày đã trôi qua
     const today = new Date();
     setSelectionRange({
       startDate: today,
@@ -104,7 +152,7 @@ export default function BookingRoom(props) {
               -
             </button>
             <div>{countGuest} khách</div>
-            <button  onClick={() => updateCount("increment")} className="w-8 h-8 bg-gray-300 hover:bg-red-400 duration-200 rounded-xl text-white cursor-pointer">
+            <button onClick={() => updateCount("increment")} className="w-8 h-8 bg-gray-300 hover:bg-red-400 duration-200 rounded-xl text-white cursor-pointer">
               +
             </button>
           </div>
@@ -123,10 +171,10 @@ export default function BookingRoom(props) {
       <div className="border-b py-2">
         <div className="flex justify-between py-1 text-base">
           <div className="underline text-gray-600">
-            $ {props.room.giaTien} x {numNights} đêm
+            ${roomState.roomInfo.giaTien} x {numNights} đêm
           </div>
           <div>
-            <span>{totalPrice}</span> $
+            <span>{basePrice}</span> $
           </div>
         </div>
         <div className="flex justify-between py-1 text-base">
@@ -134,12 +182,12 @@ export default function BookingRoom(props) {
             Phí dịch vụ
           </div>
           <div>
-            <span>{totalPrice}</span> $
+            <span>{serviceFee}</span> $
           </div>
         </div>
       </div>
       <div className="flex justify-between items-center text-lg font-semibold pt-3">
-        <div>Tổng trước thuế</div>
+        <div>Tổng giá</div>
         <div>{totalPrice} $</div>
       </div>
       {showDateRangePicker && (

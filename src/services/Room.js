@@ -51,6 +51,11 @@ class RoomService {
       data,
     })
   };
-
+  fetchBookingRoomApi() {
+    return requestApi({
+      url: `/dat-phong`,
+      method: "GET",
+    })
+  };
 }
 export const roomService = new RoomService();
