@@ -66,13 +66,13 @@ export default function AdminUser() {
           <Fragment>
             <button
               onClick={() => navigate(`/admin/editUser/${user.id}`)}
-              className="btn-edit mr-2 "
+              className="btnUser-edit mr-2 "
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
             <button
               onClick={() => fetchAdminDelete(user.id)}
-              className="btn-delete"
+              className="btnUser-delete"
             >
               <i className="fa-solid fa-trash" />
             </button>

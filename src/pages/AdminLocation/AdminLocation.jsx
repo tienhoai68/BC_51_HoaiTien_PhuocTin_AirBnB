@@ -4,6 +4,7 @@ import { adminLocalService } from "../../services/AdminLocation";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
+import "./AdminLocation.scss";
 export default function AdminLocation() {
   const navigate = useNavigate();
   const [localState, setLocalState] = useState();
@@ -52,13 +53,13 @@ export default function AdminLocation() {
           <Fragment>
             <button
               onClick={() => navigate(`/admin/editlocation/${location.id}`)}
-              className="btn-edit mr-2 "
+              className="btnLocation-edit mr-2 "
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
             <button
               onClick={() => handleDeleteLocation(location.id)}
-              className="btn-delete mr-2"
+              className="btnLocation-delete mr-2"
             >
               <i className="fa-solid fa-trash" />
             </button>

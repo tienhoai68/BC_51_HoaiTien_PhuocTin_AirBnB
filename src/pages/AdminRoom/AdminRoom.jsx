@@ -3,6 +3,8 @@ import { Table } from "antd";
 import { adminRoomService } from "../../services/AdminRoom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
+
+import "./AdminRoom.scss";
 export default function AdminRoom() {
   const navigate = useNavigate();
   const [showModal, setShowModal] = useState(false);
@@ -82,13 +84,13 @@ export default function AdminRoom() {
           <Fragment>
             <button
               onClick={() => navigate(`/admin/editRoom/${room.id}`)}
-              className="btn-edit mr-2 "
+              className="btnRoom-edit mr-2 "
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
             <button
               onClick={() => handleDelete(room.id)}
-              className="btn-delete mr-2"
+              className="btnRoom-delete mr-2"
             >
               <i className="fa-solid fa-trash" />
             </button>
@@ -96,7 +98,7 @@ export default function AdminRoom() {
               onClick={() => {
                 openModal(room.id);
               }}
-              className="mr-2"
+              className="mr-2 btnRoom-Img"
             >
               <i className="fa-regular fa-image" />
             </button>

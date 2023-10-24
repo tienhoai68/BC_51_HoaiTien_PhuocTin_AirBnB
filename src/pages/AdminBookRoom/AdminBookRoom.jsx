@@ -4,6 +4,7 @@ import { adminBookRoomService } from "../../services/AdminBookRoom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
+import "./AdminBookRoom.scss";
 export default function AdminBookRoom() {
   const navigate = useNavigate();
   const { Search } = Input;
@@ -56,11 +57,14 @@ export default function AdminBookRoom() {
           <Fragment>
             <button
               onClick={() => navigate(`/admin/bookroom/${bookRoom.id}`)}
-              className="mr-2"
+              className="mr-2 btnBookRoom-edit"
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
-            <button onClick={() => handleDelete(bookRoom.id)}>
+            <button
+              className="btnBookRoom-delete"
+              onClick={() => handleDelete(bookRoom.id)}
+            >
               <i className="fa-solid fa-trash" />
             </button>
           </Fragment>

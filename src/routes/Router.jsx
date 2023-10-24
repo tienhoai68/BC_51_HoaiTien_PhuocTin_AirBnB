@@ -5,7 +5,6 @@ import Home from "../pages/Home/Home";
 import PageNotFound from "../pages/PageNotFound/PageNotFound";
 import Login from "../pages/Login/Login";
 import AdminLayout from "../layouts/AdminLayout/AdminLayout";
-import AdminHome from "../pages/AdminHome/AdminHome";
 import AdminRoom from "../pages/AdminRoom/AdminRoom";
 import AdminUser from "../pages/AdminUser/AdminUser";
 import RoomDetails from "../pages/RoomDetails/RoomDetails";
@@ -58,7 +57,11 @@ export default function Router() {
       children: [
         {
           path: "/admin/",
-          element: <AdminHome />,
+          element: <AdminBookRoom />,
+        },
+        {
+          path: "/admin/:idRoom",
+          element: <AdminBookRoomDetail />,
         },
         {
           path: "/admin/user",
@@ -99,14 +102,6 @@ export default function Router() {
         {
           path: "/admin/comment",
           element: <AdminComment />,
-        },
-        {
-          path: "/admin/bookroom",
-          element: <AdminBookRoom />,
-        },
-        {
-          path: "/admin/bookroom/:idRoom",
-          element: <AdminBookRoomDetail />,
         },
       ],
     },

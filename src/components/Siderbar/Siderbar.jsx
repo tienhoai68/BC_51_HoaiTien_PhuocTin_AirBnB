@@ -26,11 +26,6 @@ export default function Siderbar() {
       name: "Comment",
       icon: <i className="fa-regular fa-comment" />,
     },
-    {
-      path: "/admin/bookroom",
-      name: "Book Room",
-      icon: <i className="fa-regular fa-address-book" />,
-    },
   ];
 
   const renderSiderbar = () => {
