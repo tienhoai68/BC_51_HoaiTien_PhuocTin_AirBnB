@@ -9,11 +9,11 @@ const requestApi = axios.create({
   baseURL: BASE_URL,
   headers: {
     TokenCybersoft: TOKEN_CYBERSOFT,
-    token: userState.userReducer.userInfo ? userState.userReducer.userInfo.token : ""
+    token: userState.userReducer.userInfo ? userState.userReducer.userInfo.token : "",
   }
 })
 // requestApi.interceptors.request.use((config) => {
-  
+
 //   let accessToken = null;
 
 //   if (userState.userReducer.userInfo) {

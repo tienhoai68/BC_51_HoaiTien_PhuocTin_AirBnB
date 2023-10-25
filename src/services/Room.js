@@ -57,5 +57,11 @@ class RoomService {
       method: "GET",
     })
   };
+  fetchRoomTicketApi(id) {
+    return requestApi({
+      url: `/dat-phong/lay-theo-nguoi-dung/${id}`,
+      method: "GET",
+    })
+  };
 }
 export const roomService = new RoomService();

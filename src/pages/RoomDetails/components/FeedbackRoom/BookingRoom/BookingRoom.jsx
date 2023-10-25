@@ -60,7 +60,7 @@ export default function BookingRoom() {
     ngayDen: selectionRange.startDate,
     ngayDi: selectionRange.endDate,
     soLuongKhach: countGuest,
-    maNguoiDung: userState.userInfo.user.id,
+    maNguoiDung: userState.userInfo ? userState.userInfo.user.id : "",
   };
   const updateCount = (action) => {
     if (action === 'increment') {
