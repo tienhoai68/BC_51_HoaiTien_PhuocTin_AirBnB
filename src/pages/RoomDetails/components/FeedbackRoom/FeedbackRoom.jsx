@@ -30,7 +30,7 @@ export default function FeedbackRoom(props) {
     saoBinhLuan: rating,
     ngayBinhLuan: moment().format('ddd, DD MMM YYYY HH:mm:ss [GMT]'),
     maPhong: props.feedBack.id,
-    maNguoiBinhLuan: userState.userInfo.user.id,
+    maNguoiBinhLuan: userState.userInfo ? userState.userInfo.user.id : "",
   };
   const handleRatingChange = (value) => {
     setRating(value);

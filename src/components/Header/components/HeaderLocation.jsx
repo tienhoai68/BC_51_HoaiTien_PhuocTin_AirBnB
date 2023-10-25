@@ -46,7 +46,7 @@ export default function HeaderLocation() {
           getOptionLabel={(option) => option.tenViTri}
           renderOption={(props, option) => (
             <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-              <img loading="lazy" width="40" src={option.hinhAnh} alt="" />
+              <img loading="lazy" width="40" src={option.hinhAnh} alt="..." />
               {option.tenViTri}, {option.tinhThanh}, {option.quocGia}
             </Box>
           )}

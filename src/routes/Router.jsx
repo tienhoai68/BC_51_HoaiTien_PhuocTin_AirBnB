@@ -23,6 +23,7 @@ import AdminEditLocation from "../pages/AdminEditLocation/AdminEditLocation";
 import AdminComment from "../pages/AdminComment/AdminComment";
 import AdminBookRoom from "../pages/AdminBookRoom/AdminBookRoom";
 import AdminBookRoomDetail from "../pages/AdminBookRoom/BookRoomDetail/AdminBookRoomDetail";
+import AuthGuard from "../guards/AuthGuard";
 
 export default function Router() {
   const routing = useRoutes([
@@ -36,7 +37,11 @@ export default function Router() {
         },
         {
           path: "/room-detail/:roomId",
-          element: <RoomDetails />,
+          element: (
+            <AuthGuard>
+              <RoomDetails />
+            </AuthGuard>
+          ),
         },
         {
           path: "/room-by-city/:roomCityId",

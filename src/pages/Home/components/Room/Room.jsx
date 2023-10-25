@@ -21,15 +21,21 @@ import { Link, useNavigate } from 'react-router-dom';
 import "./Room.scss"
 import { roomService } from '../../../../services/Room';
 import { useSelector } from 'react-redux';
+import { useContext } from 'react';
+import { LoadingContext } from '../../../../contexts/Loading/Loading';
 
 
 export default function Room() {
   const userState = useSelector((state) => state.userReducer);
+  const [_, setLoadingState] = useContext(LoadingContext);
   const [room, setRoom] = useState([]);
   const navigate = useNavigate();
   const fetchRoom = async () => {
+    setLoadingState({ isLoading: true });
     const result = await roomService.fetchRoomApi();
     setRoom(result.data.content)
+    setLoadingState({ isLoading: false });
+
   }
 
   const handleBooking = (roomId) => {

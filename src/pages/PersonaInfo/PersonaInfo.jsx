@@ -8,6 +8,8 @@ import "./PersonaInfo.scss";
 import { useSelector } from "react-redux";
 import { userService } from "../../services/UserBooking";
 import ImagePersonal from "./ImagePersonal/ImagePersonal";
+import { useContext } from "react";
+import { LoadingContext } from "../../contexts/Loading/Loading";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("(*) Họ tên không được để trống"),
@@ -24,6 +26,7 @@ const validationSchema = Yup.object().shape({
 export default function PersonaInfo() {
 
   const stateUser = useSelector((state) => state.userReducer);
+  const [_, setLoadingState] = useContext(LoadingContext);
   const [userInfo, setUserInfo] = useState({
     name: '',
     birthday: '',
@@ -35,8 +38,10 @@ export default function PersonaInfo() {
   const [fieldErrors, setFieldErrors] = useState("");
 
   const getUserInfo = async () => {
+    setLoadingState({ isLoading: true });
     const result = await userService.userInfoApi(stateUser.userInfo.user.id);
-    setUserInfo(result.data.content)
+    setUserInfo(result.data.content);
+    setLoadingState({ isLoading: false });
   }
   const handleChangeUserInfo = async (values, { resetForm }) => {
     try {

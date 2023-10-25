@@ -21,17 +21,22 @@ import "swiper/css/pagination";
 import { Link, useParams } from "react-router-dom";
 import "./RoomByCity.scss";
 import { roomService } from "../../services/Room";
+import { useContext } from "react";
+import { LoadingContext } from "../../contexts/Loading/Loading";
 
 
 export default function RoomByCity() {
+  const [_, setLoadingState] = useContext(LoadingContext);
+
   const param = useParams();
 
   const [roomByCity, setRoomByCity] = useState([]);
 
   const fetchRoomByCity = async () => {
-
+    setLoadingState({ isLoading: true });
     const result = await roomService.fetchRoomByCityApi(param.roomCityId);
     setRoomByCity(result.data.content);
+    setLoadingState({ isLoading: false });
   };
 
   useEffect(() => {
@@ -41,7 +46,6 @@ export default function RoomByCity() {
   const renderContentRoom = () => {
 
     return roomByCity.map((element) => {
-      console.log(element);
       return (
         <Link key={element.id} href="" className="roomLink">
           <Swiper
@@ -78,50 +82,45 @@ export default function RoomByCity() {
           </Swiper>
           <div>
             <p className="flex justify-between mt-2">
-              <span className="font-bold text-xl text-gray-900 truncate">{element.tenPhong}</span>
-              <div className="flex items-center">
-                <span className="text-yellow-500 text-xl">
+              <span className="font-bold truncate">{element.tenPhong}</span>
+              <span className="flex justify-between items-center ml-1">
+                <span className="star-icon ml-2">
                   <AiFillStar />
-                </span>
-                <span className="text-gray-700 text-base ml-2">
-                  9.14
-                </span>
-                <span className="text-gray-700 text-base ml-4">
-                  {element.khach} khách
-                </span>
-              </div>
+                </span>{" "}
+                9.14
+              </span>
             </p>
             <p className="text-sm mt-2">
-              <div className="flex items-center">
+              <span className="flex items-center">
                 <span className="font-semibold text-gray-600 mr-1">Sức chứa:</span>
                 {element?.khach > 0 && element?.khach <= 8 && (
-                  <div className="flex">
+                  <span className="flex">
                     {[...Array(element.khach)].map((_, index) => (
                       <PersonIcon fontSize="small" key={index} className="inline text-gray-500" />
                     ))}
-                  </div>
+                  </span>
                 )}
-              </div>
-              <div className="flex items-center mt-2">
+              </span>
+              <span className="flex items-center mt-2">
                 <span className="font-semibold text-gray-600 mr-1">Giường:</span>
                 {element?.giuong > 0 && element?.giuong <= 8 && (
-                  <div className="flex">
+                  <span className="flex">
                     {[...Array(element.giuong)].map((_, index) => (
                       <KingBedIcon fontSize="small" key={index} className="inline text-gray-500" />
                     ))}
-                  </div>
+                  </span>
                 )}
-              </div>
-              <div className="flex items-center mt-2">
+              </span>
+              <span className="flex items-center mt-2">
                 <span className="font-semibold text-gray-600 mr-1">Phòng tắm:</span>
                 {element?.phongTam > 0 && element?.phongTam <= 8 && (
-                  <div className="flex">
+                  <span className="flex">
                     {[...Array(element.phongTam)].map((_, index) => (
                       <ShowerIcon fontSize="small" key={index} className="inline text-gray-500" />
                     ))}
-                  </div>
+                  </span>
                 )}
-              </div>
+              </span>
               <span className="flex items-center font-semibold text-gray-600 mt-2">
                 Các tiện ích:
                 {element.dieuHoa && (

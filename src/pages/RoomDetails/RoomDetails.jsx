@@ -26,9 +26,12 @@ import FeedbackRoom from "./components/FeedbackRoom/FeedbackRoom";
 import BookingRoom from "./components/FeedbackRoom/BookingRoom/BookingRoom";
 import { useDispatch } from "react-redux";
 import { setRoomInfoAction } from "../../store/actions/roomAction";
+import { useContext } from "react";
+import { LoadingContext } from "../../contexts/Loading/Loading";
 
 export default function RoomDetails() {
   const param = useParams();
+  const [_, setLoadingState] = useContext(LoadingContext);
   const dispatch = useDispatch();
   const [feedBackRoom, setFeedBackRoom] = useState([]);
   const [roomDetail, setRoomDetail] = useState({});
@@ -41,6 +44,7 @@ export default function RoomDetails() {
 
   };
   const fetchRoomDetail = async () => {
+    setLoadingState({ isLoading: true });
     const roomDetailResult = await roomService.fetchRoomDetailApi(param.roomId);
     const maViTri = roomDetailResult.data.content.maViTri;
     if (maViTri > 0) {
@@ -54,6 +58,7 @@ export default function RoomDetails() {
     }
     const motaArray = roomDetailResult.data.content.moTa.split(regex);
     setDesCription(motaArray);
+    setLoadingState({ isLoading: false });
   }
   useEffect(() => {
     fetchRoomDetail();
@@ -377,7 +382,7 @@ export default function RoomDetails() {
                       </div>
                     </div>
                     <div>
-                      <BookingRoom room={roomDetail} />
+                      <BookingRoom />
                     </div>
                   </div>
                 </div>
