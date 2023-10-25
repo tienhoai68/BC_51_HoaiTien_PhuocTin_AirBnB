@@ -1,8 +1,12 @@
 import React, { useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import "./Siderbar.scss";
+import { useDispatch } from "react-redux";
+import { setUserInfoAction } from "../../store/actions/userAction";
 export default function Siderbar() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
   const toggle = () => setIsOpen(!isOpen);
   const menuItemSiderbar = [
@@ -27,6 +31,11 @@ export default function Siderbar() {
       icon: <i className="fa-regular fa-comment" />,
     },
   ];
+  const handleLogoutUser = () => {
+    localStorage.removeItem("USER_INFO");
+    dispatch(setUserInfoAction(null));
+    navigate("/");
+  };
 
   const renderSiderbar = () => {
     return menuItemSiderbar.map((element, idx) => {
@@ -62,7 +71,7 @@ export default function Siderbar() {
       {renderSiderbar()}
       <hr />
       <div>
-        <button className="btn-logout">
+        <button onClick={handleLogoutUser} className="btn-logout">
           <div className="icon-siderbar">
             <i className="fa-solid fa-arrow-right-from-bracket" />
           </div>

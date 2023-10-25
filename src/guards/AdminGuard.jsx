@@ -1,8 +1,8 @@
-import { notification } from 'antd';
-import React, { useEffect } from 'react'
-import { useSelector } from 'react-redux';
-import { useNavigate } from 'react-router-dom'
-import { UserType } from '../enums/api';
+import { notification } from "antd";
+import React, { useEffect } from "react";
+import { useSelector } from "react-redux";
+import { useNavigate } from "react-router-dom";
+import { UserType } from "../enums/api";
 
 export default function AdminGuard(props) {
   const navigate = useNavigate();
@@ -13,16 +13,15 @@ export default function AdminGuard(props) {
         message: "Bạn chưa đăng nhập",
         placement: "bottomLeft",
       });
-      navigate("/login")
-    } else if (userState.userInfo.maLoaiNguoiDung !== UserType.QuanTri) {
+      navigate("/login");
+    } else if (userState.userInfo.user.role !== UserType.ADMIN) {
       notification.warning({
         message: "Bạn không có quyền truy cập",
         placement: "bottomLeft",
-      })
-      navigate("/")
+      });
+      navigate("/");
     }
-  }, [])
+  }, []);
 
-
-  return <>{props.children}</>
+  return <>{props.children}</>;
 }

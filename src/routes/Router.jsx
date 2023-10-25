@@ -23,6 +23,7 @@ import AdminComment from "../pages/AdminComment/AdminComment";
 import AdminBookRoom from "../pages/AdminBookRoom/AdminBookRoom";
 import AdminBookRoomDetail from "../pages/AdminBookRoom/BookRoomDetail/AdminBookRoomDetail";
 import AuthGuard from "../guards/AuthGuard";
+import AdminGuard from "../guards/AdminGuard";
 
 export default function Router() {
   const routing = useRoutes([
@@ -58,7 +59,11 @@ export default function Router() {
     },
     {
       path: "/admin",
-      element: <AdminLayout />,
+      element: (
+        <AdminGuard>
+          <AdminLayout />
+        </AdminGuard>
+      ),
       children: [
         {
           path: "/admin/",
