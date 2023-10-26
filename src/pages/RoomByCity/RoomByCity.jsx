@@ -18,15 +18,18 @@ import { AiFillStar } from "react-icons/ai";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import "./RoomByCity.scss";
 import { roomService } from "../../services/Room";
 import { useContext } from "react";
 import { LoadingContext } from "../../contexts/Loading/Loading";
+import { useSelector } from "react-redux";
 
 
 export default function RoomByCity() {
   const [_, setLoadingState] = useContext(LoadingContext);
+  const navigate = useNavigate();
+  const userState = useSelector((state) => state.userReducer);
 
   const param = useParams();
 
@@ -38,6 +41,13 @@ export default function RoomByCity() {
     setRoomByCity(result.data.content);
     setLoadingState({ isLoading: false });
   };
+  const handleBooking = (roomId) => {
+    if (userState) {
+      navigate(`/room-detail/${roomId}`)
+    } else {
+      navigate("/login");
+    }
+  }
 
   useEffect(() => {
     fetchRoomByCity();
@@ -46,6 +56,7 @@ export default function RoomByCity() {
   const renderContentRoom = () => {
 
     return roomByCity.map((element) => {
+      console.log(element);
       return (
         <Link key={element.id} href="" className="roomLink">
           <Swiper
@@ -57,6 +68,7 @@ export default function RoomByCity() {
             keyboard={true}
             modules={[Navigation, Pagination, Mousewheel, Keyboard]}
             className="roomByCity"
+            onClick={() => handleBooking(element.id)}
           >
             <SwiperSlide>
               <img src={element.hinhAnh} alt="..." className="w-" />
@@ -84,9 +96,9 @@ export default function RoomByCity() {
             <p className="flex justify-between mt-2">
               <span className="font-bold truncate">{element.tenPhong}</span>
               <span className="flex justify-between items-center ml-1">
-                <span className="star-icon ml-2">
+                <span className="ml-2 text-yellow-500 mx-1">
                   <AiFillStar />
-                </span>{" "}
+                </span>
                 9.14
               </span>
             </p>

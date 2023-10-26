@@ -79,9 +79,9 @@ export default function Room() {
             <p className="flex justify-between mt-2">
               <span className="font-bold truncate">{element.tenPhong}</span>
               <span className="flex justify-between items-center ml-1">
-                <span className="star-icon ml-2">
+                <span className="ml-2 text-yellow-500 mx-1">
                   <AiFillStar />
-                </span>{" "}
+                </span>
                 9.14
               </span>
             </p>

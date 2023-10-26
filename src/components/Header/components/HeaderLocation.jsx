@@ -34,7 +34,6 @@ export default function HeaderLocation() {
       navigate("/login");
     }
   };
-
   return (
     <>
       <div className="hover:bg-gray-300 rounded-full h-full flex flex-wrap justify-center items-center">
@@ -45,7 +44,7 @@ export default function HeaderLocation() {
           autoHighlight
           getOptionLabel={(option) => option.tenViTri}
           renderOption={(props, option) => (
-            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props} key={option.id}>
               <img loading="lazy" width="40" src={option.hinhAnh} alt="..." />
               {option.tenViTri}, {option.tinhThanh}, {option.quocGia}
             </Box>
@@ -56,7 +55,7 @@ export default function HeaderLocation() {
               label="Địa Điểm"
               inputProps={{
                 ...params.inputProps,
-                autoComplete: 'new-password',
+                autoComplete: 'off',
               }}
             />
           )}
