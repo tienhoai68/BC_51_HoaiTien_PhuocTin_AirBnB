@@ -61,6 +61,7 @@ export default function RoomDetails() {
     setLoadingState({ isLoading: false });
   }
   useEffect(() => {
+    window.scrollTo(0, 0)
     fetchRoomDetail();
     fecthFeedBack();
   }, [])
