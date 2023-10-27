@@ -97,11 +97,11 @@ export default function AdminLocation() {
   };
   return (
     <div className="container m-5 mx-auto adminUser-main">
-      <div className="title-adminUser m-5">
+      <div className=" m-5">
         <h1 className="title-admin">Admin Location</h1>
         <button
           onClick={() => navigate(`/admin/addlocation`)}
-          className="btn-addUser"
+          className="btn-add"
         >
           ADD LOCATION
         </button>

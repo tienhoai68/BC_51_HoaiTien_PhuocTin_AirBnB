@@ -143,7 +143,7 @@ export default function AdminComment() {
   };
   return (
     <div className="container m-5 mx-auto adminComment-main">
-      <div className="title-adminComment m-5">
+      <div className=" m-5">
         <h1 className=" mb-5 title-admin">Admin Comment</h1>
         <Search
           onChange={handleSearch}

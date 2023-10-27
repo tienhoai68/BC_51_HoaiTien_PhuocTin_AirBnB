@@ -135,7 +135,7 @@ export default function AdminUser() {
         <h1 className="title-admin">User Admin</h1>
         <button
           onClick={() => navigate("/admin/addUser")}
-          className="btn-addUser"
+          className="btn-add"
         >
           ADD USER
         </button>

@@ -74,7 +74,7 @@ export default function AdminBookRoomDetail() {
           text: "Cập nhật thành công !",
         });
         if (result.data.content) {
-          navigate(`/admin/bookroom`);
+          navigate(`/admin/`);
         }
       } catch (error) {
         Swal.fire({

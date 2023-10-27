@@ -56,7 +56,7 @@ export default function AdminBookRoom() {
         return (
           <Fragment>
             <button
-              onClick={() => navigate(`/admin/bookroom/${bookRoom.id}`)}
+              onClick={() => navigate(`/admin/${bookRoom.id}`)}
               className="mr-2 btnBookRoom-edit"
             >
               <i className="fa-solid fa-magnifying-glass" />

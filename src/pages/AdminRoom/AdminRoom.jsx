@@ -170,7 +170,7 @@ export default function AdminRoom() {
         <h1 className="title-admin">Admin Room</h1>
         <button
           onClick={() => navigate("/admin/addRoom")}
-          className="btn-addUser"
+          className="btn-add"
         >
           ADD ROOM
         </button>
