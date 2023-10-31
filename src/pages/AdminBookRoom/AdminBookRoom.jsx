@@ -1,10 +1,11 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useContext, useEffect, useState } from "react";
 import { Input, Table } from "antd";
 import { adminBookRoomService } from "../../services/AdminBookRoom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 import "./AdminBookRoom.scss";
+import { LoadingContext } from "../../contexts/Loading/Loading";
 export default function AdminBookRoom() {
   const navigate = useNavigate();
   const { Search } = Input;
@@ -13,6 +14,7 @@ export default function AdminBookRoom() {
   const handleChange = (pagination, filters, sorter) => {
     setSortedInfo(sorter);
   };
+  const [_, setLoadingState] = useContext(LoadingContext);
   const columns = [
     {
       title: "ID",
@@ -78,8 +80,11 @@ export default function AdminBookRoom() {
   }, []);
 
   const bookRoomListApi = async () => {
+    setLoadingState({ isLoading: true });
     const result = await adminBookRoomService.fetchAdminBookRoomListApi();
+
     setBookRoomList(result.data.content);
+    setLoadingState({ isLoading: false });
   };
   const handleDelete = async (id) => {
     try {
