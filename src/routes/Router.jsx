@@ -55,6 +55,10 @@ export default function Router() {
           path: "/ticket-by-user",
           element: <TicketByUser />,
         },
+        {
+          path: "*",
+          element: <PageNotFound />,
+        },
       ],
     },
     {
@@ -114,10 +118,6 @@ export default function Router() {
           element: <AdminComment />,
         },
       ],
-    },
-    {
-      path: "*",
-      element: <PageNotFound />,
     },
     {
       path: "/login",

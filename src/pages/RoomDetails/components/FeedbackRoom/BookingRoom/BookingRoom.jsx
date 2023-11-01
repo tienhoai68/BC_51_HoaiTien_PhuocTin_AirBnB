@@ -6,10 +6,14 @@ import moment from 'moment';
 import { roomService } from '../../../../../services/Room';
 import { useSelector } from 'react-redux';
 import { notification } from 'antd';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
+
 
 export default function BookingRoom() {
   const userState = useSelector((state) => state.userReducer);
   const roomState = useSelector((state) => state.roomReducer);
+  const navigate = useNavigate();
   const [showDateRangePicker, setShowDateRangePicker] = useState(false);
 
   const [countGuest, setCountGuest] = useState(0);
@@ -46,10 +50,10 @@ export default function BookingRoom() {
     const pricePerNight = roomState.roomInfo.giaTien;
     if (pricePerNight && numNights >= 0) {
       const basePrice = pricePerNight * numNights;
-      const calculatedServiceFee = 0.1 * basePrice;
+      const calculatedServiceFee = (0.1 * basePrice);
       const totalPrice = basePrice + calculatedServiceFee;
       setBasePrice(basePrice);
-      setServiceFee(calculatedServiceFee);
+      setServiceFee(calculatedServiceFee.toLocaleString());
       setTotalPrice(totalPrice);
     }
   };
@@ -71,7 +75,21 @@ export default function BookingRoom() {
   };
 
   const bookingRoom = async () => {
-    await roomService.bookingRoomApi(bookingData);
+    try {
+      await roomService.bookingRoomApi(bookingData);
+      Swal.fire({
+        icon: 'success',
+        title: 'Success!',
+        text: 'Bạn đã đặt phòng thành công',
+      })
+      navigate("/ticket-by-user")
+    } catch (error) {
+      Swal.fire({
+        icon: 'error',
+        title: `${error.response.data.content}`,
+        text: "Xin vui lòng thử lại",
+      })
+    }
   }
 
   const isDateBooked = (date, maPhong) => {
@@ -162,12 +180,19 @@ export default function BookingRoom() {
         type="submit"
         onClick={bookingRoom}
         className="w-full py-3 mt-3 rounded-lg text-white text-lg font-semibold btn-bookroom"
+        disabled={countGuest === 0 || numNights === 0 ? true : false}
       >
         Đặt phòng
       </button>
-      <div className="text-center font-normal text-gray-400 my-2">
-        <span>Bạn vẫn chưa bị trừ tiền</span>
-      </div>
+      {countGuest === 0 && numNights === 0 ? (
+        <div className="text-center font-normal text-gray-400 my-2">
+          <span>Bạn vẫn chưa bị trừ tiền</span>
+        </div>
+      ) : countGuest !== 0 && numNights !== 0 ? (
+        <div className="text-center font-normal text-gray-400 my-2">
+          <span>Số tiền bạn cần trả là : </span>
+        </div>
+      ) : null}
       <div className="border-b py-2">
         <div className="flex justify-between py-1 text-base">
           <div className="underline text-gray-600">

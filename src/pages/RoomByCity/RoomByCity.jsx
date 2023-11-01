@@ -56,7 +56,6 @@ export default function RoomByCity() {
   const renderContentRoom = () => {
 
     return roomByCity.map((element) => {
-      console.log(element);
       return (
         <Link key={element.id} href="" className="roomLink">
           <Swiper

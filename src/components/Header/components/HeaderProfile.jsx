@@ -177,7 +177,7 @@ export default function HeaderProfile() {
                   onClick={handleLogout}
                   className={classNames(
                     active ? 'bg-gray-100 text-rose-500' : 'text-rose-500',
-                    'block px-4 py-2 text-sm font-semibold'
+                    'block px-4 py-2 text-sm font-semibold w-full text-left'
                   )}
                 >
                   Đăng xuất
