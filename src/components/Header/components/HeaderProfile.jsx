@@ -38,7 +38,7 @@ export default function HeaderProfile() {
                     'block px-4 py-2 text-sm font-semibold'
                   )}
                 >
-                  Đăng Kí
+                  Đăng Ký
                 </NavLink>
               )}
             </Menu.Item>

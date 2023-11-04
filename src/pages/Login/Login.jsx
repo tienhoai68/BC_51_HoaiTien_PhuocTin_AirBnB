@@ -7,6 +7,9 @@ import { userService } from "../../services/UserBooking";
 import Swal from 'sweetalert2';
 import { useDispatch } from "react-redux";
 import { setUserInfoAction } from "../../store/actions/userAction";
+import MailOutlineIcon from '@mui/icons-material/MailOutline';
+import PasswordIcon from '@mui/icons-material/Password';
+
 
 
 const validationSchema = Yup.object().shape({
@@ -22,7 +25,7 @@ export default function Login() {
     password: "",
   };
 
-  const handleSubmitLogin = async (values,  { resetForm }) => {
+  const handleSubmitLogin = async (values, { resetForm }) => {
     try {
       const result = await userService.loginApi(values);
       dispatch(setUserInfoAction(result.data.content));
@@ -79,11 +82,13 @@ export default function Login() {
                 </div>
                 <div>
                   <div className="mb-2">
-                    <label
-                      htmlFor="email"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      Email
+                    <label htmlFor="email" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                      <div className="flex items-center">
+                        <span className="mr-2">
+                          <MailOutlineIcon className="w-6 h-6 text-gray-700" />
+                        </span>
+                        Email
+                      </div>
                     </label>
                     <Field
                       type="email"
@@ -99,11 +104,13 @@ export default function Login() {
                     />
                   </div>
                   <div className="mb-6">
-                    <label
-                      htmlFor="password"
-                      className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300"
-                    >
-                      Mật Khẩu
+                    <label htmlFor="password" className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
+                      <div className="flex items-center">
+                        <span className="mr-2">
+                          <PasswordIcon className="w-6 h-6 text-gray-700" />
+                        </span>
+                        Mật Khẩu
+                      </div>
                     </label>
                     <Field
                       type="password"
@@ -136,7 +143,7 @@ export default function Login() {
                   </div>
                   <div className="text-center">
                     <p>
-                      Chưa có tài khoản{" "}
+                      Chưa có tài khoản?{" "}
                       <NavLink
                         className="text-rose-700 hover:text-rose-500 hover:underline underline-offset-4 tracking-wider duration-200"
                         to="/register"
