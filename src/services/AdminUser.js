@@ -39,6 +39,13 @@ class AdminUsersService {
       method: "GET",
     });
   }
+  fetchAdminImgApi(data) {
+    return requestApi({
+      url: `/users/upload-avatar`,
+      method: "POST",
+      data,
+    });
+  }
 }
 
 export const adminUsersService = new AdminUsersService();
