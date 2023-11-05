@@ -63,7 +63,7 @@ export default function AdminEditUser() {
       if (userImgFile !== null) {
         let formData = new FormData();
         formData.append("formFile", userImgFile, userImgFile.name);
-        const resultImg = await adminUsersService.fetchAdminImgApi(formData);
+        const resultImgEdit = await adminUsersService.fetchAdminImgApi(formData);
       }
       Swal.fire({
         icon: "success",
