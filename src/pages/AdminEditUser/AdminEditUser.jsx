@@ -8,6 +8,8 @@ import Swal from "sweetalert2";
 export default function AdminEditUser() {
   const params = useParams();
   const navigate = useNavigate();
+  const [imgUser, setImgUser] = useState("");
+  const [userImgFile, setUserImgFile] = useState(null);
   const [userEditState, setUserEditState] = useState({
     name: "",
     email: "",
@@ -25,6 +27,7 @@ export default function AdminEditUser() {
   const fetchAdminDetailApi = async () => {
     const result = await adminUsersService.fetchAdminDetailApi(params.userId);
     setUserEditState(result.data.content);
+    console.log(result.data.content);
   };
   const handleChangeDate = (value) => {
     const ngaySinh = dayjs(value);
@@ -39,13 +42,29 @@ export default function AdminEditUser() {
       [event.target.name]: event.target.value,
     });
   };
+  const handChangeImgUser = (event) => {
+    let file = event.target.files[0];
+
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      setImgUser(event.target.result);
+    };
+    setUserImgFile(file);
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
+
     try {
       const result = await adminUsersService.fetchAdminUpdateApi(
         params.userId,
         userEditState
       );
+      if (userImgFile !== null) {
+        let formData = new FormData();
+        formData.append("formFile", userImgFile, userImgFile.name);
+        const resultImgEdit = await adminUsersService.fetchAdminImgApi(formData);
+      }
       Swal.fire({
         icon: "success",
         title: "Success!",
@@ -156,6 +175,19 @@ export default function AdminEditUser() {
             <option value="ADMIN">ADMIN</option>
             <option value="USER">USER</option>
           </select>
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            AVATAR :
+          </label>
+          <input name="avatar" type="File" onChange={handChangeImgUser} />
+          <br />
+          <img
+            className="mt-3"
+            style={{ width: 150, height: 150 }}
+            src={imgUser === "" ? userEditState.avatar : imgUser}
+            alt="..."
+          />
         </div>
 
         <div className="col-span-2 mt-3 ">

@@ -12,8 +12,14 @@ export default function AdminUser() {
   const { Search } = Input;
   const [userState, setUserState] = useState([]);
   const [sortedInfo, setSortedInfo] = useState({});
+  const [imgUser, setImgUser] = useState([]);
+  const [imgFile, setImgFile] = useState({});
   const handleChange = (pagination, filters, sorter) => {
     setSortedInfo(sorter);
+  };
+  const [showModal, setShowModal] = useState(false);
+  const openModal = (id) => {
+    setShowModal(!showModal);
   };
   const columns = [
     {
@@ -38,6 +44,17 @@ export default function AdminUser() {
       },
       sortOrder: sortedInfo.columnKey === "name" ? sortedInfo.order : null,
       ellipsis: true,
+    },
+    {
+      title: "Avatar",
+      dataIndex: "avatar",
+      render: (text, user) => {
+        return (
+          <Fragment>
+            <img src={user.avatar} alt="..." width={100} height={100} />
+          </Fragment>
+        );
+      },
     },
     {
       title: "Email",
@@ -72,9 +89,17 @@ export default function AdminUser() {
             </button>
             <button
               onClick={() => fetchAdminDelete(user.id)}
-              className="btnUser-delete"
+              className="btnUser-delete mr-2"
             >
               <i className="fa-solid fa-trash" />
+            </button>
+            <button
+              onClick={() => {
+                openModal(user.id);
+              }}
+              className="mr-2 btnRoom-Img"
+            >
+              <i className="fa-regular fa-image" />
             </button>
           </Fragment>
         );
@@ -90,6 +115,7 @@ export default function AdminUser() {
   const fetchAdminUserApi = async () => {
     const result = await adminUsersService.fetchAdminUserApi();
     setUserState(result.data.content);
+    console.log(result.data.content);
   };
   const fetchAdminDelete = async (id) => {
     try {
@@ -129,14 +155,42 @@ export default function AdminUser() {
       fetchAdminUserApi();
     }
   };
+  const handleUploadImgUser = (event) => {
+    let file = event.target.files[0];
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = (event) => {
+      setImgUser(event.target.result);
+    };
+    setImgFile(file);
+  };
+  const handleUploadUser = async () => {
+    let formData = new FormData();
+    formData.append("formFile", imgFile, imgFile.name);
+    try {
+      const result = await adminUsersService.fetchAdminImgApi(formData);
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Cập nhật hình thành công !",
+      });
+      if (result.data.content) {
+        fetchAdminUserApi();
+        setShowModal(!showModal);
+      }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.content}`,
+      });
+    }
+  };
   return (
     <div className="container m-5 mx-auto adminUser-main">
       <div className="title-adminUser m-5">
         <h1 className="title-admin">User Admin</h1>
-        <button
-          onClick={() => navigate("/admin/addUser")}
-          className="btn-add"
-        >
+        <button onClick={() => navigate("/admin/addUser")} className="btn-add">
           ADD USER
         </button>
         <Search
@@ -155,6 +209,55 @@ export default function AdminUser() {
         dataSource={data}
         onChange={handleChange}
       />
+      {showModal ? (
+        <>
+          <div className="justify-center items-center flex overflow-x-hidden overflow-y-auto fixed inset-0 z-50 outline-none focus:outline-none">
+            <div className="relative w-auto my-6 mx-auto max-w-3xl">
+              {/*content*/}
+              <div className="border-0 rounded-lg shadow-lg relative flex flex-col w-full bg-white outline-none focus:outline-none">
+                {/*header*/}
+                <div className="flex items-start justify-between p-5 border-b border-solid border-blueGray-200 rounded-t">
+                  <h3 className="text-3xl font-semibold">Thêm hình</h3>
+                  <button
+                    className="p-1 ml-auto bg-transparent border-0 text-black opacity-5 float-right text-3xl leading-none font-semibold outline-none focus:outline-none"
+                    onClick={() => setShowModal(false)}
+                  >
+                    <span className="bg-transparent text-black opacity-5 h-6 w-6 text-2xl block outline-none focus:outline-none">
+                      ×
+                    </span>
+                  </button>
+                </div>
+                {/*body*/}
+                <div className="relative p-6 flex-auto">
+                  <input
+                    name="hinhAnh"
+                    type="File"
+                    onChange={handleUploadImgUser}
+                  />
+                </div>
+                {/*footer*/}
+                <div className="flex items-center justify-end p-6 border-t border-solid border-blueGray-200 rounded-b">
+                  <button
+                    className="bg-emerald-500 text-white active:bg-emerald-600 font-bold uppercase text-sm px-6 py-3 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={handleUploadUser}
+                  >
+                    Lưu ảnh
+                  </button>
+                  <button
+                    className="text-red-500 background-transparent font-bold uppercase px-6 py-2 text-sm outline-none focus:outline-none mr-1 mb-1 ease-linear transition-all duration-150"
+                    type="button"
+                    onClick={() => setShowModal(false)}
+                  >
+                    Đóng
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div className="opacity-25 fixed inset-0 z-40 bg-black"></div>
+        </>
+      ) : null}
     </div>
   );
 }
