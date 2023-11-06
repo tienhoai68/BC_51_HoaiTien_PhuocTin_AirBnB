@@ -9,12 +9,14 @@
     padding: 0px;
     white-space: nowrap;
 }
+
 .MuiAutocomplete-hasPopupIcon.css-1wuilmg-MuiAutocomplete-root .MuiOutlinedInput-root {
     border-radius: 30px;
     width: 100%;
     padding: 12px;
 
 }
+
 .css-14s5rfu-MuiFormLabel-root-MuiInputLabel-root {
     top: 4% !important;
 }
@@ -116,13 +118,40 @@
     stroke: currentcolor;
     stroke-width: 0;
 }
+
 .transition-slide-down {
     transform: translateY(-45%);
     opacity: 0;
     transition: transform 0.3s ease, opacity 0.3s ease;
-  }
-  
-  .transition-slide-down.active {
+}
+
+.transition-slide-down.active {
     transform: translateY(0);
     opacity: 1;
-  }
+}
+
+@media (max-width: 1279.98px) {
+    .header-search {
+        flex-wrap: nowrap;
+    }
+}
+
+// Large devices (desktops, less than 1200px)
+@media (max-width: 1199.98px) {}
+
+// Medium devices (tablets, less than 992px)
+@media (min-width: 767.98px) and (max-width: 991.98px) {
+    .search-location {
+        width: 100%;
+    }
+}
+
+// Small devices (landscape phones, less than 768px)
+@media (max-width: 767.98px) {}
+
+// Small devices (landscape phones, 576px and up)
+@media (max-width: 575.98px) {}
+
+@media (min-width: 458px) and (max-width: 575.90px) {}
+
+@media (max-width: 400px) {}

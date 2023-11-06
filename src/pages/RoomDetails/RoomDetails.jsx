@@ -159,7 +159,7 @@ export default function RoomDetails() {
                     <span className="text-gray-800 ml-2">{description[2]}</span>
                   </h2>
 
-                  <div className="flex items-center">
+                  <div className="flex flex-wrap items-center">
                     <span className="font-semibold text-gray-600 mr-2 ">Sức chứa:</span>
                     {roomDetail?.khach > 0 && roomDetail?.khach <= 8 && (
                       <span className="flex mr-2 border-r pr-2">
