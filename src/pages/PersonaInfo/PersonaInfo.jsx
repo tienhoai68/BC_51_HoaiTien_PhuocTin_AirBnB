@@ -72,7 +72,7 @@ export default function PersonaInfo() {
     <div className="container mx-auto px-10 personal-info mb-20">
       <div className="h-28"></div>
       <div className="flex flex-wrap">
-        <div className="w-full md:w-1/4">
+        <div className="w-full md:w-1/4 max-md:mb-2">
           <div className="w-full sticky top-32 border rounded-lg p-5">
             <ImagePersonal />
             <div className="mt-2">

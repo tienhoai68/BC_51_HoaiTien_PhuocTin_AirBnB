@@ -133,7 +133,7 @@ export default function Footer() {
         </div>
       </div>
       <div className='bg-gray-50 border-t fixed bottom-0 w-screen z-10  py-3 hidden md:block'>
-        <div className='container mx-auto px-10 flex justify-between items-center text-gray-500 '>
+        <div className='container mx-auto px-8 flex justify-between items-center text-gray-500 max-lg:text-xs'>
           <div>
             <span>© 2023 Airbnb, Inc.</span>
             <span className="px-3 hover:underline cursor-pointer">Quyền riêng tư</span>.
