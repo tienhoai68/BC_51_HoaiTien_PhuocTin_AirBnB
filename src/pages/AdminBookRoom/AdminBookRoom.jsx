@@ -59,12 +59,12 @@ export default function AdminBookRoom() {
           <Fragment>
             <button
               onClick={() => navigate(`/admin/${bookRoom.id}`)}
-              className="mr-2 btnBookRoom-edit"
+              className="m-2 btnBookRoom-edit"
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
             <button
-              className="btnBookRoom-delete"
+              className="m-2 btnBookRoom-delete"
               onClick={() => handleDelete(bookRoom.id)}
             >
               <i className="fa-solid fa-trash" />

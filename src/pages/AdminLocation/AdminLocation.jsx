@@ -53,13 +53,13 @@ export default function AdminLocation() {
           <Fragment>
             <button
               onClick={() => navigate(`/admin/editlocation/${location.id}`)}
-              className="btnLocation-edit mr-2 "
+              className="btnLocation-edit m-2 "
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
             <button
               onClick={() => handleDeleteLocation(location.id)}
-              className="btnLocation-delete mr-2"
+              className="btnLocation-delete m-2"
             >
               <i className="fa-solid fa-trash" />
             </button>
