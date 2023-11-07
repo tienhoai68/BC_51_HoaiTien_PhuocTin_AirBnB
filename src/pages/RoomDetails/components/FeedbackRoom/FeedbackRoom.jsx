@@ -143,7 +143,7 @@ export default function FeedbackRoom(props) {
       </div>
       <div className="grid grid-cols-1 sm:grid-cols-2 sm:gap-x-20 gap-y-4 sm:w-4/5 mt-5">
         {renderFeedBack()}
-        <div className="sm:col-span-2">
+        <div className="sm:col-span-2 ">
           {feedBackRoom.length > 4 && (
             <button
               className="border border-solid border-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-md px-5 py-3 font-semibold text-base text-gray-800 tracking-wider uppercase mr-2"
@@ -153,7 +153,7 @@ export default function FeedbackRoom(props) {
             </button>
           )}
           <button
-            className="border border-solid border-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-md px-5 py-3 font-semibold text-base text-gray-800 tracking-wider uppercase "
+            className="max-md:mt-2 border border-solid border-gray-900 hover:bg-gray-100 transition-all duration-200 rounded-md px-5 py-3 font-semibold text-base text-gray-800 tracking-wider uppercase "
             onClick={toggleCommentForm}
           >
             Bình luận của bạn

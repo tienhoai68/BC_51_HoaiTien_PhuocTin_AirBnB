@@ -28,17 +28,29 @@ export default function BookingRoom() {
 
   const [bookedRooms, setBookedRooms] = useState([]);
 
+  const [disabledDates, setDisabledDates] = useState([]);
+  console.log(disabledDates);
+
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
     endDate: new Date(),
     key: 'selection',
   });
 
+  const bookingData = {
+    id: 0,
+    maPhong: roomState.roomInfo.id,
+    ngayDen: selectionRange.startDate,
+    ngayDi: selectionRange.endDate,
+    soLuongKhach: countGuest,
+    maNguoiDung: userState.userInfo ? userState.userInfo.user.id : "",
+  };
+
   const disableBookingRoom = async () => {
     const result = await roomService.fetchBookingRoomApi();
     setBookedRooms(result.data.content);
+    // setDisabledDates(result.data.content);
   }
-
 
   const calculateNumNights = () => {
     const start = moment(selectionRange.startDate);
@@ -58,14 +70,7 @@ export default function BookingRoom() {
     }
   };
 
-  const bookingData = {
-    id: 0,
-    maPhong: roomState.roomInfo.id,
-    ngayDen: selectionRange.startDate,
-    ngayDi: selectionRange.endDate,
-    soLuongKhach: countGuest,
-    maNguoiDung: userState.userInfo ? userState.userInfo.user.id : "",
-  };
+
   const updateCount = (action) => {
     if (action === 'increment') {
       setCountGuest(countGuest + 1);
@@ -126,10 +131,25 @@ export default function BookingRoom() {
     }
   };
 
+  // const disableDateBooking = () => {
+  //   const disabledDates = bookedRooms.map((booking) => {
+  //     const startDate = new Date(booking.ngayDen);
+  //     const endDate = new Date(booking.ngayDi);
+
+  //     const disabledRange = [];
+  //     disabledRange.push(startDate);
+  //     disabledRange.push(endDate);
+
+  //     return disabledRange;
+  //   });
+  //   setDisabledDates(disabledDates);
+  // }
+
   useEffect(() => {
     disableBookingRoom();
     calculateNumNights();
     calculateTotalPrice();
+    // disableDateBooking();
   }, [selectionRange, roomState.roomInfo.giaTien, numNights]);
 
   const handleReceiveRoom = () => {
@@ -231,6 +251,9 @@ export default function BookingRoom() {
               ranges={[selectionRange]}
               onChange={handleSelect}
               minDate={new Date()}
+              // disabledDates={disabledDates}
+            // excludeDateIntervals={disabledDates}
+            // disabledRanges={disabledDates}
             />
           </div>
         </div>
