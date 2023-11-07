@@ -46,17 +46,6 @@ export default function AdminUser() {
       ellipsis: true,
     },
     {
-      title: "Avatar",
-      dataIndex: "avatar",
-      render: (text, user) => {
-        return (
-          <Fragment>
-            <img src={user.avatar} alt="..." width={100} height={100} />
-          </Fragment>
-        );
-      },
-    },
-    {
       title: "Email",
       dataIndex: "email",
     },
@@ -83,13 +72,13 @@ export default function AdminUser() {
           <Fragment>
             <button
               onClick={() => navigate(`/admin/editUser/${user.id}`)}
-              className="btnUser-edit mr-2 "
+              className="btnUser-edit m-2 "
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
             <button
               onClick={() => fetchAdminDelete(user.id)}
-              className="btnUser-delete mr-2"
+              className="btnUser-delete m-2"
             >
               <i className="fa-solid fa-trash" />
             </button>
@@ -97,7 +86,7 @@ export default function AdminUser() {
               onClick={() => {
                 openModal(user.id);
               }}
-              className="mr-2 btnRoom-Img"
+              className="m-2 btnRoom-Img"
             >
               <i className="fa-regular fa-image" />
             </button>
@@ -115,7 +104,6 @@ export default function AdminUser() {
   const fetchAdminUserApi = async () => {
     const result = await adminUsersService.fetchAdminUserApi();
     setUserState(result.data.content);
-    console.log(result.data.content);
   };
   const fetchAdminDelete = async (id) => {
     try {

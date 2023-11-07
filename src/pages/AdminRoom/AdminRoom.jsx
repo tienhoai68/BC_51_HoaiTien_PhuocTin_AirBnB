@@ -84,13 +84,13 @@ export default function AdminRoom() {
           <Fragment>
             <button
               onClick={() => navigate(`/admin/editRoom/${room.id}`)}
-              className="btnRoom-edit mr-2 "
+              className="btnRoom-edit m-2 "
             >
               <i className="fa-solid fa-magnifying-glass" />
             </button>
             <button
               onClick={() => handleDelete(room.id)}
-              className="btnRoom-delete mr-2"
+              className="btnRoom-delete m-2"
             >
               <i className="fa-solid fa-trash" />
             </button>
@@ -98,7 +98,7 @@ export default function AdminRoom() {
               onClick={() => {
                 openModal(room.id);
               }}
-              className="mr-2 btnRoom-Img"
+              className="m-2 btnRoom-Img"
             >
               <i className="fa-regular fa-image" />
             </button>
