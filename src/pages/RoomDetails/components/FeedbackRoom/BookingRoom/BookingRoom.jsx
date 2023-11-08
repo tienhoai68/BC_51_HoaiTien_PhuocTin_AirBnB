@@ -13,6 +13,8 @@ import Swal from 'sweetalert2';
 export default function BookingRoom() {
   const userState = useSelector((state) => state.userReducer);
   const roomState = useSelector((state) => state.roomReducer);
+  const roomId = roomState.roomInfo.id;
+
   const navigate = useNavigate();
   const [showDateRangePicker, setShowDateRangePicker] = useState(false);
 
@@ -28,8 +30,7 @@ export default function BookingRoom() {
 
   const [bookedRooms, setBookedRooms] = useState([]);
 
-  const [disabledDates, setDisabledDates] = useState([]);
-  console.log(disabledDates);
+  // const [disabledDates, setDisabledDates] = useState([]);
 
   const [selectionRange, setSelectionRange] = useState({
     startDate: new Date(),
@@ -47,9 +48,12 @@ export default function BookingRoom() {
   };
 
   const disableBookingRoom = async () => {
-    const result = await roomService.fetchBookingRoomApi();
-    setBookedRooms(result.data.content);
-    // setDisabledDates(result.data.content);
+    try {
+      const result = await roomService.fetchBookingRoomApi();
+      setBookedRooms(result.data.content);
+    } catch (error) {
+      console.log(error);
+    }
   }
 
   const calculateNumNights = () => {
@@ -130,26 +134,28 @@ export default function BookingRoom() {
       })
     }
   };
-
-  // const disableDateBooking = () => {
-  //   const disabledDates = bookedRooms.map((booking) => {
-  //     const startDate = new Date(booking.ngayDen);
-  //     const endDate = new Date(booking.ngayDi);
-
-  //     const disabledRange = [];
-  //     disabledRange.push(startDate);
-  //     disabledRange.push(endDate);
-
-  //     return disabledRange;
-  //   });
-  //   setDisabledDates(disabledDates);
-  // }
+  const getDisabledDates = (maPhong) => {
+    const bookedDatesForRoom = bookedRooms
+      .filter((room) => room.maPhong === maPhong)
+      .map((room) => {
+        const startDate = new Date(room.ngayDen);
+        const endDate = new Date(room.ngayDi);
+        const datesInRange = [];
+        let currentDate = startDate;
+        while (currentDate <= endDate) {
+          datesInRange.push(new Date(currentDate));
+          currentDate.setDate(currentDate.getDate() + 1);
+        }
+        return datesInRange;
+      })
+      .flat();
+    return bookedDatesForRoom;
+  };
 
   useEffect(() => {
     disableBookingRoom();
     calculateNumNights();
     calculateTotalPrice();
-    // disableDateBooking();
   }, [selectionRange, roomState.roomInfo.giaTien, numNights]);
 
   const handleReceiveRoom = () => {
@@ -251,9 +257,7 @@ export default function BookingRoom() {
               ranges={[selectionRange]}
               onChange={handleSelect}
               minDate={new Date()}
-              // disabledDates={disabledDates}
-            // excludeDateIntervals={disabledDates}
-            // disabledRanges={disabledDates}
+              disabledDates={getDisabledDates(roomId)}
             />
           </div>
         </div>
