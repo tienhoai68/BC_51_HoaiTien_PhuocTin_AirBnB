@@ -223,16 +223,30 @@
       .rdrDayNumber {
         border-radius: 1.042em;
         background-color: #e0565b !important;
-        
+
         span {
           color: #fff !important;
         }
       }
+
     }
   }
 
   .rdrDayDisabled {
     background-color: #f8f8f8;
+    border-radius: 50%;
+
+    &:hover {
+      .rdrDayNumber {
+        border-radius: 1.042em;
+        background-color: #f8f8f8 !important;
+
+        span {
+          color: #666 !important;
+        }
+      }
+
+    }
   }
 
   .rdrEndEdge,
