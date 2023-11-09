@@ -1,3 +1,4 @@
+import React, { useState } from "react";
 import moment from "moment/moment";
 import React, { createRef, useState } from "react";
 import { adminUsersService } from "../../services/AdminUser";
@@ -5,7 +6,6 @@ import { DatePicker } from "antd";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
-
 export default function AdminAddUser() {
   const nameInputRef = createRef();
   const emailInputRef = createRef();
@@ -130,7 +130,7 @@ export default function AdminAddUser() {
     }
   };
   return (
-    <div className="container mx-auto py-5">
+    <div className="container mx-auto py-5 ml-5">
       <form onSubmit={handleSubmit}>
         <div className="mb-4 ">
           <div className="md:block text-center text-3xl text-blue-800">
@@ -169,7 +169,7 @@ export default function AdminAddUser() {
           </label>
           <input
             onChange={handleChange}
-            type="text"
+            type="password"
             name="password"
             className="border text-sm rounded-md w-1/3 p-2 "
           />
