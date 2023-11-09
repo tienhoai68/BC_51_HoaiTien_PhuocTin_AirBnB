@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Form, Switch } from "antd";
-
 import "./AdminAddRoom.scss";
 import { adminRoomService } from "../../services/AdminRoom";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
+
 export default function AdminAddRoom() {
   const navigate = useNavigate();
+  const [error, setError] = useState(false);
   const [roomState, setRoomState] = useState({
     tenPhong: "",
     khach: 0,
@@ -41,22 +42,34 @@ export default function AdminAddRoom() {
     });
   };
   const handleSubmit = async () => {
-    try {
-      const result = await adminRoomService.fetchAdminAddRoomApi(roomState);
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Thêm phòng thành công !",
-      });
-      if (result.data.content) {
-        navigate("/admin/phongthue");
+    if (error) {
+      try {
+        const result = await adminRoomService.fetchAdminAddRoomApi(roomState);
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Thêm phòng thành công !",
+        });
+        if (result.data.content) {
+          navigate("/admin/phongthue");
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.content}`,
+        });
       }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.response.data.content}`,
-      });
+    }
+  };
+  const onFinish = (values) => {
+    if (values) {
+      setError(true);
+    }
+  };
+  const onFinishFailed = (errorInfo) => {
+    if (errorInfo) {
+      setError(false);
     }
   };
   return (
@@ -74,9 +87,21 @@ export default function AdminAddRoom() {
         style={{
           maxWidth: 1000,
         }}
+        autoComplete="off"
+        onFinish={onFinish}
+        onFinishFailed={onFinishFailed}
         onSubmitCapture={handleSubmit}
       >
-        <Form.Item label="Tên Phòng: ">
+        <Form.Item
+          label="Tên Phòng: "
+          name="tenPhong"
+          rules={[
+            {
+              required: true,
+              message: "Không để trống!",
+            },
+          ]}
+        >
           <input
             onChange={handleChange}
             type="text"
@@ -84,7 +109,16 @@ export default function AdminAddRoom() {
             className="border text-sm rounded-md w-2/3 p-2 "
           />
         </Form.Item>
-        <Form.Item label="Số Khách :">
+        <Form.Item
+          label="Số Khách :"
+          name="khach"
+          rules={[
+            {
+              required: true,
+              message: "Không để trống!",
+            },
+          ]}
+        >
           <input
             min={1}
             onChange={handleChange}
@@ -93,7 +127,16 @@ export default function AdminAddRoom() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </Form.Item>
-        <Form.Item label="Phòng Ngủ :">
+        <Form.Item
+          label="Phòng Ngủ :"
+          name="phongNgu"
+          rules={[
+            {
+              required: true,
+              message: "Không để trống!",
+            },
+          ]}
+        >
           <input
             min={1}
             onChange={handleChange}
@@ -102,7 +145,16 @@ export default function AdminAddRoom() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </Form.Item>
-        <Form.Item label="Số Giường :">
+        <Form.Item
+          label="Số Giường :"
+          name="giuong"
+          rules={[
+            {
+              required: true,
+              message: "Không để trống!",
+            },
+          ]}
+        >
           <input
             min={1}
             onChange={handleChange}
@@ -111,7 +163,16 @@ export default function AdminAddRoom() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </Form.Item>
-        <Form.Item label="Số Phòng Tắm :">
+        <Form.Item
+          label="Số Phòng Tắm :"
+          name="phongTam"
+          rules={[
+            {
+              required: true,
+              message: "Không để trống!",
+            },
+          ]}
+        >
           <input
             min={1}
             onChange={handleChange}
@@ -121,7 +182,16 @@ export default function AdminAddRoom() {
           />
         </Form.Item>
 
-        <Form.Item label=" Mã Vị Trí :">
+        <Form.Item
+          label=" Mã Vị Trí :"
+          name="maViTri"
+          rules={[
+            {
+              required: true,
+              message: "Không để trống!",
+            },
+          ]}
+        >
           <input
             max={10}
             min={0}
@@ -131,7 +201,16 @@ export default function AdminAddRoom() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </Form.Item>
-        <Form.Item label="Mô Tả: ">
+        <Form.Item
+          label="Mô Tả: "
+          name="moTa"
+          rules={[
+            {
+              required: true,
+              message: "Không để trống!",
+            },
+          ]}
+        >
           <input
             onChange={handleChange}
             type="text"
