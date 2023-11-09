@@ -107,14 +107,24 @@ export default function AdminUser() {
   };
   const fetchAdminDelete = async (id) => {
     try {
-      const result = await adminUsersService.fetchAdminDeleteApi(id);
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Xóa User thành công !",
+      const confirmationResult = await Swal.fire({
+        title: "Are you sure?",
+        text: "You won't be able to revert this!",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes, delete it!",
       });
-
-      fetchAdminUserApi();
+      if (confirmationResult.isConfirmed) {
+        const result = await adminUsersService.fetchAdminDeleteApi(id);
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Xóa User thành công !",
+        });
+        fetchAdminUserApi();
+      }
     } catch (error) {
       Swal.fire({
         icon: "error",
