@@ -168,16 +168,14 @@ export default function AdminRoom() {
     <div className="container m-5 mx-auto adminUser-main">
       <div className="title-adminUser m-5">
         <h1 className="title-admin">Admin Room</h1>
-        <button
-          onClick={() => navigate("/admin/addRoom")}
-          className="btn-add"
-        >
+        <button onClick={() => navigate("/admin/addRoom")} className="btn-add">
           ADD ROOM
         </button>
       </div>
 
       <hr />
       <Table
+        rowKey={(record) => record.id}
         className="table-AddminUser"
         columns={columns}
         dataSource={data}

@@ -155,7 +155,12 @@ export default function AdminComment() {
       </div>
       <hr />
 
-      <Table columns={columns} dataSource={data} onChange={handleChange} />
+      <Table
+        rowKey={(record) => record.id}
+        columns={columns}
+        dataSource={data}
+        onChange={handleChange}
+      />
     </div>
   );
 }

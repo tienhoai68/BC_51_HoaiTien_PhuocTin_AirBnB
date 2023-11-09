@@ -1,5 +1,5 @@
 import moment from "moment/moment";
-import React, { useState } from "react";
+import React, { createRef, useState } from "react";
 import { adminUsersService } from "../../services/AdminUser";
 import { DatePicker } from "antd";
 import dayjs from "dayjs";
@@ -7,6 +7,11 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 
 export default function AdminAddUser() {
+  const nameInputRef = createRef();
+  const emailInputRef = createRef();
+  const passwordInputRef = createRef();
+  const phoneInputRef = createRef();
+  const dateInputRef = createRef();
   const navigate = useNavigate();
   const [userState, setUserState] = useState({
     name: "",
@@ -17,6 +22,7 @@ export default function AdminAddUser() {
     gender: true,
     role: "ADMIN",
   });
+
   const handleChange = (event) => {
     setUserState({
       ...userState,
@@ -44,24 +50,83 @@ export default function AdminAddUser() {
       });
     }
   };
+  const validateRequired = (value, ref, mes) => {
+    if (value !== "") {
+      ref.innerHTML = "";
+      return true;
+    }
+    ref.innerHTML = mes;
+    return false;
+  };
+  const validateCheck = (value, ref, mes, letter) => {
+    if (letter.test(value)) {
+      ref.innerHTML = "";
+      return true;
+    }
+    ref.innerHTML = mes;
+    return false;
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
-    try {
-      const result = await adminUsersService.fetchAdminAddUserApi(userState);
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "thêm User thành công !",
-      });
-      if (result.data.content) {
-        navigate(`/admin/user`);
+    let isValid = true;
+    isValid &= validateRequired(
+      userState.name,
+      nameInputRef.current,
+      "Chưa nhập tên !!!"
+    );
+    isValid &=
+      validateRequired(
+        userState.email,
+        emailInputRef.current,
+        "Chưa nhập Email !!!"
+      ) &&
+      validateCheck(
+        userState.email,
+        emailInputRef.current,
+        "Định dạng email chưa đúng",
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
+      );
+
+    isValid &= validateRequired(
+      userState.password,
+      passwordInputRef.current,
+      "Chưa nhập Password !!!"
+    );
+    isValid &=
+      validateRequired(
+        userState.phone,
+        phoneInputRef.current,
+        "Chưa nhập Số điện thoại !!!"
+      ) &&
+      validateCheck(
+        userState.phone,
+        phoneInputRef.current,
+        "Nhập đúng số điện thoại !!!",
+        /^[0-9]+$/
+      );
+    isValid &= validateRequired(
+      userState.birthday,
+      dateInputRef.current,
+      "Chưa chọn ngày sinh !!!"
+    );
+    if (isValid) {
+      try {
+        const result = await adminUsersService.fetchAdminAddUserApi(userState);
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "thêm User thành công !",
+        });
+        if (result.data.content) {
+          navigate(`/admin/user`);
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.content}`,
+        });
       }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.response.data.content}`,
-      });
     }
   };
   return (
@@ -83,6 +148,9 @@ export default function AdminAddUser() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={nameInputRef}></span>
+        </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">Email :</label>
           <input
@@ -91,6 +159,9 @@ export default function AdminAddUser() {
             name="email"
             className="border text-sm rounded-md w-1/3 p-2 "
           />
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={emailInputRef}></span>
         </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">
@@ -103,6 +174,9 @@ export default function AdminAddUser() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={passwordInputRef}></span>
+        </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">
             Phone Number :
@@ -114,6 +188,9 @@ export default function AdminAddUser() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={phoneInputRef}></span>
+        </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">
             Birthday :
@@ -124,6 +201,9 @@ export default function AdminAddUser() {
             name="birthday"
             className="border text-sm rounded-md w-1/3 p-2 "
           />
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={dateInputRef}></span>
         </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">

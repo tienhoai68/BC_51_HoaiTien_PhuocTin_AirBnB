@@ -109,6 +109,7 @@ export default function AdminLocation() {
 
       <hr />
       <Table
+        rowKey={(record) => record.id}
         className="table-AddminUser"
         columns={columns}
         dataSource={data}

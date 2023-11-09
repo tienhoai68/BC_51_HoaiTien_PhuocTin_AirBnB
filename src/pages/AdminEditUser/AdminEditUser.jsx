@@ -4,8 +4,13 @@ import { adminUsersService } from "../../services/AdminUser";
 import dayjs from "dayjs";
 import { DatePicker } from "antd";
 import Swal from "sweetalert2";
+import { createRef } from "react";
 
 export default function AdminEditUser() {
+  const nameInputRef = createRef();
+  const emailInputRef = createRef();
+  const phoneInputRef = createRef();
+  const dateInputRef = createRef();
   const params = useParams();
   const navigate = useNavigate();
   const [imgUser, setImgUser] = useState("");
@@ -18,6 +23,7 @@ export default function AdminEditUser() {
     birthday: "",
     gender: "",
     role: "",
+    avatar: {},
   });
 
   useEffect(() => {
@@ -27,7 +33,9 @@ export default function AdminEditUser() {
   const fetchAdminDetailApi = async () => {
     const result = await adminUsersService.fetchAdminDetailApi(params.userId);
     setUserEditState(result.data.content);
-    console.log(result.data.content);
+    if (result.data.content) {
+      alert("CHÚ Ý: CHỈ CẬP NHẬT HÌNH CHO ACCOUNT ĐANG ĐĂNG NHẬP !!!");
+    }
   };
   const handleChangeDate = (value) => {
     const ngaySinh = dayjs(value);
@@ -52,33 +60,87 @@ export default function AdminEditUser() {
     };
     setUserImgFile(file);
   };
+  const validateRequired = (value, ref, mes) => {
+    if (value !== "") {
+      ref.innerHTML = "";
+      return true;
+    }
+    ref.innerHTML = mes;
+    return false;
+  };
+  const validateCheck = (value, ref, mes, letter) => {
+    if (letter.test(value)) {
+      ref.innerHTML = "";
+      return true;
+    }
+    ref.innerHTML = mes;
+    return false;
+  };
   const handleSubmit = async (event) => {
     event.preventDefault();
-
-    try {
-      const result = await adminUsersService.fetchAdminUpdateApi(
-        params.userId,
-        userEditState
+    let isValid = true;
+    isValid &= validateRequired(
+      userEditState.name,
+      nameInputRef.current,
+      "Chưa nhập tên !!!"
+    );
+    isValid &=
+      validateRequired(
+        userEditState.email,
+        emailInputRef.current,
+        "Chưa nhập Email !!!"
+      ) &&
+      validateCheck(
+        userEditState.email,
+        emailInputRef.current,
+        "Định dạng email chưa đúng",
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/
       );
-      if (userImgFile !== null) {
-        let formData = new FormData();
-        formData.append("formFile", userImgFile, userImgFile.name);
-        const resultImgEdit = await adminUsersService.fetchAdminImgApi(formData);
+    isValid &=
+      validateRequired(
+        userEditState.phone,
+        phoneInputRef.current,
+        "Chưa nhập Số điện thoại !!!"
+      ) &&
+      validateCheck(
+        userEditState.phone,
+        phoneInputRef.current,
+        "Nhập đúng số điện thoại !!!",
+        /^[0-9]+$/
+      );
+    isValid &= validateRequired(
+      userEditState.birthday,
+      dateInputRef.current,
+      "Chưa chọn ngày sinh !!!"
+    );
+    if (isValid) {
+      try {
+        const result = await adminUsersService.fetchAdminUpdateApi(
+          params.userId,
+          userEditState
+        );
+        if (userImgFile !== null) {
+          let formData = new FormData();
+          formData.append("formFile", userImgFile, userImgFile.name);
+          const resultImgEdit = await adminUsersService.fetchAdminImgApi(
+            formData
+          );
+        }
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Cập nhật User thành công !",
+        });
+        if (result.data.content) {
+          navigate(`/admin/user`);
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.content}`,
+        });
       }
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Cập nhật User thành công !",
-      });
-      if (result.data.content) {
-        navigate(`/admin/user`);
-      }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.response.data.content}`,
-      });
     }
   };
 
@@ -102,6 +164,9 @@ export default function AdminEditUser() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={nameInputRef}></span>
+        </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">Email :</label>
           <input
@@ -111,6 +176,9 @@ export default function AdminEditUser() {
             name="email"
             className="border text-sm rounded-md w-1/3 p-2 "
           />
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={emailInputRef}></span>
         </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">
@@ -136,6 +204,9 @@ export default function AdminEditUser() {
             className="border text-sm rounded-md w-1/3 p-2 "
           />
         </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={phoneInputRef}></span>
+        </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">
             Birthday :
@@ -147,6 +218,9 @@ export default function AdminEditUser() {
             value={dayjs(userEditState.birthday, "DD/MM/YYYY")}
             className="border text-sm rounded-md w-1/3 p-2 "
           />
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={dateInputRef}></span>
         </div>
         <div className="mb-2">
           <label className="block mb-2 text-sm font-medium mr-3">
