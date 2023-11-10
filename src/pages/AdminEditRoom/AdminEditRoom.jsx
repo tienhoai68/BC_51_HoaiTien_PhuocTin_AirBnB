@@ -16,7 +16,7 @@ export default function AdminEditRoom() {
     giuong: 0,
     phongTam: 0,
     moTa: "",
-    giaTien: 0,
+    giaTien: 1,
     mayGiat: false,
     banLa: false,
     tivi: false,
@@ -79,7 +79,7 @@ export default function AdminEditRoom() {
   return (
     <div className="container mx-auto py-5">
       <div className="md:block text-center text-3xl text-blue-800">
-        <h1>Thêm Phòng Thuê</h1>
+        <h1>Cập Nhật Phòng Thuê</h1>
       </div>
       <Form
         labelCol={{
@@ -163,16 +163,27 @@ export default function AdminEditRoom() {
             className="border text-sm rounded-md w-2/3 p-2 "
           />
         </Form.Item>
+        <Form.Item label=" Giá tiền :">
+          <input
+            value={editRoomState.giaTien}
+            min={1}
+            onChange={handleChange}
+            type="number"
+            name="giaTien"
+            className="border text-sm rounded-md w-1/3 p-2 "
+          />
+        </Form.Item>
         <Form.Item label="Máy Giặt:" valuePropName="checked">
           <Switch
-            value={editRoomState.mayGiat}
+            checked={editRoomState.mayGiat}
+            onClick={handleChangeSwitch}
             name="mayGiat"
             className="adminSwitch"
           />
         </Form.Item>
         <Form.Item label="Bàn Là:" valuePropName="checked">
           <Switch
-            value={editRoomState.banLa}
+            checked={editRoomState.banLa}
             onClick={handleChangeSwitch}
             name="banLa"
             className="adminSwitch"
@@ -180,7 +191,7 @@ export default function AdminEditRoom() {
         </Form.Item>
         <Form.Item label="Tivi:" valuePropName="checked">
           <Switch
-            value={editRoomState.tivi}
+            checked={editRoomState.tivi}
             onClick={handleChangeSwitch}
             name="tivi"
             className="adminSwitch"
@@ -188,7 +199,7 @@ export default function AdminEditRoom() {
         </Form.Item>
         <Form.Item label="Điều Hòa:" valuePropName="checked">
           <Switch
-            value={editRoomState.dieuHoa}
+            checked={editRoomState.dieuHoa}
             onClick={handleChangeSwitch}
             name="dieuHoa"
             className="adminSwitch"
@@ -196,7 +207,7 @@ export default function AdminEditRoom() {
         </Form.Item>
         <Form.Item label="Wifi:" valuePropName="checked">
           <Switch
-            value={editRoomState.wifi}
+            checked={editRoomState.wifi}
             onClick={handleChangeSwitch}
             name="wifi"
             className="adminSwitch"
@@ -204,7 +215,7 @@ export default function AdminEditRoom() {
         </Form.Item>
         <Form.Item label="Bếp:" valuePropName="checked">
           <Switch
-            value={editRoomState.bep}
+            checked={editRoomState.bep}
             onClick={handleChangeSwitch}
             name="bep"
             className="adminSwitch"
@@ -212,7 +223,7 @@ export default function AdminEditRoom() {
         </Form.Item>
         <Form.Item label="Bãi Đỗ Xe:" valuePropName="checked">
           <Switch
-            value={editRoomState.doXe}
+            checked={editRoomState.doXe}
             onClick={handleChangeSwitch}
             name="doXe"
             className="adminSwitch"
@@ -220,7 +231,7 @@ export default function AdminEditRoom() {
         </Form.Item>
         <Form.Item label="Hồ Bơi:" valuePropName="checked">
           <Switch
-            value={editRoomState.hoBoi}
+            checked={editRoomState.hoBoi}
             onClick={handleChangeSwitch}
             name="hoBoi"
             className="adminSwitch"
@@ -228,7 +239,7 @@ export default function AdminEditRoom() {
         </Form.Item>
         <Form.Item label="Bàn Ủi:" valuePropName="checked">
           <Switch
-            value={editRoomState.banUi}
+            checked={editRoomState.banUi}
             onClick={handleChangeSwitch}
             name="banUi"
             className="adminSwitch"
