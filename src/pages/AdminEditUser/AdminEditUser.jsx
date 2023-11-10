@@ -34,7 +34,7 @@ export default function AdminEditUser() {
     const result = await adminUsersService.fetchAdminDetailApi(params.userId);
     setUserEditState(result.data.content);
     if (result.data.content) {
-      alert("CHÚ Ý: CHỈ CẬP NHẬT HÌNH CHO ACCOUNT ĐANG ĐĂNG NHẬP !!!");
+      alert("CHÚ Ý: KHÔNG THỂ CẬP NHẬT HÌNH ẢNH CHO ACCOUNT KHÁC !!!");
     }
   };
   const handleChangeDate = (value) => {

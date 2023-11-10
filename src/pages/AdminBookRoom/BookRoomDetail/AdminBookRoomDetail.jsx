@@ -88,7 +88,7 @@ export default function AdminBookRoomDetail() {
   return (
     <div className="container mx-auto py-5">
       <div className="md:block text-center text-3xl text-blue-800 mb-5">
-        <h1>Cập nhật phòng thuê</h1>
+        <h1>CẬP NHẬT LẠI PHÒNG THUÊ</h1>
       </div>
       <Form
         labelCol={{
