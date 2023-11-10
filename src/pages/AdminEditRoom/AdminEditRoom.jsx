@@ -1,5 +1,5 @@
 import { Form, Input, Switch } from "antd";
-import React from "react";
+import React, { createRef } from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
@@ -7,6 +7,14 @@ import { adminRoomService } from "../../services/AdminRoom";
 import Swal from "sweetalert2";
 
 export default function AdminEditRoom() {
+  const tenPhongInputRef = createRef();
+  const khachRef = createRef();
+  const phongNguRef = createRef();
+  const giuongRef = createRef();
+  const phongTamRef = createRef();
+  const giaTienRef = createRef();
+  const maViTriRef = createRef();
+
   const navigate = useNavigate();
   const params = useParams();
   const [editRoomState, setEditRoomState] = useState({
@@ -52,27 +60,98 @@ export default function AdminEditRoom() {
     });
   };
 
-  const handleSubmit = async () => {
-    try {
-      const result = await adminRoomService.fetchAdminEditRoomApi(
-        params.roomId,
-        editRoomState
-      );
-      Swal.fire({
-        icon: "success",
-        title: "Success!",
-        text: "Cập nhật Room thành công !",
-      });
+  const validateRequired = (value, ref, mes) => {
+    if (value !== "") {
+      ref.innerHTML = "";
+      return true;
+    }
+    ref.innerHTML = mes;
+    return false;
+  };
 
-      if (result.data.content) {
-        navigate("/admin/phongthue");
+  const validateCheck = (value, ref, mes, letter) => {
+    if (letter.test(value)) {
+      ref.innerHTML = "";
+      return true;
+    }
+    ref.innerHTML = mes;
+    return false;
+  };
+
+  const handleSubmit = async (event) => {
+    event.preventDefault();
+    let isValid = true;
+    isValid &= validateRequired(
+      editRoomState.tenPhong,
+      tenPhongInputRef.current,
+      "Không để trống tên phòng"
+    );
+    isValid &=
+      validateRequired(
+        editRoomState.khach,
+        khachRef.current,
+        "Không để trống số khách"
+      ) &&
+      validateCheck(
+        editRoomState.khach,
+        khachRef.current,
+        "số khách phải là số",
+        /^[0-9]+$/
+      );
+    isValid &= validateRequired(
+      editRoomState.phongNgu,
+      phongNguRef.current,
+      "Không để trống số phòng ngủ"
+    );
+    isValid &= validateRequired(
+      editRoomState.phongTam,
+      phongTamRef.current,
+      "Không để trống số phòng tắm"
+    );
+    isValid &= validateRequired(
+      editRoomState.giuong,
+      giuongRef.current,
+      "Không để trống số giường"
+    );
+    isValid &=
+      validateRequired(
+        editRoomState.giaTien,
+        giaTienRef.current,
+        "Không để trống"
+      ) &&
+      validateCheck(
+        editRoomState.giaTien,
+        giaTienRef.current,
+        "Giá tiền phải là số",
+        /^[0-9]+$/
+      );
+    isValid &= validateRequired(
+      editRoomState.maViTri,
+      maViTriRef.current,
+      "Không để trống mã vị trí"
+    );
+    if (isValid) {
+      try {
+        const result = await adminRoomService.fetchAdminEditRoomApi(
+          params.roomId,
+          editRoomState
+        );
+        Swal.fire({
+          icon: "success",
+          title: "Success!",
+          text: "Cập nhật Room thành công !",
+        });
+
+        if (result.data.content) {
+          navigate("/admin/phongthue");
+        }
+      } catch (error) {
+        Swal.fire({
+          icon: "error",
+          title: "Oops...",
+          text: `${error.response.data.content}`,
+        });
       }
-    } catch (error) {
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: `${error.response.data.content}`,
-      });
     }
   };
 
@@ -81,179 +160,230 @@ export default function AdminEditRoom() {
       <div className="md:block text-center text-3xl text-blue-800">
         <h1>Cập Nhật Phòng Thuê</h1>
       </div>
-      <Form
-        labelCol={{
-          span: 4,
-        }}
-        wrapperCol={{
-          span: 14,
-        }}
-        style={{
-          maxWidth: 1000,
-        }}
-        onSubmitCapture={handleSubmit}
-      >
-        <Form.Item label="Tên Phòng: ">
+      <form onSubmit={handleSubmit}>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Tên Phòng :
+          </label>
           <input
             value={editRoomState.tenPhong}
             onChange={handleChange}
             type="text"
             name="tenPhong"
-            className="border text-sm rounded-md w-2/3 p-2 "
+            className="border text-sm rounded-md w-0.5/3 p-2 mb-2"
           />
-        </Form.Item>
-        <Form.Item label="Số Khách :">
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={tenPhongInputRef}></span>
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Số khách :
+          </label>
           <input
             value={editRoomState.khach}
-            min={1}
             onChange={handleChange}
+            min={1}
             type="number"
             name="khach"
-            className="border text-sm rounded-md w-1/3 p-2 "
+            className="border text-sm rounded-md w-0.5/3 p-2 "
           />
-        </Form.Item>
-        <Form.Item label="Phòng Ngủ :">
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={khachRef}></span>
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Phòng ngủ :
+          </label>
           <input
             value={editRoomState.phongNgu}
-            min={1}
             onChange={handleChange}
+            min={1}
             type="number"
             name="phongNgu"
-            className="border text-sm rounded-md w-1/3 p-2 "
+            className="border text-sm rounded-md  w-0.5/3 p-2 "
           />
-        </Form.Item>
-        <Form.Item label="Số Giường :">
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={phongNguRef}></span>
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Giường :
+          </label>
           <input
             value={editRoomState.giuong}
-            min={1}
             onChange={handleChange}
+            min={1}
             type="number"
             name="giuong"
-            className="border text-sm rounded-md w-1/3 p-2 "
+            className="border text-sm rounded-md  w-0.5/3 p-2 "
           />
-        </Form.Item>
-        <Form.Item label="Số Phòng Tắm :">
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={giuongRef}></span>
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Phòng Tắm :
+          </label>
           <input
             value={editRoomState.phongTam}
-            min={1}
             onChange={handleChange}
+            min={1}
             type="number"
             name="phongTam"
-            className="border text-sm rounded-md w-1/3 p-2 "
+            className="border text-sm rounded-md  w-0.5/3 p-2 "
           />
-        </Form.Item>
-
-        <Form.Item label=" Mã Vị Trí :">
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={phongTamRef}></span>
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Mã vị trí :
+          </label>
           <input
             value={editRoomState.maViTri}
-            max={10}
-            min={0}
             onChange={handleChange}
+            min={0}
             type="number"
             name="maViTri"
-            className="border text-sm rounded-md w-1/3 p-2 "
+            className="border text-sm rounded-md  w-0.5/3 p-2 "
           />
-        </Form.Item>
-        <Form.Item label="Mô Tả: ">
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={maViTriRef}></span>
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">Mô tả :</label>
           <input
             value={editRoomState.moTa}
             onChange={handleChange}
             type="text"
             name="moTa"
-            className="border text-sm rounded-md w-2/3 p-2 "
+            className="border text-sm rounded-md  w-0.5/3 p-2 "
           />
-        </Form.Item>
-        <Form.Item label=" Giá tiền :">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Giá tiền :
+          </label>
           <input
             value={editRoomState.giaTien}
-            min={1}
             onChange={handleChange}
+            min={1}
             type="number"
             name="giaTien"
-            className="border text-sm rounded-md w-1/3 p-2 "
+            className="border text-sm rounded-md  w-0.5/3 p-2 "
           />
-        </Form.Item>
-        <Form.Item label="Máy Giặt:" valuePropName="checked">
+        </div>
+        <div style={{ color: "red" }}>
+          <span className="text-danger" ref={giaTienRef}></span>
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Máy giặt :
+          </label>
           <Switch
             checked={editRoomState.mayGiat}
             onClick={handleChangeSwitch}
             name="mayGiat"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Bàn Là:" valuePropName="checked">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Bàn là :
+          </label>
           <Switch
             checked={editRoomState.banLa}
             onClick={handleChangeSwitch}
             name="banLa"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Tivi:" valuePropName="checked">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">Tivi :</label>
           <Switch
             checked={editRoomState.tivi}
             onClick={handleChangeSwitch}
             name="tivi"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Điều Hòa:" valuePropName="checked">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Điều hòa :
+          </label>
           <Switch
             checked={editRoomState.dieuHoa}
             onClick={handleChangeSwitch}
             name="dieuHoa"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Wifi:" valuePropName="checked">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">Wifi :</label>
           <Switch
             checked={editRoomState.wifi}
             onClick={handleChangeSwitch}
             name="wifi"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Bếp:" valuePropName="checked">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">Bếp :</label>
           <Switch
             checked={editRoomState.bep}
             onClick={handleChangeSwitch}
             name="bep"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Bãi Đỗ Xe:" valuePropName="checked">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Bãi đõ xe :
+          </label>
           <Switch
             checked={editRoomState.doXe}
             onClick={handleChangeSwitch}
             name="doXe"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Hồ Bơi:" valuePropName="checked">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Hồ bơi :
+          </label>
           <Switch
             checked={editRoomState.hoBoi}
             onClick={handleChangeSwitch}
             name="hoBoi"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Bàn Ủi:" valuePropName="checked">
+        </div>
+        <div className="mb-2">
+          <label className="block mb-2 text-sm font-medium mr-3">
+            Bàn Ủi :
+          </label>
           <Switch
             checked={editRoomState.banUi}
             onClick={handleChangeSwitch}
             name="banUi"
             className="adminSwitch"
           />
-        </Form.Item>
-        <Form.Item label="Action">
+        </div>
+        <div className="mb-2">
           <button
             type="submit"
-            className=" font-medium text-sm py-2.5 mr-2 mb-2 bg-blue-500 p-3 rounded-md"
+            className=" font-medium text-sm py-2.5 m-3 bg-blue-500 p-5 rounded-md"
           >
             Thêm
           </button>
-        </Form.Item>
-      </Form>
+        </div>
+      </form>
     </div>
   );
 }
