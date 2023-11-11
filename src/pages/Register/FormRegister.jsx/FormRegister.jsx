@@ -11,6 +11,9 @@ import PasswordIcon from '@mui/icons-material/Password';
 import BusinessIcon from '@mui/icons-material/Business';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import TransgenderIcon from '@mui/icons-material/Transgender';
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
+
 
 
 const validationSchema = Yup.object({
@@ -46,9 +49,13 @@ export default function FormRegister() {
   };
 
   const onSubmitRegister = async (values, { resetForm }) => {
+    const formattedValues = {
+      ...values,
+      birthday: values.birthday ? dayjs(values.birthday).format("DD/MM/YYYY") : null,
+    };
 
     try {
-      await userService.registerApi(values);
+      await userService.registerApi(formattedValues);
       setFieldErrors({});
       Swal.fire({
         icon: 'success',
@@ -201,12 +208,22 @@ export default function FormRegister() {
                 Ngày Sinh
               </div>
             </label>
-            <Field
+            {/* <Field
               type="date"
               id="birthday"
               name="birthday"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            />
+            /> */}
+             <Field name="birthday">
+            {({ field, form }) => (
+              <DatePicker
+                {...field}
+                format="DD/MM/YYYY"
+                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                onChange={(value) => form.setFieldValue("birthday", value)}
+              />
+            )}
+          </Field>
             <ErrorMessage
               name="birthday"
               component="div"
