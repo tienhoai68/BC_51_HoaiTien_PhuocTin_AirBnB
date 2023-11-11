@@ -10,6 +10,8 @@ import { userService } from "../../services/UserBooking";
 import ImagePersonal from "./ImagePersonal/ImagePersonal";
 import { useContext } from "react";
 import { LoadingContext } from "../../contexts/Loading/Loading";
+import { DatePicker } from "antd";
+import dayjs from "dayjs";
 
 const validationSchema = Yup.object().shape({
   name: Yup.string().required("(*) Họ tên không được để trống"),
@@ -40,12 +42,21 @@ export default function PersonaInfo() {
   const getUserInfo = async () => {
     setLoadingState({ isLoading: true });
     const result = await userService.userInfoApi(stateUser.userInfo.user.id);
-    setUserInfo(result.data.content);
+    setUserInfo({
+      ...result.data.content,
+      birthday: result.data.content.birthday
+        ? dayjs(result.data.content.birthday)
+        : "",
+    });
     setLoadingState({ isLoading: false });
   }
   const handleChangeUserInfo = async (values, { resetForm }) => {
+    const formattedValues = {
+      ...values,
+      birthday: values.birthday ? dayjs(values.birthday).format("MM/DD/YYYY") : null,
+    };
     try {
-      await userService.updateUserInfoApi(stateUser.userInfo.user.id, values);
+      await userService.updateUserInfoApi(stateUser.userInfo.user.id, formattedValues);
       getUserInfo();
       setFieldErrors("");
       Swal.fire({
@@ -133,13 +144,16 @@ export default function PersonaInfo() {
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       <span className="text-red-600">*</span> Ngày sinh
                     </label>
-                    <Field
-                      type="date"
-                      id="birthday"
-                      name="birthday"
-                      className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                      required
-                    />
+                         <Field name="birthday">
+          {({ field, form }) => (
+            <DatePicker
+              {...field}
+              format="DD/MM/YYYY" 
+              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+              onChange={(value) => form.setFieldValue("birthday", value)}
+            />
+          )}
+        </Field>
                     <ErrorMessage
                       name="birthday"
                       component="div"
