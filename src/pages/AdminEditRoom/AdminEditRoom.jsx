@@ -1,20 +1,34 @@
-import { Form, Input, Switch } from "antd";
-import React, { createRef } from "react";
+import React from "react";
 import { useEffect } from "react";
 import { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { adminRoomService } from "../../services/AdminRoom";
 import Swal from "sweetalert2";
+import { Formik, Field, Form, ErrorMessage } from "formik";
+import * as Yup from "yup";
+
+const validationSchema = Yup.object({
+  tenPhong: Yup.string().required("(*) Tên Phòng là bắt buộc"),
+  khach: Yup.string()
+    .required("(*) Số Khách bị trống")
+    .matches(/^[0-9]/, "(*) Số Khách phải là số"),
+  phongNgu: Yup.string()
+    .required("(*) Số Phòng Ngủ bị trống")
+    .matches(/^[0-9]/, "(*) Số Phòng Ngủ phải là số"),
+  giuong: Yup.string()
+    .required("(*) Số Giường bị trống")
+    .matches(/^[0-9]/, "(*) Số Giường phải là số"),
+  phongTam: Yup.string()
+    .required("(*) Số Phòng Tắm bị trống")
+    .matches(/^[0-9]/, "(*) Số Phòng Tắm phải là số"),
+  moTa: Yup.string().required("(*) Không có Mô Tả nào sao ?"),
+  giaTien: Yup.string()
+    .required("(*) Số Tiền bị trống")
+    .matches(/^[0-9]/, "(*) Số Tiền phải là số"),
+  maViTri: Yup.string().required("(*) Mã vị trí bị trống"),
+});
 
 export default function AdminEditRoom() {
-  const tenPhongInputRef = createRef();
-  const khachRef = createRef();
-  const phongNguRef = createRef();
-  const giuongRef = createRef();
-  const phongTamRef = createRef();
-  const giaTienRef = createRef();
-  const maViTriRef = createRef();
-
   const navigate = useNavigate();
   const params = useParams();
   const [editRoomState, setEditRoomState] = useState({
@@ -24,7 +38,7 @@ export default function AdminEditRoom() {
     giuong: 0,
     phongTam: 0,
     moTa: "",
-    giaTien: 1,
+    giaTien: 0,
     mayGiat: false,
     banLa: false,
     tivi: false,
@@ -47,111 +61,27 @@ export default function AdminEditRoom() {
     setEditRoomState(result.data.content);
   };
 
-  const handleChange = (event) => {
-    setEditRoomState({
-      ...editRoomState,
-      [event.target.name]: event.target.value,
-    });
-  };
-  const handleChangeSwitch = (value, event) => {
-    setEditRoomState({
-      ...editRoomState,
-      [event.target.offsetParent.name]: value,
-    });
-  };
-
-  const validateRequired = (value, ref, mes) => {
-    if (value !== "") {
-      ref.innerHTML = "";
-      return true;
-    }
-    ref.innerHTML = mes;
-    return false;
-  };
-
-  const validateCheck = (value, ref, mes, letter) => {
-    if (letter.test(value)) {
-      ref.innerHTML = "";
-      return true;
-    }
-    ref.innerHTML = mes;
-    return false;
-  };
-
-  const handleSubmit = async (event) => {
-    event.preventDefault();
-    let isValid = true;
-    isValid &= validateRequired(
-      editRoomState.tenPhong,
-      tenPhongInputRef.current,
-      "Không để trống tên phòng"
-    );
-    isValid &=
-      validateRequired(
-        editRoomState.khach,
-        khachRef.current,
-        "Không để trống số khách"
-      ) &&
-      validateCheck(
-        editRoomState.khach,
-        khachRef.current,
-        "số khách phải là số",
-        /^[0-9]+$/
+  const handleSubmit = async (values, { resetForm }) => {
+    try {
+      const result = await adminRoomService.fetchAdminEditRoomApi(
+        params.roomId,
+        values
       );
-    isValid &= validateRequired(
-      editRoomState.phongNgu,
-      phongNguRef.current,
-      "Không để trống số phòng ngủ"
-    );
-    isValid &= validateRequired(
-      editRoomState.phongTam,
-      phongTamRef.current,
-      "Không để trống số phòng tắm"
-    );
-    isValid &= validateRequired(
-      editRoomState.giuong,
-      giuongRef.current,
-      "Không để trống số giường"
-    );
-    isValid &=
-      validateRequired(
-        editRoomState.giaTien,
-        giaTienRef.current,
-        "Không để trống"
-      ) &&
-      validateCheck(
-        editRoomState.giaTien,
-        giaTienRef.current,
-        "Giá tiền phải là số",
-        /^[0-9]+$/
-      );
-    isValid &= validateRequired(
-      editRoomState.maViTri,
-      maViTriRef.current,
-      "Không để trống mã vị trí"
-    );
-    if (isValid) {
-      try {
-        const result = await adminRoomService.fetchAdminEditRoomApi(
-          params.roomId,
-          editRoomState
-        );
-        Swal.fire({
-          icon: "success",
-          title: "Success!",
-          text: "Cập nhật Room thành công !",
-        });
-
-        if (result.data.content) {
-          navigate("/admin/phongthue");
-        }
-      } catch (error) {
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: `${error.response.data.content}`,
-        });
+      Swal.fire({
+        icon: "success",
+        title: "Success!",
+        text: "Cập nhật Room thành công !",
+      });
+      resetForm();
+      if (result.data.content) {
+        navigate("/admin/phongthue");
       }
+    } catch (error) {
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: `${error.response.data.content}`,
+      });
     }
   };
 
@@ -160,230 +90,275 @@ export default function AdminEditRoom() {
       <div className="md:block text-center text-3xl text-blue-800">
         <h1>Cập Nhật Phòng Thuê</h1>
       </div>
-      <form onSubmit={handleSubmit}>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Tên Phòng :
-          </label>
-          <input
-            value={editRoomState.tenPhong}
-            onChange={handleChange}
-            type="text"
-            name="tenPhong"
-            className="border text-sm rounded-md w-0.5/3 p-2 mb-2"
-          />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={tenPhongInputRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Số khách :
-          </label>
-          <input
-            value={editRoomState.khach}
-            onChange={handleChange}
-            min={1}
-            type="number"
-            name="khach"
-            className="border text-sm rounded-md w-0.5/3 p-2 "
-          />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={khachRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Phòng ngủ :
-          </label>
-          <input
-            value={editRoomState.phongNgu}
-            onChange={handleChange}
-            min={1}
-            type="number"
-            name="phongNgu"
-            className="border text-sm rounded-md  w-0.5/3 p-2 "
-          />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={phongNguRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Giường :
-          </label>
-          <input
-            value={editRoomState.giuong}
-            onChange={handleChange}
-            min={1}
-            type="number"
-            name="giuong"
-            className="border text-sm rounded-md  w-0.5/3 p-2 "
-          />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={giuongRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Phòng Tắm :
-          </label>
-          <input
-            value={editRoomState.phongTam}
-            onChange={handleChange}
-            min={1}
-            type="number"
+      <Formik
+        enableReinitialize
+        initialValues={editRoomState}
+        validationSchema={validationSchema}
+        onSubmit={handleSubmit}
+      >
+        <Form>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Tên Phòng :
+            </label>
+            <Field
+              id="tenPhong"
+              type="text"
+              name="tenPhong"
+              className="border text-sm rounded-md w-1/3 p-2 mb-2"
+            />
+            <ErrorMessage
+              name="tenPhong"
+              component="div"
+              className="text-red-500"
+            />
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Số khách :
+            </label>
+            <Field
+              id="khach"
+              type="text"
+              name="khach"
+              className="border text-sm rounded-md w-0.5/3 p-2 "
+            />
+            <ErrorMessage
+              name="khach"
+              component="div"
+              className="text-red-500"
+            />
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Phòng ngủ :
+            </label>
+            <Field
+              id="phongNgu"
+              type="text"
+              name="phongNgu"
+              className="border text-sm rounded-md  w-0.5/3 p-2 "
+            />
+            <ErrorMessage
+              name="phongNgu"
+              component="div"
+              className="text-red-500"
+            />
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Giường :
+            </label>
+            <Field
+              id="giuong"
+              type="text"
+              name="giuong"
+              className="border text-sm rounded-md  w-0.5/3 p-2 "
+            />
+            <ErrorMessage
+              name="giuong"
+              component="div"
+              className="text-red-500"
+            />
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Phòng Tắm :
+            </label>
+            <Field
+              id="phongTam"
+              type="text"
+              name="phongTam"
+              className="border text-sm rounded-md  w-0.5/3 p-2 "
+            />
+          </div>
+          <ErrorMessage
             name="phongTam"
-            className="border text-sm rounded-md  w-0.5/3 p-2 "
+            component="div"
+            className="text-red-500"
           />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={phongTamRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Mã vị trí :
-          </label>
-          <input
-            value={editRoomState.maViTri}
-            onChange={handleChange}
-            min={0}
-            type="number"
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Mã vị trí :
+            </label>
+            <Field
+              id="maViTri"
+              type="text"
+              name="maViTri"
+              className="border text-sm rounded-md  w-0.5/3 p-2 "
+            />
+          </div>
+          <ErrorMessage
             name="maViTri"
-            className="border text-sm rounded-md  w-0.5/3 p-2 "
+            component="div"
+            className="text-red-500"
           />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={maViTriRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">Mô tả :</label>
-          <input
-            value={editRoomState.moTa}
-            onChange={handleChange}
-            type="text"
-            name="moTa"
-            className="border text-sm rounded-md  w-0.5/3 p-2 "
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Giá tiền :
-          </label>
-          <input
-            value={editRoomState.giaTien}
-            onChange={handleChange}
-            min={1}
-            type="number"
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Mô tả :
+            </label>
+            <Field
+              id="moTa"
+              type="text"
+              name="moTa"
+              className="border text-sm rounded-md  w-0.5/3 p-2 "
+            />
+            <ErrorMessage
+              name="moTa"
+              component="div"
+              className="text-red-500"
+            />
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Giá tiền :
+            </label>
+            <Field
+              id="giaTien"
+              type="text"
+              name="giaTien"
+              className="border text-sm rounded-md  w-0.5/3 p-2 "
+            />
+          </div>
+          <ErrorMessage
             name="giaTien"
-            className="border text-sm rounded-md  w-0.5/3 p-2 "
+            component="div"
+            className="text-red-500"
           />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={giaTienRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Máy giặt :
-          </label>
-          <Switch
-            checked={editRoomState.mayGiat}
-            onClick={handleChangeSwitch}
-            name="mayGiat"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Bàn là :
-          </label>
-          <Switch
-            checked={editRoomState.banLa}
-            onClick={handleChangeSwitch}
-            name="banLa"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">Tivi :</label>
-          <Switch
-            checked={editRoomState.tivi}
-            onClick={handleChangeSwitch}
-            name="tivi"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Điều hòa :
-          </label>
-          <Switch
-            checked={editRoomState.dieuHoa}
-            onClick={handleChangeSwitch}
-            name="dieuHoa"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">Wifi :</label>
-          <Switch
-            checked={editRoomState.wifi}
-            onClick={handleChangeSwitch}
-            name="wifi"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">Bếp :</label>
-          <Switch
-            checked={editRoomState.bep}
-            onClick={handleChangeSwitch}
-            name="bep"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Bãi đõ xe :
-          </label>
-          <Switch
-            checked={editRoomState.doXe}
-            onClick={handleChangeSwitch}
-            name="doXe"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Hồ bơi :
-          </label>
-          <Switch
-            checked={editRoomState.hoBoi}
-            onClick={handleChangeSwitch}
-            name="hoBoi"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Bàn Ủi :
-          </label>
-          <Switch
-            checked={editRoomState.banUi}
-            onClick={handleChangeSwitch}
-            name="banUi"
-            className="adminSwitch"
-          />
-        </div>
-        <div className="mb-2">
-          <button
-            type="submit"
-            className=" font-medium text-sm py-2.5 m-3 bg-blue-500 p-5 rounded-md"
-          >
-            Thêm
-          </button>
-        </div>
-      </form>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Máy giặt :
+            </label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="mayGiat"
+                id="mayGiat"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Bàn là :
+            </label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="banLa"
+                id="banLa"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Tivi :
+            </label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="tivi"
+                id="tivi"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Điều hòa :
+            </label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="dieuHoa"
+                id="dieuHoa"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Wifi :
+            </label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="wifi"
+                id="wifi"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">Bếp :</label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="bep"
+                id="bep"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Bãi đõ xe :
+            </label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="doXe"
+                id="doXe"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Hồ bơi :
+            </label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="hoBoi"
+                id="hoBoi"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div>
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Bàn Ủi :
+            </label>
+            <label className="relative inline-flex items-center mb-5 cursor-pointer">
+              <Field
+                type="checkbox"
+                name="banUi"
+                id="banUi"
+                className="sr-only peer"
+              />
+              <div className="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-400 rounded-full peer dark:bg-gray-400 peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"></div>
+            </label>
+          </div>
+          <div className="mb-2">
+            <button
+              type="submit"
+              className=" font-medium text-sm py-2.5 m-3 bg-blue-500 p-5 rounded-md"
+            >
+              Thêm
+            </button>
+          </div>
+        </Form>
+      </Formik>
     </div>
   );
 }
