@@ -9,7 +9,9 @@ import { Form, ErrorMessage, Field, Formik } from "formik";
 
 const validationSchema = Yup.object({
   name: Yup.string().required("(*) Tên Người Dùng là bắt buộc"),
-  email: Yup.string().email("(*) Email không hợp lệ").required("(*) Email là bắt buộc"),
+  email: Yup.string()
+    .email("(*) Email không hợp lệ")
+    .required("(*) Email là bắt buộc"),
   phone: Yup.string()
     .matches(/^[0-9]{10}$/, "(*) Số Điện Thoại không hợp lệ")
     .required("(*) Số Điện Thoại là bắt buộc"),
@@ -31,24 +33,23 @@ export default function AdminEditUser() {
     role: "",
     avatar: {},
   });
-  
-  
+
   const fetchAdminDetailApi = async () => {
     const result = await adminUsersService.fetchAdminDetailApi(params.userId);
     setUserInfo({
       ...result.data.content,
       birthday: result.data.content.birthday
-      ? dayjs(result.data.content.birthday)
+        ? dayjs(result.data.content.birthday)
         : "",
-      });
-      if (result.data.content) {
-        notification.warning({
+    });
+    if (result.data.content) {
+      notification.warning({
         message: "CHÚ Ý: KHÔNG THỂ CẬP NHẬT HÌNH ẢNH CHO ACCOUNT KHÁC !!!",
         placement: "topRight",
       });
     }
   };
-  
+
   useEffect(() => {
     fetchAdminDetailApi();
   }, []);
@@ -65,9 +66,10 @@ export default function AdminEditUser() {
   const handleChangeUserInfo = async (values, { resetForm }) => {
     const formattedValues = {
       ...values,
-      birthday: values.birthday ? dayjs(values.birthday).format("MM/DD/YYYY") : null,
+      birthday: values.birthday
+        ? dayjs(values.birthday).format("MM/DD/YYYY")
+        : null,
     };
-    console.log(formattedValues);
     try {
       const result = await adminUsersService.fetchAdminUpdateApi(
         params.userId,
@@ -76,9 +78,7 @@ export default function AdminEditUser() {
       if (userImgFile !== null) {
         let formData = new FormData();
         formData.append("formFile", userImgFile, userImgFile.name);
-        await adminUsersService.fetchAdminImgApi(
-          formData
-        );
+        await adminUsersService.fetchAdminImgApi(formData);
       }
       Swal.fire({
         icon: "success",
@@ -86,286 +86,161 @@ export default function AdminEditUser() {
         text: "Cập nhật User thành công !",
       });
       fetchAdminDetailApi();
-      // if (result.data.content) {
-      //   navigate(`/admin/user`);
-      // }
+      if (result.data.content) {
+        navigate(`/admin/user`);
+      }
       resetForm();
     } catch (error) {
       Swal.fire({
-        icon: 'error',
-        title: 'Oops...',
+        icon: "error",
+        title: "Oops...",
         text: `${error.response.data.content}`,
-      })
+      });
       resetForm();
     }
   };
   return (
     <div className="container mx-auto py-5">
-    <Formik
-    enableReinitialize
-    initialValues={userInfo}
-    validationSchema={validationSchema}
-    onSubmit={handleChangeUserInfo}
-  >
-               <Form>
-        <div className="mb-4 ">
-          <div className="md:block text-center text-3xl text-blue-800">
-            <h1>Cập Nhật Tài Khoản</h1>
+      <Formik
+        enableReinitialize
+        initialValues={userInfo}
+        validationSchema={validationSchema}
+        onSubmit={handleChangeUserInfo}
+      >
+        <Form>
+          <div className="mb-4 ">
+            <div className="md:block text-center text-3xl text-blue-800">
+              <h1>Cập Nhật Tài Khoản</h1>
+            </div>
           </div>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Tên Người Dùng :
-          </label>
-          <Field
-            type="text"
-            name="name"
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-          <ErrorMessage
-                      name="name"
-                      component="div"
-                      className="form-label text-red-600"
-                    />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">Email :</label>
-          <Field
-            type="text"
-            name="email"
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-          <ErrorMessage
-                      name="email"
-                      component="div"
-                      className="form-label text-red-600"
-                    />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Password :
-          </label>
-          <Field
-           placeholder="*********"
-            type="password"
-            name="password"
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Phone Number :
-          </label>
-          <Field
-            type="text"
-            name="phone"
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-           <ErrorMessage
-                      name="phone"
-                      component="div"
-                      className="form-label text-red-600"
-                    />
-        </div>
-       
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Birthday :
-          </label>
-          <Field name="birthday">
-            {({ field, form }) => (
-              <DatePicker
-                {...field}
-                format="DD/MM/YYYY"
-                className="border text-sm rounded-md w-1/3 p-2"
-                onChange={(value) => form.setFieldValue("birthday", value)}
-              />
-            )}
-          </Field>
-                    <ErrorMessage
-                      name="birthday"
-                      component="div"
-                      className="form-label text-red-600"
-                    />
-        </div>
-       
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Gender :
-          </label>
-          <Field
-          as="select"
-            name="gender"
-            className="border text-sm rounded-md w-1/3 p-2"
-          >
-             <option value="true">MALE</option>
-            <option value="false">FEMALE</option>
-          </Field>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            TYPE USER :
-          </label>
-          <Field
-          as="select"
-            name="role"
-            className="border text-sm rounded-md w-1/3 p-2"
-          >
-            <option value="ADMIN">ADMIN</option>
-            <option value="USER">USER</option>
-          </Field>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            AVATAR :
-          </label>
-          <input name="avatar" type="File" onChange={handChangeImgUser} />
-          <br />
-          <img
-            className="mt-3"
-            style={{ width: 150, height: 150 }}
-            src={imgUser === "" ? userInfo.avatar : imgUser}
-            alt="..."
-          />
-        </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Tên Người Dùng :
+            </label>
+            <Field
+              type="text"
+              name="name"
+              className="border text-sm rounded-md w-1/3 p-2 "
+            />
+            <ErrorMessage
+              name="name"
+              component="div"
+              className="form-label text-red-600"
+            />
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Email :
+            </label>
+            <Field
+              type="text"
+              name="email"
+              className="border text-sm rounded-md w-1/3 p-2 "
+            />
+            <ErrorMessage
+              name="email"
+              component="div"
+              className="form-label text-red-600"
+            />
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Password :
+            </label>
+            <Field
+              placeholder="*********"
+              type="password"
+              name="password"
+              className="border text-sm rounded-md w-1/3 p-2 "
+            />
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Phone Number :
+            </label>
+            <Field
+              type="text"
+              name="phone"
+              className="border text-sm rounded-md w-1/3 p-2 "
+            />
+            <ErrorMessage
+              name="phone"
+              component="div"
+              className="form-label text-red-600"
+            />
+          </div>
 
-        <div className="col-span-2 mt-3 ">
-        <button
-  type="submit"
-  className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition duration-300 ease-in-out"
->
-Update
-</button>
-        </div>
-      </Form>
-  </Formik>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Birthday :
+            </label>
+            <Field name="birthday">
+              {({ field, form }) => (
+                <DatePicker
+                  {...field}
+                  format="DD/MM/YYYY"
+                  className="border text-sm rounded-md w-1/3 p-2"
+                  onChange={(value) => form.setFieldValue("birthday", value)}
+                />
+              )}
+            </Field>
+            <ErrorMessage
+              name="birthday"
+              component="div"
+              className="form-label text-red-600"
+            />
+          </div>
+
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              Gender :
+            </label>
+            <Field
+              as="select"
+              name="gender"
+              className="border text-sm rounded-md w-1/3 p-2"
+            >
+              <option value="true">MALE</option>
+              <option value="false">FEMALE</option>
+            </Field>
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              TYPE USER :
+            </label>
+            <Field
+              as="select"
+              name="role"
+              className="border text-sm rounded-md w-1/3 p-2"
+            >
+              <option value="ADMIN">ADMIN</option>
+              <option value="USER">USER</option>
+            </Field>
+          </div>
+          <div className="mb-2">
+            <label className="block mb-2 text-sm font-medium mr-3">
+              AVATAR :
+            </label>
+            <input name="avatar" type="File" onChange={handChangeImgUser} />
+            <br />
+            <img
+              className="mt-3"
+              style={{ width: 150, height: 150 }}
+              src={imgUser === "" ? userInfo.avatar : imgUser}
+              alt="..."
+            />
+          </div>
+
+          <div className="col-span-2 mt-3 ">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition duration-300 ease-in-out"
+            >
+              Update
+            </button>
+          </div>
+        </Form>
+      </Formik>
     </div>
   );
-  {/* <form onSubmit={handleSubmit}>
-        <div className="mb-4 ">
-          <div className="md:block text-center text-3xl text-blue-800">
-            <h1>Cập Nhật Tài Khoản</h1>
-          </div>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Tên Người Dùng :
-          </label>
-          <input
-            onChange={handleChange}
-            value={userEditState.name}
-            type="text"
-            name="name"
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={nameInputRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">Email :</label>
-          <input
-            onChange={handleChange}
-            value={userEditState.email}
-            type="text"
-            name="email"
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={emailInputRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Password :
-          </label>
-          <input
-            onChange={handleChange}
-            value={userEditState.password}
-            type="text"
-            name="password"
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Phone Number :
-          </label>
-          <input
-            onChange={handleChange}
-            value={userEditState.phone}
-            type="text"
-            name="phone"
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={phoneInputRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Birthday :
-          </label>
-          <DatePicker
-            name="birthday"
-            format={"DD/MM/YYYY"}
-            onChange={handleChangeDate}
-            value={dayjs(userEditState.birthday, "DD/MM/YYYY")}
-            className="border text-sm rounded-md w-1/3 p-2 "
-          />
-        </div>
-        <div style={{ color: "red" }}>
-          <span className="text-danger" ref={dateInputRef}></span>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            Gender :
-          </label>
-          <select
-            onChange={handleChange}
-            value={userEditState.gender}
-            name="gender"
-            className="border text-sm rounded-md w-1/3 p-2"
-          >
-            <option value={true}>MALE</option>
-            <option value={false}>FEMALE</option>
-          </select>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            TYPE USER :
-          </label>
-          <select
-            onChange={handleChange}
-            value={userEditState.role}
-            name="role"
-            className="border text-sm rounded-md w-1/3 p-2"
-          >
-            <option value="ADMIN">ADMIN</option>
-            <option value="USER">USER</option>
-          </select>
-        </div>
-        <div className="mb-2">
-          <label className="block mb-2 text-sm font-medium mr-3">
-            AVATAR :
-          </label>
-          <input name="avatar" type="File" onChange={handChangeImgUser} />
-          <br />
-          <img
-            className="mt-3"
-            style={{ width: 150, height: 150 }}
-            src={imgUser === "" ? userEditState.avatar : imgUser}
-            alt="..."
-          />
-        </div>
-
-        <div className="col-span-2 mt-3 ">
-          <button
-            type="submit"
-            className=" font-medium text-sm py-2.5 mr-2 mb-2 bg-blue-500 p-3 rounded-md"
-          >
-            Cập nhật
-          </button>
-        </div>
-      </form> */}
 }

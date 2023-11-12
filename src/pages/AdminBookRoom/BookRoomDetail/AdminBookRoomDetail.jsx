@@ -1,4 +1,4 @@
-import { DatePicker, Form } from "antd";
+import { DatePicker, Form, notification } from "antd";
 import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { adminBookRoomService } from "../../../services/AdminBookRoom";
@@ -48,7 +48,10 @@ export default function AdminBookRoomDetail() {
     if (/^[0-9]+$/.test(value)) {
       return true;
     }
-    alert(mes);
+    notification.warning({
+      message: mes,
+      placement: "topLeft",
+    });
     return false;
   };
   const handleSubmit = async () => {
