@@ -45,7 +45,7 @@ export default function FormRegister() {
     password: "",
     address: "",
     birthday: "",
-    gender: "true",
+    gender: "",
   };
 
   const onSubmitRegister = async (values, { resetForm }) => {
@@ -208,12 +208,6 @@ export default function FormRegister() {
                 Ngày Sinh
               </div>
             </label>
-            {/* <Field
-              type="date"
-              id="birthday"
-              name="birthday"
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            /> */}
              <Field name="birthday">
             {({ field, form }) => (
               <DatePicker
@@ -245,6 +239,7 @@ export default function FormRegister() {
               name="gender"
               className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             >
+              <option value="">Giới tính</option>
               <option value="true">Nam</option>
               <option value="false">Nữ</option>
             </Field>

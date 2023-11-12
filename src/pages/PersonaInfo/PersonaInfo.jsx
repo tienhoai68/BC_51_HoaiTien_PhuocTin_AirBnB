@@ -51,9 +51,10 @@ export default function PersonaInfo() {
     setLoadingState({ isLoading: false });
   }
   const handleChangeUserInfo = async (values, { resetForm }) => {
+    console.log(values);
     const formattedValues = {
       ...values,
-      birthday: values.birthday ? dayjs(values.birthday).format("MM/DD/YYYY") : null,
+      birthday: values.birthday ? dayjs(values.birthday).format("DD/MM/YYYY") : null,
     };
     try {
       await userService.updateUserInfoApi(stateUser.userInfo.user.id, formattedValues);
@@ -134,7 +135,7 @@ export default function PersonaInfo() {
                       placeholder="Họ Tên"
                     />
                     <ErrorMessage
-                      name="hoTen"
+                      name="name"
                       component="div"
                       className="form-label text-red-600"
                     />
