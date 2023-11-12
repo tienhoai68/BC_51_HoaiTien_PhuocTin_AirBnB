@@ -44,6 +44,7 @@ export default function AdminBookRoomDetail() {
       ngayDi: ngay,
     });
   };
+
   const valicationNumber = (value, mes) => {
     if (/^[0-9]+$/.test(value)) {
       return true;
@@ -56,13 +57,16 @@ export default function AdminBookRoomDetail() {
   };
   const handleSubmit = async () => {
     let isValid = true;
-    isValid &= valicationNumber(bookRoomDetail.maPhong, "Nhập Số !!!");
+    isValid &= valicationNumber(bookRoomDetail.maPhong, "Nhập Số Mã Phòng !!!");
 
-    isValid &= valicationNumber(bookRoomDetail.maNguoiDung, "Vui Lòng Nhập Số");
+    isValid &= valicationNumber(
+      bookRoomDetail.maNguoiDung,
+      "Vui Lòng Nhập Số Cho Mã Người Dùng"
+    );
 
     isValid &= valicationNumber(
       bookRoomDetail.soLuongKhach,
-      "Vui lòng nhập số !!!"
+      "Vui Lòng Nhập Số Khách!!!"
     );
 
     if (isValid) {
