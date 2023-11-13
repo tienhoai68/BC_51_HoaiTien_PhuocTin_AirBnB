@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import "./Header.scss";
 import LanguageIcon from '@mui/icons-material/Language';
 import HeaderProfile from "./components/HeaderProfile";
@@ -16,7 +16,6 @@ export default function Header() {
   const userState = useSelector((state) => state.userReducer);
   const [roomLocation, setRoomLocation] = useState([]);
   const [selectedLocationId, setSelectedLocationId] = useState(null);
-
   const fetchRoomByLocaiton = async () => {
     const result = await roomService.fetchRoomByLocationApi();
     setRoomLocation(result.data.content)
@@ -87,7 +86,7 @@ export default function Header() {
           >
             <div className="font-medium border-r pr-2">Địa điểm bất kỳ</div>
             <div className="font-medium border-r pr-2 pl-2">Tuần bất kỳ</div>
-            <div className="ffont-normal pr-2 pl-2">Thêm khách</div>
+            <div className="font-normal pr-2 pl-2">Thêm khách</div>
             <div className="inline-flex w-8 h-8 justify-center items-center bg-rose-500 rounded-full text-white">
               <svg
                 viewBox="0 0 32 32"

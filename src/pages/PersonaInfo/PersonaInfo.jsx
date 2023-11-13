@@ -36,12 +36,14 @@ export default function PersonaInfo() {
     phone: '',
     gender: '',
   });
+  console.log(userInfo.birthday);
 
   const [fieldErrors, setFieldErrors] = useState("");
 
   const getUserInfo = async () => {
     setLoadingState({ isLoading: true });
     const result = await userService.userInfoApi(stateUser.userInfo.user.id);
+    console.log(result.data.content.birthday);
     setUserInfo({
       ...result.data.content,
       birthday: result.data.content.birthday
@@ -51,10 +53,9 @@ export default function PersonaInfo() {
     setLoadingState({ isLoading: false });
   }
   const handleChangeUserInfo = async (values, { resetForm }) => {
-    console.log(values);
     const formattedValues = {
       ...values,
-      birthday: values.birthday ? dayjs(values.birthday).format("DD/MM/YYYY") : null,
+      birthday: values.birthday ? dayjs(values.birthday).format("MM-DD-YYYY") : null,
     };
     try {
       await userService.updateUserInfoApi(stateUser.userInfo.user.id, formattedValues);
@@ -145,16 +146,16 @@ export default function PersonaInfo() {
                     <label className="block mb-2 text-sm font-medium text-gray-900 dark:text-gray-300">
                       <span className="text-red-600">*</span> Ngày sinh
                     </label>
-                         <Field name="birthday">
-          {({ field, form }) => (
-            <DatePicker
-              {...field}
-              format="DD/MM/YYYY" 
-              className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-              onChange={(value) => form.setFieldValue("birthday", value)}
-            />
-          )}
-        </Field>
+                    <Field name="birthday">
+                      {({ field, form }) => (
+                        <DatePicker
+                          {...field}
+                          format="DD/MM/YYYY"
+                          className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                          onChange={(value) => form.setFieldValue("birthday", value)}
+                        />
+                      )}
+                    </Field>
                     <ErrorMessage
                       name="birthday"
                       component="div"

@@ -100,7 +100,7 @@ export default function Login() {
                     <ErrorMessage
                       name="email"
                       component="div"
-                      className="text-red-600"
+                      className="text-red-600 font-semibold"
                     />
                   </div>
                   <div className="mb-6">
@@ -122,7 +122,7 @@ export default function Login() {
                     <ErrorMessage
                       name="password"
                       component="div"
-                      className="text-red-600"
+                      className="text-red-600 font-semibold"
                     />
                   </div>
                   <div className="grid grid-cols-2 items-center mb-6">

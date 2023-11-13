@@ -158,9 +158,9 @@ export default function AdminBookRoomDetail() {
         <Form.Item label="Button">
           <button
             type="submit"
-            className=" font-medium text-sm py-2.5 mr-2 mb-2 bg-blue-500 p-3 rounded-md"
+            className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition duration-300 ease-in-out"
           >
-            Cập nhật
+            Cập Nhật
           </button>
         </Form.Item>
       </Form>
