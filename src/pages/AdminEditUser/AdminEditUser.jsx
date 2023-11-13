@@ -67,7 +67,7 @@ export default function AdminEditUser() {
     const formattedValues = {
       ...values,
       birthday: values.birthday
-        ? dayjs(values.birthday).format("MM/DD/YYYY")
+        ? dayjs(values.birthday).format("DD-MM-YYYY")
         : null,
     };
     try {
@@ -100,7 +100,7 @@ export default function AdminEditUser() {
     }
   };
   return (
-    <div className="container mx-auto py-5">
+    <div className="container mx-auto py-5 ml-5">
       <Formik
         enableReinitialize
         initialValues={userInfo}

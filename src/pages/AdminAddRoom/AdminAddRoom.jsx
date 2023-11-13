@@ -71,7 +71,7 @@ export default function AdminAddRoom() {
     }
   };
   return (
-    <div className="container mx-auto py-5 ">
+    <div className="container mx-auto py-5 ml-5">
       <div className="md:block text-center text-3xl text-blue-800">
         <h1>Thêm Phòng Thuê</h1>
       </div>
@@ -336,7 +336,7 @@ export default function AdminAddRoom() {
           <div className="mb-2">
             <button
               type="submit"
-              className=" font-medium text-sm py-2.5 m-3 bg-blue-500 p-5 rounded-md"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-medium py-2.5 px-4 rounded-md transition duration-300 ease-in-out"
             >
               Thêm
             </button>

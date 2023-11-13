@@ -51,7 +51,7 @@ export default function FormRegister() {
   const onSubmitRegister = async (values, { resetForm }) => {
     const formattedValues = {
       ...values,
-      birthday: values.birthday ? dayjs(values.birthday).format("DD/MM/YYYY") : null,
+      birthday: values.birthday ? dayjs(values.birthday).format("DD-MM-YYYY") : null,
     };
 
     try {
@@ -105,7 +105,7 @@ export default function FormRegister() {
             <ErrorMessage
               name="name"
               component="div"
-              className="text-red-500"
+              className="text-red-600 font-semibold"
             />
           </div>
           <div className="mb-1">
@@ -127,10 +127,10 @@ export default function FormRegister() {
             <ErrorMessage
               name="email"
               component="div"
-              className="text-red-500"
+              className="text-red-600 font-semibold"
             />
             {fieldErrors.email && (
-              <label className="text-red-500">(*) {fieldErrors.email}</label>
+              <label className="text-red-600 font-semibold">(*) {fieldErrors.email}</label>
             )}
           </div>
           <div className="mb-1">
@@ -152,7 +152,7 @@ export default function FormRegister() {
             <ErrorMessage
               name="phone"
               component="div"
-              className="text-red-500"
+              className="text-red-600 font-semibold"
             />
           </div>
           <div className="mb-1">
@@ -174,7 +174,7 @@ export default function FormRegister() {
             <ErrorMessage
               name="password"
               component="div"
-              className="text-red-500"
+              className="text-red-600 font-semibold"
             />
           </div>
           <div className="mb-1">
@@ -196,7 +196,7 @@ export default function FormRegister() {
             <ErrorMessage
               name="address"
               component="div"
-              className="text-red-500"
+              className="text-red-600 font-semibold"
             />
           </div>
           <div className="mb-1">
@@ -208,20 +208,20 @@ export default function FormRegister() {
                 Ngày Sinh
               </div>
             </label>
-             <Field name="birthday">
-            {({ field, form }) => (
-              <DatePicker
-                {...field}
-                format="DD/MM/YYYY"
-                className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-                onChange={(value) => form.setFieldValue("birthday", value)}
-              />
-            )}
-          </Field>
+            <Field name="birthday">
+              {({ field, form }) => (
+                <DatePicker
+                  {...field}
+                  format="DD/MM/YYYY"
+                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  onChange={(value) => form.setFieldValue("birthday", value)}
+                />
+              )}
+            </Field>
             <ErrorMessage
               name="birthday"
               component="div"
-              className="text-red-500"
+              className="text-red-600 font-semibold"
             />
           </div>
           <div className="mb-1">
@@ -246,7 +246,7 @@ export default function FormRegister() {
             <ErrorMessage
               name="gender"
               component="div"
-              className="text-red-500"
+              className="text-red-600 font-semibold"
             />
           </div>
           <div></div>

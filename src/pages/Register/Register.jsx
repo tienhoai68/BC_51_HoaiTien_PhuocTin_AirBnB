@@ -33,7 +33,7 @@ export default function Register() {
                 <h1>Đăng Ký Tài Khoản</h1>
               </div>
             </div>
-              <FormRegister/>
+            <FormRegister />
           </div>
         </div>
       </div>
