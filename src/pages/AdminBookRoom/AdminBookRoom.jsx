@@ -1,5 +1,5 @@
 import React, { Fragment, useContext, useEffect, useState } from "react";
-import { Input, Table } from "antd";
+import { Input, Table, notification } from "antd";
 import { adminBookRoomService } from "../../services/AdminBookRoom";
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
@@ -98,7 +98,8 @@ export default function AdminBookRoom() {
         confirmButtonText: "Yes, delete it!",
       });
       if (confirmationResult.isConfirmed) {
-        const result = await adminBookRoomService.fetchAdminDeleteBookRoomListApi(id);
+        const result =
+          await adminBookRoomService.fetchAdminDeleteBookRoomListApi(id);
         if (result.data.content === null) {
           bookRoomListApi();
         }
@@ -120,7 +121,10 @@ export default function AdminBookRoom() {
     if (/^[0-9]+$/.test(value)) {
       return true;
     }
-    alert(mes);
+    notification.warning({
+      message: mes,
+      placement: "topLeft",
+    });
     return false;
   };
   const handleSearch = async (event) => {

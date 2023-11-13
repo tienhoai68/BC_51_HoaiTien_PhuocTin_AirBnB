@@ -1,7 +1,6 @@
 import React, { Fragment, useEffect, useState } from "react";
 import { adminCommentService } from "../../services/AdminComment";
-import { Table } from "antd";
-import { Input } from "antd";
+import { Table, notification, Input } from "antd";
 import Swal from "sweetalert2";
 
 import "./AdminComment.scss";
@@ -90,7 +89,10 @@ export default function AdminComment() {
     if (/^[0-9]+$/.test(value)) {
       return true;
     }
-    alert(mes);
+    notification.warning({
+      message: mes,
+      placement: "topLeft",
+    });
     return false;
   };
 
