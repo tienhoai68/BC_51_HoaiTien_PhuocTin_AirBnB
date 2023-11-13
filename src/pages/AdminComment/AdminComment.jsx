@@ -158,7 +158,7 @@ export default function AdminComment() {
         <h1 className=" mb-5 title-admin">Admin Comment</h1>
         <Search
           onChange={handleSearch}
-          placeholder="Tìm kiếm theo mã người dùng ..."
+          placeholder="Tìm kiếm theo mã phòng ..."
           allowClear
           size="large"
           onSearch={onSearch}
