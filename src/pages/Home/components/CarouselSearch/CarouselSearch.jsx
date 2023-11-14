@@ -3,13 +3,13 @@ import { Swiper, SwiperSlide } from 'swiper/react';
 import TuneIcon from '@mui/icons-material/Tune';
 import { Button } from 'antd';
 
-// Import Swiper styles
+
 import 'swiper/css';
-import 'swiper/css/navigation'; // Import the navigation styles
+import 'swiper/css/navigation'; 
 import 'swiper/css/pagination';
 import "./CarouselSearch.scss"
 
-// import required modules
+
 import { Navigation } from 'swiper/modules';
 import { NavLink } from 'react-router-dom';
 

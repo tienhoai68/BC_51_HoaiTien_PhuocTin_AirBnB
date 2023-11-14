@@ -5,11 +5,11 @@ const DEDAULT_STATE = {
   roomInfo: "",
 };
 const stringify = localStorage.getItem("ROOM_INFO");
-// console.log(stringify);
+
 if (stringify) {
   DEDAULT_STATE.roomInfo = JSON.parse(stringify);
 }
-// console.log(DEDAULT_STATE.userInfo);
+
 
 export const roomReducer = (state = DEDAULT_STATE, action) => {
 

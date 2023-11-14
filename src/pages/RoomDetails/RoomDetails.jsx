@@ -127,28 +127,6 @@ export default function RoomDetails() {
                 alt=".."
               />
             </div>
-            {/* <div className="hidden sm:grid sm:grid-cols-2 gap-2 ">
-              <div>
-                <img className="w-full h-full" src={imgRoom} alt="" />
-              </div>
-              <div className="hidden md:block rounded-tr-xl overflow-hidden">
-                <img
-                  className="w-full h-full rounded-tr-xl overflow-hidden"
-                  src={imgRoom}
-                  alt=""
-                />
-              </div>
-              <div className="rounded-r-xl overflow-hidden md:rounded-none">
-                <img className="w-full h-full" src={imgRoom} alt="" />
-              </div>
-              <div className="hidden md:block rounded-br-xl overflow-hidden">
-                <img
-                  className="w-full h-full rounded-br-xl overflow-hidden"
-                  src={imgRoom}
-                  alt=""
-                />
-              </div>
-            </div> */}
           </div>
           <div className="w-full flex sm:flex-row flex-col mt-10 border-b pb-5">
             <div className="w-full sm:w-1/2 lg:w-3/5">

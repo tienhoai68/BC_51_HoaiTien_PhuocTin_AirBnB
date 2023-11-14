@@ -20,7 +20,6 @@ const CommentSchema = Yup.object().shape({
 export default function FeedbackRoom(props) {
 
   const userState = useSelector((state) => state.userReducer);
-  // console.log(userState.userInfo.user.id);
   const [feedBackRoom, setFeedBackRoom] = useState([]);
   const [showAllComments, setShowAllComments] = useState(false);
   const [isCommenting, setIsCommenting] = useState(false);
@@ -62,10 +61,7 @@ export default function FeedbackRoom(props) {
     const dataSubmit = { ...values, saoBinhLuan: rating };
     await roomService.sendCommentApi(dataSubmit);
     fecthFeedBack();
-    // lấy dataSubmit này post api
-    // Reset the form after submission
     resetForm();
-    // Hide the comment form
     setIsCommenting(false);
     setRating(0);
   };

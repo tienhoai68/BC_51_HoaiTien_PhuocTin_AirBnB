@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useState } from "react";
 import "./Header.scss";
 import LanguageIcon from '@mui/icons-material/Language';
 import HeaderProfile from "./components/HeaderProfile";
