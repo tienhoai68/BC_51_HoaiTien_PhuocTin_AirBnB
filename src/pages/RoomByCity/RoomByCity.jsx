@@ -10,11 +10,11 @@ import CountertopsIcon from '@mui/icons-material/Countertops';
 import TvIcon from '@mui/icons-material/Tv';
 import WifiIcon from '@mui/icons-material/Wifi';
 import PersonIcon from '@mui/icons-material/Person';
-// Import Swiper React components
+
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Mousewheel, Keyboard } from "swiper/modules";
 import { AiFillStar } from "react-icons/ai";
-// Import Swiper styles
+
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
